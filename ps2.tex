@@ -228,7 +228,13 @@ We can now prove give a bottom-up proof of \cref{face_trick}.
 
     As in the previous case, the fact that $G$ has no separating triangle with the edge $uv$ implies $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
     
-    Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{\tau}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{\tau}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  
+    
+    \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $\tau_s'$ that has feet on $\tau_i'$, $\tau_r'$ and $\tau_q'$ for some $q$.  But now $\tau_s$ has two feet on $\tau_r$ and no feet on $\tau_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.}
+    
+    
+    Now consider any face $f$ of $G_j$ for some $j\in\{r,\ldots,2n-5\}$.  If $f$ contains no edge of $\overline{\tau}_r$ and no vertex of $\overline{\tau}_r$.
+    
+    Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{\tau}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{\tau}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and 
     
     
     
