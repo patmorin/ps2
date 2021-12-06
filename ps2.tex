@@ -96,7 +96,7 @@
 \maketitle
 
 \begin{abstract}
-    The Product Structure Theorem for planar graphs (Dujmović et al, 2019) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and $3$-cycle.  We give an alternative proof of this theorem.
+    The Product Structure Theorem for planar graphs (Dujmović et al, 2019) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and $3$-cycle.  We give an alternative proof of this theorem that leads to a linear-time algorithm.
 \end{abstract}
 % \end{titlepage}
 
@@ -108,7 +108,13 @@
 
 \section{Introduction}
 
-\section{Tripod Decomposition}
+\section{Preliminaries}
+
+
+
+
+
+\section{Tripod Decompositions}
 
 
 Let $G$ be a $n$-vertex triangulation and $T_0$ be a breadth-first spanning forest\todo{Define BFS forest} of $G$ having three roots, all on a common face, $f_0$, of $G$.  A \emph{tripod} $\tau$ in $G$ is a triple of disjoint vertical paths\todo{Define vertical paths and lower endpoints} in $T_0$ whose lower endpoints are contained in a single face of $G$.  (Note that each of the three paths in $\tau$ may be empty.)
@@ -148,7 +154,7 @@ Let $\overline{\tau}_0$ be the subgraph of $G$ consisting of the edges and verti
 
 
 \bibliographystyle{plainurlnat}
-\bibliography{af2t}
+\bibliography{ps2}
 
 
 \end{document}
