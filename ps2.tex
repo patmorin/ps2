@@ -104,27 +104,45 @@
 
 \section{Preliminaries}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are finite.  A \emph{triangulation} is an edge-maximal planar graph.  We will assume that any triangulation is embedded without crossings in $\R^2$ so that any cycle in a triangulation defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  The \emph{outer face} of a triangulation $G$ is the unique $3$-cycle in $G$ with no vertices of $G$ in its interior.
+
+A \emph{cutset} in a graph $G$ is a subset $S$ of $V(G)$ such that $G-S$ has more than one connected component.  A \emph{separating triangle} in a triangulation $G$ is a $3$-cycle $uvw$ in $G$ whose vertices form a cutset.  It is well known that any $3$-vertex cutset $\{u,v,w\}$ in a triangulation is a separating triangle and that $G-\{u,v,w\}$ has exactly two components, one contained in the interior of $uvw$ and one contained in the exterior of $uvw$.
+
 % See Diestel \cite[Chapter 12]{diestel:graph} for definitions of treewidth and tree decompositions.
 
-For any graph $G$ and any set $S$, the \emph{induced subgraph} $G[S]$ is the graph with vertex set $V(G[S]):=V(G)\cap S$ and edge set $E(G[S]):=\{vw\in E(G):v,w\in S\}$.  When $G$ is an embedded planar graph and $f$ is a face of $G$, we will sometimes treat $f$ as a subgraph of $G$ that includes all vertices and edges of $G$ on the boundary of $f$.
+For any graph $G$ and any set $S$, the \emph{induced subgraph} $G[S]$ is the graph with vertex set $V(G[S]):=V(G)\cap S$ and edge set $E(G[S]):=\{vw\in E(G):v,w\in S\}$.  When $G$ is triangulation and $f$ is a face of $G$, we will sometimes treat $f$ as a subgraph of $G$ that includes all vertices and edges of $G$ on the boundary of $f$.
 
 Let $G$ be a graph. A \emph{path} in $G$ is a (possibly empty) sequence of vertices $v_0,\ldots,v_r$ with the property that $v_{i-1}v_i\in E(G)$, for each $i\in\{1,\ldots,r\}$.  The \emph{endpoints} of a path $v_0,\ldots,v_r$ are the vertices $v_0$ and $v_r$.  We will treat a path $v_0,\ldots,v_r$ interchangeably with the subgraph of $G$ having vertex set $\{v_0,\ldots,v_r\}$ and edge set $\{v_{i-1}v_i:i\in\{1,\ldots,r\}\}$.  The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of edges in the path.  The \emph{length} of an empty path is $-1$. For two vertices $v,w\in V(G)$, $\dist_G(v,w)$ denotes the length of a shortest path in $G$ that contains $v$ and $w$, or $\dist_G(v,w):=\infty$ if $v$ and $w$ are in different connected components of $G$.  For a non-empty subset $S\subseteq V(G)$, $\dist_G(v,S):=\min\{\dist_G(v,w):w\in S\}$.
 
-For a tree $T$ rooted a vertex $v_0\in V(T)$, the \emph{depth} of a node $v\in V(T)$ is $\depth_T(v):=\dist_T(v,v_0)$.  A forest, $F$ rooted at a set $S$ is the union of vertex-disjoint trees $(T_x:x\in S)$ such that $T_x$ is a tree rooted at $x$, for each $x\in S$.  The \emph{depth} of a node $v$ in a forest rooted at $S$ is $\depth_F(v):=\dist_F(v,S)$.  The \emph{height} of a forest $F$ is $\height(F):=\max\{\depth_F(v):v\in V(F)\}$.\todo{How much of this still needed?}
-% A \emph{vertical path} in a forest $F$ is a path $v_0,\ldots,v_r$ in $F$ with $\depth_F(v_i)=\depth_F(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$.  The \emph{lower endpoint} of a vertical path $v_0,\ldots,v_r$ is $v_0$ and $v_r$ is the \emph{upper endpoint}.
+For a tree $T$ rooted a vertex $v_0\in V(T)$, the \emph{depth} of a node $v\in V(T)$ is $\depth_T(v):=\dist_T(v,v_0)$.  A forest, $F$ rooted at a set $S$ is the union of vertex-disjoint trees $(T_x:x\in S)$ such that $T_x$ is a tree rooted at $x$, for each $x\in S$.  The \emph{depth} of a node $v$ in a forest rooted at $S$ is $\depth_F(v):=\dist_F(v,S)$.  The \emph{height} of a forest $F$ is $\height(F):=\max\{\depth_F(v):v\in V(F)\}$.  A \emph{vertical path} in a forest $F$ is a path $v_0,\ldots,v_r$ in $F$ with $\depth_F(v_i)=\depth_F(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$.  The \emph{lower endpoint} of a vertical path $v_0,\ldots,v_r$ is $v_0$ and $v_r$ is the \emph{upper endpoint}.  A \emph{breadth-first-search (BFS) forest} $F$ rooted at $S$ is a spanning forest of $G$ rooted at $S$ with the property that $\dist_G(v,S)=\depth_F(v)$ for each $v\in V(G)$.
 
-A \emph{layering} $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ of a graph $G$ is a partition of $V(G)$ into a sequence of sets with the property that, if $u\in L_i$, $v\in L_j$, and $uv\in E(G)$ then $|i-j|\le 1$. For a non-emptsy subset $S\subseteq V(G)$, the \emph{$S$-rooted BFS layering} $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ is the layering in which $L_i=\{v\in V(G):\dist_G(v,S)=i\}$, for each $i\in\N$.   The \emph{height} of a BFS layering $\mathcal{L}$ is $\max\{i\in\N: L_i\neq\emptyset\}$.
 
-Fix a layering $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ of a graph $G$. A path $v_0,\ldots,v_r$ in $G$ is \emph{vertical} with respect to $\mathcal{L}$ if there exists an $i\in\N$ such that $v_j\in L_{i-j}$ for each $j\in\{0,\ldots,r\}$. When $G$ and $\textsc{L}$ are clear from context we simply say that $v_0,\ldots,v_r$ is a \emph{vertical path}.  If $v_0,\ldots,v_r$ is a vertical path, then $v_0$ is \emph{lower endpoint} of the path and $v_r$ is the \emph{upper endpoint}.
+\begin{lem}
+  Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $F$ be an $S$-rooted BFS forest of $G$, and let $h:=\height(F)$.  Then $F$ contains an edge $uv$ such that
+  \begin{compactenum}[1.]
+    \item No separating triangle of $G$ contains $uv$; \label{no_separating_triangle2}
+    \item $h=\depth(v)=\depth(u)+1$; and \label{max_depth}
+    \item
+    \begin{compactenum}[(a)]
+      \item $\deg_G(v)\le 5$, or\label{low_degree}
+      \item $\deg_F(u)\le 2$.\label{only_child}
+    \end{compactenum}
+  \end{compactenum}
+\end{lem}
 
-% A \emph{breadth-first-search (BFS) forest} $F$ rooted at $S$ is a spanning forest of $G$ rooted at $S$ with the property that $\dist_G(v,S)=\depth_F(v)$ for each $v\in V(G)$.
+\begin{proof}
+  % Let $h:=\height(F)$.  Say that a separating triangle $abc$ of $G$ is \emph{worrisome} if $\{h-1,h\}=\{\depth_F(a),\depth_F(b),\depth_F(c)\}$.  If $G$ contains no worrisome separating triangles then we can ignore \cref{no_separating_triangle}.  Define a partial order $\prec$ on the separating triangles of $G$ in which $\Delta_1\prec \Delta_2$ if the interior of $\Delta_1$ is contained in the interior of $\Delta_2$.  Now consider any worrisome separating triangle $f_0'$ that is minimal with respect to $\prec$.  Let $G'$ be the subgraph of $G$ induced by the vertices of $f_0'$ and the vertices in the interior of $f_0'$.  Then $G'$ has $n'\ge 4$ vertices, outer face $f'$, and $F':=F\cap G'$ is an $S'$-rooted spanning forest of $G'$ for some $S'\subseteq f_0'$.  Therefore it suffices to prove the result for $G'$, which has no worrisome separating triangles.  We therefore assume that $G$ has no worrisome separating triangles, so we can ignore the first requirement.
+  
+  Let us ignore the requirement \cref{no_separating_triangle2} for now.  Let $L_0:=\{u\in V(G):\depth_F(u)=h-1\}$ and let $L_1:=\{v\in V(G):\depth_F(v)=h\}$.
+  
+\end{proof}
+
 
 
 \section{Tripod Decompositions}
 
 
-Let $G$ be a $n$-vertex triangulation, let $f_0$ be a face of $G$, and let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $V(f_0)$-rooted BFS layering of $G$.  A \emph{tripod} $\tau:=(\pi_\tau,\rho_\tau,\sigma_\tau)$ is a triple of vertex-disjoint vertical paths in $G$ whose lower endpoints are contained in a single face $f$ of $G$.  Each of the paths $\pi_\tau$, $\rho_\tau$, and $\sigma_\tau$ is a \emph{leg} of $\tau$. Note that any of the legs of $\tau$ may be empty.
+Let $G$ be a $n$-vertex triangulation, let $f_0$ be a face of $G$, and let $F$ be a BFS forest of $G$ rooted at a $V(f_0)$.  A \emph{tripod} $\tau:=(\pi_\tau,\rho_\tau,\sigma_\tau)$ in $G$ is a triple of vertex-disjoint vertical paths in $F$ whose lower endpoints are contained in a single face $f$ of $G$.  Each of the paths $\pi_\tau$, $\rho_\tau$, and $\sigma_\tau$ is a \emph{leg} of $\tau$. Note that any of the legs of $\tau$ may be empty.
 
 Starting in the next sentence, we may treat a tripod $\tau$ as a triple $(\pi_\tau,\rho_\tau,\sigma_\tau)$ of paths  in $G$, as a subgraph $\pi_\tau\cup\rho_\tau\cup\sigma_\tau$ of $G$, or as a vertex subset $V(\pi_\tau)\cup V(\rho_\tau)\cup V(\sigma_\tau)\subseteq V(G)$, relying on the reader to distinguish between these usages from context.  A \emph{tripod decomposition} $\mathcal{D}$ of $(G,F)$ is a partition of $V(G)$ into tripods.  \citet{dujmovic.joret.ea:planar} proved the following result, which implies the planar product structure theorem:
 
@@ -144,8 +162,7 @@ It is straightforward to verify from these definitions that $\mathcal{D}_\mathca
 
 We now define the \emph{closure} of each tripod in $\tau_0,\ldots,\tau_{2n-3}$.  Define $\overline{\tau}_0$ be the subgraph of $G$ consisting of the edges and vertices of $f_0$.  For each $i\in\{1,\ldots,2n-3\}$, let $\overline{\tau}_i$ denote the subgraph of $G$ consisting of the edges and vertices of $f_i$, the edges and vertices of the three paths in $\tau_i$ and, for each non-empty path in $\tau_i$ with top vertex $v$, the edge from $v$ to its parent in $F$.  Each of these three final vertices is called a \emph{foot} of $\overline{\tau}_i$.
 
-
-We let $G_i$ be the (not necessarily induced) subgraph of $G$ obtained by taking the union of $\overline{\tau}_0,\ldots,\overline{\tau}_i$.  For each vertex $v\in V(G_i)$, let $j_\mathcal{F}(v)$ be the unique integer such that $v\in \tau_{j(v)}$. For each edge $e$ of $G_i$, we let $j_\mathcal{F}(e):=\min\{j\in\{0,\ldots,i\}:e\in E(\overline{\tau}_i)\}$.
+For each $i\in\{0,\ldots,2n-3\}$, let $G[i]:=G[\bigcup_{j=0}^i\tau_j]$. Note that $G_i$ contains $\bigcup_{j=0}^i \tau_j$ as a subgraph.  For each vertex $v$ of $G$, let $j_\mathcal{F}(v):=\min\{j:v\in V(G_j)$ and for each edge $e$ of $G$, let $j_\mathcal{F}(e):=\min\{j:v\in E(G_j)\}$.
 
 \Cref{tripod_decomposition} can be obtained as a simple consequence of the next lemma. Informally, this lemma states that we can find an ordering $\mathcal{F}$ of $G$'s faces so that produces a tripod decomposition $\mathcal{D}_\mathcal{F}$ resulting in a sequence of biconnected graphs $G_0,\ldots,G_{2n-3}$ such that each face $f$ of each graph $G_j$ is nicely bounded by at most three tripods in the set $\tau_0,\ldots,\tau_j$.  The connection between \cref{tripod_decomposition} and \cref{face_trick} is that, since each tripod $\tau_j$ is contained in a face $f$ of $G_{j-1}$, this naturally defines a partial $3$-tree that contains $H:=G/\mathcal{D}$ where the parents of $\tau_j$ are the three tripods on the boundary of the face $f$.
 
@@ -163,16 +180,11 @@ We let $G_i$ be the (not necessarily induced) subgraph of $G$ obtained by taking
 
 \citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider some face $f$ of $G_{i-1}$, $f\not\in\{f_0,\ldots,f_{i-1}\}$, and use (\ref{three_faces}) and Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$.  This approach was subsequently used by \citet{morin:fast} to devise an $O(n\log n)$ time divide-and-conquer algorithm for computing a tripod decomposition satisfying the conditions of \cref{tripod_decomposition}.  We will give an inductive proof of \cref{face_trick} that has a more bottom-up flavour, but first we need the following lemma:
 
-\todo[inline]{%
-  Drop the BFS forest $F$ altogether, and work with a layering instead.
-  Strengthen the next lemma with an alternative:  There exists a vertex $v$ of depth $h$ and degree at most $4$ ($5$ is also good enough), or there exists a vertex $u$ of depth $h-1$ with exactly one neighbour of depth $h$.   These put us into the two good cases that we know how to handle.  The former case fixes the problem pointed out in Case~2 of the proof of \cref{face_trick} and the latter case puts us in Case~1 ($v$ becomes an extension of $u$'s tripod.)
-}
-
 \begin{lem}\label{good_deep_edge}
   If $n\ge 4$, then $F$ contains an edge $uv$ such that
   \begin{compactenum}[(i)]
     \item\label{max_depth} $\depth_{F}(v)=\height(F)$; and
-    \item\label{no_separating_triangle} there is no $w\in V(G)$ such that $G-\{u,v,w\}$ is disconnected, i.e, no separating triangle in $G$ includes the edge $uv$.
+    \item\label{no_separating_triangle} there is no $w\in V(G)$ such that $G-\{u,v,w\}$ is disconnected.
   \end{compactenum}
 \end{lem}
 
@@ -200,15 +212,15 @@ We can now prove give a bottom-up proof of \cref{face_trick}.
 
   Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.
   % Because of this, there is no need to distinguish between a face that is in $G'$ and the corresponding face in $G$.
-  Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f_{2n-4}$ and $f_{2n-3}$ of $G$ that contain the edge $uv$.
-
-  We claim that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}). To prove this claim, consider the unique tripod $\tau_i'$ in the tripod decomposition $\mathcal{D}_{\mathcal{F'}}:=\tau_0',\ldots,\tau_{2n-3}'$ that contains $u$. For each $j\in\{0,\ldots,i-1\}$, $G_j=G_j'$ and $\tau_j=\tau_j'$ so it suffices to check conditions (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-3\}$. Furthermore, $G_{2n-3}=G_{2n-4}=G_{2n-5}$, so it suffices to verify (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-5\}$.
-
-
+  Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f_{2n-4}$ and $f_{2n-3}$ of $G$ that contain the edge $uv$.  
+  
+  We claim that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}). To prove this claim, consider the unique tripod $\tau_i'$ in the tripod decomposition $\mathcal{D}_{\mathcal{F'}}:=\tau_0',\ldots,\tau_{2n-3}'$ that contains $u$. For each $j\in\{0,\ldots,i-1\}$, $G_j=G_j'$ and $\tau_j=\tau_j'$ so it suffices to check conditions (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-3\}$. Furthermore, $G_{2n-3}=G_{2n-4}=G_{2n-5}$, so it suffices to verify (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-5\}$. 
+  
+  
   Now there are two cases to consider:
 
   \begin{enumerate}
-    \item The face $f_i$ is incident to $v$ (and not $u$) in $G$. See \cref{replacement}.
+    \item The face $f_i$ is incident to $v$ (and not $u$) in $G$. See \cref{replacement}.  
     \begin{figure}
       \begin{center}
         \begin{tabular}{cc}
@@ -220,36 +232,37 @@ We can now prove give a bottom-up proof of \cref{face_trick}.
     \end{figure}
 
     In this case we claim that $G_j'=G_j/uv$ for each $j\in\{0,\ldots,2n-5\}$. That is, $G_j'$ is obtained from $G_j$ by contracting the edge $uv$ into $u$.  To prove this, it suffices to show that $\overline{\tau}_j'=\overline{\tau}_j$ for each $j\in\{0,\ldots,2n-5\}$ since this implies that
-    \[
-      G_j/uv = (G_{j-1}\cup\overline{\tau}_j)/uv=(G_{j-1}/uv) \cup (\overline{\tau}_j/uv) = G_{j-1}'\cup \overline{\tau}_j' = G_j' \enspace .
+    \[  
+      G_j/uv = (G_{j-1}\cup\overline{\tau}_j)/uv=(G_{j-1}/uv) \cup (\overline{\tau}_j/uv) = G_{j-1}'\cup \overline{\tau}_j' = G_j' \enspace . 
     \]
-
+      
     Above, we have already argued that $G_j=G_j'$, $\tau_j=\tau_j'$, and $\overline{\tau}_j=\overline{\tau}_j'$ for each $j\in\{0,\ldots,i-1\}$, so the first interesting case occurs when $j=i$.  We will finish the proof of the claim by induction on $j\ge i$. The case $j=i$ is special.  Since $f_i$ is incident on $v$, $v$ is contained in the tripod $\tau_i$.  Indeed, $\tau_i$ is identical to $\tau_i'$ except that the leg with bottom vertex $u$ is extended so that its bottom vertex is $v$. Therefore $\tau_i'=\tau_i/uv$.
 
     Suppose $j\ge i$ and consider the face $f'$ of $G_{j-1}'$ that contains $f_j'$.  By the inductive hypothesis, there is a face $f$ of $G_{j-1}$ that corresponds to $f'$. The tripods $\tau_j$ and $\tau_j'$ are identical; each contains three maximal vertical paths from the vertices of $f'_j=f_j$ up to, but not including the first vertex in $f'$, respectively $f$.  The closures $\overline{tau}_j$ and $\overline{\tau}_j'$ of these tripods are also identical except that, possibly the vertex $u$ appears as a foot in one leg of $\overline{\tau}_j'$ but is replaced by $v$ in $\overline{\tau}_j$.  Nevertheless $\overline{\tau}_j'=\tau_j/uv$, as required.  This completes the proof that $G_j'=G_j/uv$.
 
     Since $G$ contains no separating triangle with the edge $uv$, neither does $G_j$.  It now follows that $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-
+    
     Since $G_j'=G_j/uv$, there is an injective function from the faces of $G_j'$ onto the faces of $G_j$.  Therefore, for any face $f\not\in\{f_{2n-3},f_{2n-4}\}$ of $G_j$ there is a corresponding face $f'$ of $G_j'$.  It is straightforward to verify that $J_\mathcal{F}(f)=J_\mathcal{F'}(f')$ and therefore $f$ satisfies (\ref{three_faces}) since $f'$ satisfies (\ref{three_faces}).
-
+    
     \item The face $f_i$ is not incident to $v$ in $G$.  Since $v$ is a leaf of $F$, this implies that $v\not\in \tau_j$ for any $j\in\{0,\ldots,i\}$.  In fact, $v$ is the bottom vertex of the leg of the tripod $\tau_r$ that contains $v$.  In particular, $v\in\tau_r$ for the minimum $r$ such that $f_r$ is incident to $v$ in $G$.  Note that this implies $r\ge i$ since otherwise $u$ would already be included in $\tau_r'$ and not in $\tau_i'$. Case~1 above considers the case $i=r$.  Furthermore, $r\le 2n-5$, since  $f_{2n-4}$ and $f_{2n-3}$ account for only two of the at least three faces of $G$ incident to $v$.  Therefore $r\in\{i+1,\ldots,2n-5\}$ and $\tau_r'$ is a tripod with one empty leg whose foot is $u$.
-
+    
     Again, we claim that $G_j'=G_j/uv$ for each $j\in\{0,2n-5\}$.  The proof of this claim is similar to the previous case except that we already know that $G_j=G_j'$ for each $j\in\{0,\ldots,r-1\}$, so the first interesting case occurs when $j=r$. This case is handled easily because, from the discussion in the preceding paragraph $\overline{\tau}_r'=\overline{\tau}_r/uv$.  The cases in which $j\in\{r+1,\ldots,2n-5\}$ are handled as in the previous case.
 
     As in the previous case, the fact that $G$ has no separating triangle with the edge $uv$ implies $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-
-    \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $\tau_s'$ that has feet on $\tau_i'$, $\tau_r'$ and $\tau_q'$ for some $q$.  But now $\tau_s$ has two feet on $\tau_r$ and no feet on $\tau_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.}
-
-
+    
+    
+    \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $\tau_s'$ that has feet on $\tau_i'$, $\tau_r'$ and $\tau_q'$ for some $q$.  But now $\tau_s$ has two feet on $\tau_r$ and no feet on $\tau_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.  The problem seems to go away if $v$ has degree at most $5$, and looks}
+    
+    
     Now consider any face $f$ of $G_j$ for some $j\in\{r,\ldots,2n-5\}$.  If $f$ contains no edge of $\overline{\tau}_r$ and no vertex of $\overline{\tau}_r$.
-
-    Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{\tau}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{\tau}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and
-
-
-
-
-
-
+    
+    Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{\tau}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{\tau}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and 
+    
+    
+    
+    
+    
+    
     \todo{define foot of a tripod}.  In $\tau_r$ this leg contains the length-$0$ path that contains only $v$.  We now verify that $\mathcal{F}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}).  This verification is similar to the verification in the first case, except for the proof that $\mathcal{F}$ satisfies (\ref{three_faces}) for a face $f$ that contains $v$.
 
     Let $f$ be a face of $G$ that contains $v$.  If $|J_{\mathcal{F}'}(f)|\in\{1,2\}$ then $|J_{\mathcal{F}}(f)|\le 3$ and its easy since $J_{\mathcal{F}}(f)\subseteq J_{\mathcal{F'}}(f)\cup\{r\}$.  If $f$ also contains $u$ then it contains the edge uv and [argue that we can swap an element of $J_{\mathcal{F}'}(f)$ for $r$].  If $f$ does not contain $u$ then [argue that we can swap $i$ out of $J_{\mathcal{F}'}(f)$ and use $r$ instead.]  \qedhere
