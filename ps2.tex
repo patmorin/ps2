@@ -131,6 +131,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
     \item $\deg_G(v)\le 4$, or\label{low_degree}
     \item $|N_G(u)\cap L_h|=1$.\label{only_child}
   \end{compactenum}
+  \todo{Add a condition on $uv$ not being part of a separating triangle?}
 \end{lem}
 
 \begin{proof}
@@ -147,7 +148,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
       \item a curve that is outside of $C_{i+1}$.
     \end{inparaenum}
   \end{compactenum}
-  Identify each vertex of $G$ with the point that represents it in such an ordered concentric representation and each edge of $G$ with the curve that represents it.  Refer to \cref{gammas}.  If $v$ has at least three neighbours in $L_{h-1}$ then there exists an arc $\Gamma_0$ of $C_{h-1}$ with endpoints $u_0$ and $u_2$ that contains exactly three neighbours $u_0$, $u$, and $u_2$ of $v$.  Let $\Gamma_1$ be the minimal arc of $C_h$ that contains $v$ and the intersections of the edges $u_0v$ and $u_2v$ with $C_h$.  Observe that $N_G(u_1)\cap L_h\subseteq \Gamma_1\cap L_h$.  Therefore, if $\Gamma_1\cap L_h=\{v\}$, then the edge $uv$ satisfies (\ref{only_child}) and we are done.
+  Identify each vertex of $G$ with the point that represents it in such an ordered concentric representation and each edge of $G$ with the curve that represents it.  Refer to \cref{gammas}.  If $v$ has at least three neighbours in $L_{h-1}$ then there exists an arc $\Gamma_0$ of $C_{h-1}$ with endpoints $u_0$ and $u_2$ that contains exactly three neighbours $u_0$, $u$, and $u_2$ of $v$.  Let $\Gamma_1$ be the minimal arc of $C_h$ that contains $v$ and the intersections of the edges $u_0v$ and $u_2v$ with $C_h$.  Observe that $N_G(u)\cap L_h\subseteq \Gamma_1\cap L_h$.  Therefore, if $\Gamma_1\cap L_h=\{v\}$, then the edge $uv$ satisfies (\ref{only_child}) and we are done.
   \begin{figure}
     \begin{center}
       \begin{tabular}{c@{\hspace{1cm}}c}
@@ -161,6 +162,26 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
   Suppose therefore that $|\Gamma_1\cap L_h|\ge 2$.  Partition $\Gamma_1$ into two subarcs $\Gamma_{1,a}$ and $\Gamma_{1,b}$ each having an endpoint at $uv\cap C_h$, with $\Gamma_{1,a}$ having an endpoint at $u_0v\cap C_h$ and $\Gamma_{1,b}$ having an endpoint on $u_2v\cap C_h$.   Define $\Gamma_{0,a}$ and $\Gamma_{0,b}$ similarly as the two arcs obtained by cutting $\Gamma_0$ at $u$.  Without loss of generality, we may assume that $Q:=\Gamma_{1,a}\cap L_h\setminus\{v\}$ is non-empty.  Then $G[Q\cup\{v\}]$ is an outerplanar graph with at least two vertices, so it contains at least two vertices of degree at most $2$.  Let $v'$ be a vertex in $Q$ such that $\deg_{G[Q\cup\{v\}}(v')\le 2$.  Observe that $\deg_{G[L_h]}(v')=\deg_{G[Q\cup\{v\}]}(v')\le 2$.  Therefore, we may repeat the entire argument, from the beginning, using $v'$ in place of $v$.  This will either show that some edge $u'v'$ incident on $v'$ satisifies the conditions of the lemma, or will lead to the same situation with arcs $\Gamma_0'$ and $\Gamma_1'$ defined analagously to $\Gamma_0$ and $\Gamma_1$.  The key observation is that $\Gamma_0'\subseteq\Gamma_{0,a}$ and therefore $|\Gamma_0'\cap L_{h-1}| < |\Gamma_0\cap L_{h-1}|$ since $\Gamma_0'$ does not contain $u_2$.  This cannot continue indefinitely so it will eventually lead to an edge $u''v''$ satisfying the conditions of the lemma.
 \end{proof}
 
+The next lemma talks about edge contractions.  Contraction of an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.  
+
+This is the lemma we really want:
+
+\begin{lem}\label{contraction_sequence}
+  Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Then there exists a sequence $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ that can be contracted, in order, to give a sequence of graphs $\langle G_i\rangle_{i=0}^{|L_h|}$ (with $G_0=G$ and $G_i$ the result of contracting edges $u_1v_1,\ldots,u_{i-1}v_{i-1}$) that has the following properties:
+  \begin{compactenum}[(i)]
+    \item $u_iv_i$ is a contractible edge of $G_{i-1}$; and
+    \item
+    \begin{compactenum}[(a)]
+      \item $\deg_{G_{i-1}}(v_i)\le 4$; or\label{low_degree2}
+      \item $\deg_{G_{i-1}}(v_i)> 4$, $|N_{G_i}(u_i)\cap L_{h-1}|=1$, and $u_i$ appears as an endpoint of exactly one edge in $S$.\label{only_child2}
+    \end{compactenum}
+  \end{compactenum}  
+\end{lem}
+
+\begin{proof}
+  TODO
+\end{proof}
 
 % Using \cref{good_edge} we can establish the following vertex ordering:
 
@@ -177,7 +198,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 % \end{proof}
 
 
-\begin{lem}
+\begin{lem}\label{tripod_blobs}
   Let $G$ be an embedded planar graph, let $S:=Y_1\uplus Y_2\uplus Y_3\subseteq V(G)$ be such that $G[S]$ is connected, let $f$ be an internal face of $G[S]$ and let $Y_4\subseteq V(G)\setminus S$ such that $Y_4$ is in the interior of $f$, $G[Y_4]$ is connected, and, for each $i\in\{1,2,3\}$ such that $V(f)\cap Y_i$ is non-empty, there exists an edge $u_i,v_i$ of $G$ with $u_i\in Y_4$ and $v_i\in Y_i$.  Then, for each face $g$ of $G[S\cup Y]$, $V(g)\cap Y_j$ is empty, for at least one $j\in\{1,2,3,4\}$.
 \end{lem}
 
@@ -206,20 +227,38 @@ We now describe how tripod decompositions can be obtained from total orders on t
   \item $Y_0$ is the tripod whose three paths are three vertices of $f_0$.
   \item For each $i\in\{0,\ldots,2n-2\}$, let $S_i:=\bigcup_{j=0}^i Y_j$.
   \item For each $i\in\{1,\ldots,2n-3\}$, let $x_{i,j}$, $j\in\{1,2,3\}$ denote the three vertices of $f_i$.
-  \item For each $i\in\{1,\ldots,2n-3\}$, let $I_{i,j}$ be a vertical path in $F$ defined as follows.  If $x_{i,j}\in S$, then $I_{i,j}$ is empty.  Otherwise, the upper endpoint of $I_{i,j}$ is the minimum $F$-depth ancestor of $x_{i,j}$ that is not in $S$. The lower endpoint of $I_{i,j}$ is any $F$-descendant of $x_{i,j}$ (chosen using some fixed rule).
+  \item For each $i\in\{1,\ldots,2n-3\}$, let $I_{i,j}$ be a vertical path in $F$ defined as follows.  If $x_{i,j}\in S$, then $I_{i,j}$ is empty.  Otherwise, the upper endpoint of $I_{i,j}$ is the minimum $F$-depth ancestor of $x_{i,j}$ that is not in $S$. The lower endpoint of $I_{i,j}$ is obtained by starting at $x_{i,j}$ and walking downward in $F$ as long as the current node has exactly one child and that child has degree at least $5$ in $G$. 
   \item $Y_i:=I_{i,1}\cup I_{i,2}\cup I_{i,3}$.
 \end{compactenum}
 It is straightforward to verify from these definitions that $\mathcal{D}_\mathcal{F}$ is indeed a connected tripod decomposition of $(G,F)$.
 
-For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$. For each $i\in\{1,\ldots,2n-3\}$ define the \emph{feet} of $Y_i$ as the set of vertices in $G_{i-1}$ adjacent to at least one vertex in $Y_i$.  For each vertex $v$ of $G$, let $Y_v$ be the unique index $j$ such that $v\in Y_j$.
+For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u$ in $G_{i-1}$ is a \emph{foot} of the tripod $Y_i$ if $u\in V(f_i)$ or if there exists an edge $uv$ of $G$ with $v\in Y_i$.  (Note that a tripod may have much more than three feet!)
 
-\Cref{tripod_decomposition} can be obtained as a simple consequence of the next lemma. Informally, this lemma states that we can find an ordering $\mathcal{F}$ of $G$'s faces so that produces a tripod decomposition $\mathcal{D}_\mathcal{F}$ resulting in a sequence of connected graphs $G_0,\ldots,G_{2n-3}$ such that each face $f$ of each graph $G_j$ is bounded by at most three tripods in the set $Y_0,\ldots,Y_j$.  The connection between \cref{tripod_decomposition} and \cref{face_trick} is that, since each tripod $Y_j$ is contained in a face $f$ of $G_{j-1}$, this naturally defines a partial $3$-tree that contains $H:=G/\mathcal{D}$ where the parent clique of $Y_j$ in the $3$-tree contains the (at most) three tripods on the boundary of the face $f$.
+
+\todo[inline]{
+  Describe greedy face orderings.  These are orderings with the property that, if $f_i$ has an edge $xy$ with both $x$ and $y$ in $G_{i-1}$ then the next face of $G$ to appear in the face $f$ opposite $xy$ should be the other face with $xy$ on its boundary.  Make sure that whatever ordering we do is greedy.
+}
+
+% For each $i\in\{1,\ldots,2n-3\}$ define the \emph{feet} of $Y_i$ as the set of vertices in $G_{i-1}$ adjacent to at least one vertex in $Y_i$.  
+% For each vertex $v$ of $G$, let $Y_v$ be the unique index $j$ such that $v\in Y_j$.
+
+% \Cref{tripod_decomposition} can be obtained as a simple consequence of the next lemma. Informally, this lemma states that we can find an ordering $\mathcal{F}$ of $G$'s faces so that produces a tripod decomposition $\mathcal{D}_\mathcal{F}$ resulting in a sequence of connected graphs $G_0,\ldots,G_{2n-3}$ such that each face $f$ of each graph $G_j$ is bounded by at most three tripods in the set $Y_0,\ldots,Y_j$.  The connection between \cref{tripod_decomposition} and \cref{face_trick} is that, since each tripod $Y_j$ is contained in a face $f$ of $G_{j-1}$, this naturally defines a partial $3$-tree that contains $H:=G/\mathcal{D}$ where the parent clique of $Y_j$ in the $3$-tree contains the (at most) three tripods on the boundary of the face $f$.
 
 \begin{lem}\label{face_trick}
   For any triangulation $G$, any face $f_0$ of $G$, and any $S\subseteq V(f_0)$ there exists an $S$-rooted BFS forest $F$ and an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ of the faces of $G$ that defines a connected tripod decomposition $\mathcal{D}_\mathcal{F}:=Y_0,\ldots,Y_{2n-3}$ such that, for each $j\in\{0,\ldots,2n-3\}$ the tripod $Y_j$ has a foot in each tripod that contains a vertex on the face of $G_{j-1}$ whose interior  contains $Y_j$.
 \end{lem}
 
-\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}$ of $G_{i-1}$ and use (\ref{three_faces}) and Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$.  \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  We will now give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.
+\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}$ of $G_{i-1}$ and use (\ref{three_faces}) and Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$.  \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we will now give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.   Before doing so, we first establish an easy consequence of \cref{face_trick} and \cref{tripod_blobs}.
+
+\begin{lem}
+  Let $G$, $S$, $\mathcal{F}$, $Y_0,\ldots,Y_{2n-3}$, and $G_0,\ldots,G_{2n-3}$ be defined as in \cref{face_trick}. Then, for each $i\in\{0,2n-3\}$, each face of $G_i$ contains vertices of at most three tripods in $Y_0,\ldots,Y_{2n-3}$. 
+\end{lem}
+
+\begin{proof}
+  The proof is by induction on $i$.  The base case $i=0$ is trivial since $G_0=f_0$ has three vertices.  Now assume $i\ge 1$. Let $g$ be any face $G_i$.  If $g$ is also a face of $G_{i-1}$ then the inductive hypothesis implies the result.  Otherwise, $g$ contains at least one vertex of the tripod $Y_i$.  The tripod $Y_i$ is contained in the interior of some face $f$ of $G_{i-1}$.  The inductive hypothesis implies that $f$ contains vertices of $c\le 3$ tripods among $Y_{0},\ldots,Y_{i-1}$.  If $c\le 2$ then $g$ contains vertices of $Y_i$ and at most two tripods in $Y_0,\ldots,Y_{i-1}$, as required.  If $c=3$ then \cref{tripod_blobs} establishes the result.
+\end{proof}
+
+
 
 
 % , but first we need the following lemma:
@@ -250,67 +289,136 @@ For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$. For each $i\
 % We can now prove give a bottom-up proof of \cref{face_trick}.
 
 \begin{proof}[Proof of \cref{face_trick}]
-  The proof is by induction on $n$, the number of vertices of $G$.  If $n=3$, the proof is trivial: Set $f_1$ to be the only inner face of $G$.  Then $G_1=G_0=\overline{Y}_0=G$ is biconnected so it satisfies (\ref{biconnected}).  For each $i\in\{0,1\}$ and each face $f$ of $G$, $J_{\mathcal{F}}(f)=Y_0$ which satisfies (\ref{three_faces}).  Assume therefore that $n\ge 4$ and that the statement of the lemma is true for any graph with $n-1$ vertices.
+  The proof is by induction on $n$, the number of vertices of $G$.  If $n=3$, the proof is trivial: Set $f_1$ to be the only inner face of $G$.  Then $Y_0=V(G_0)= V(G_1)$ and $Y_1$ is empty.  Assume therefore that $n\ge 4$ and that the statement of the lemma is true for any graph with fewer than $n$ vertices.
+  
+  Let $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ be the sequence of edges given by \cref{contraction_sequence}.  We put these edges into the BFS forest $F$ we are constructing.  We then contract these edges and repeat this process on the resulting graph to obtain our BFS forest $F$ and an ordering of the edges of $F$ that gives a contraction sequence $S$ with some properties we want.  Let $uv$ be the first edge in $S$ and let $G'$ and $F'$ be obtained by contracting $uv$ in $G$ and $F$, respectively.
+  
+  Since $uv$ is a contractible edge of $G$, $G'$ is a triangulation.  Since $\depth_F(v)=\height(F)$, $F'$ is an $S$-rooted BFS tree of $G'$.  Recurse on $G'$, $F'$, and the suffix $S'$ obtained by removing $uv$ from $S$. The result is an ordering of $\mathcal{F}':=f_0,\ldots,f_{2n-5}$ of the faces of $G'$ such that the tripod sequence $\mathcal{D}_{F'}:=Y_0',\ldots,Y_{2n-5}'$ and the resulting sequence of induced subgraph $G_0',\ldots,G_{2n-5}'$ satisfy the conditions of the lemma.  
 
-  Let $uv\in E(G)$ be an edge of $G$ satisfying the conditions of \cref{good_edge}.  If $uv$ is part of a separating triangle $uvw$ then [handle separating triangles separately]\todo{Or avoid those edges if possible.} Let $G'$ and $F'$ be obtained by contracting the edge $uv$ in $G$ and $F$, respectively. We use the convention that $G'$ and $F'$ contain the vertex $u$ but not $v$ so that $N_{G'}(u)=N_G(u)\cup N_G(v)$ and $N_{F'}(u)=N_F(u)\cup N_F(v)$.  Observe that $G'$ is a triangulation on $n-1$ vertices and $F$ is a BFS forest of $G'$ rooted at the vertices of $f_0$.   Apply the inductive hypothesis to obtain an ordering $\mathcal{F}':=f_0,\ldots,f_{2n-5}$ of the faces of $G'$ that satisfies the conditions of the lemma.
-
-  Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.
-  % Because of this, there is no need to distinguish between a face that is in $G'$ and the corresponding face in $G$.
-  Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f_{2n-4}$ and $f_{2n-3}$ of $G$ that contain the edge $uv$.
-
-  We claim that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}). To prove this claim, consider the unique tripod $Y_i'$ in the tripod decomposition $\mathcal{D}_{\mathcal{F'}}:=Y_0',\ldots,Y_{2n-3}'$ that contains $u$. For each $j\in\{0,\ldots,i-1\}$, $G_j=G_j'$ and $Y_j=Y_j'$ so it suffices to check conditions (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-3\}$. Furthermore, $G_{2n-3}=G_{2n-4}=G_{2n-5}$, so it suffices to verify (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-5\}$.
-
-
-  Now there are two cases to consider:
-
+  Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.  Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f'$ and $f''$ of $G$ that contain the edge $uv$. We now show that it is possible to insert $f'$ and $f''$ into the ordering $f_0,\ldots,f_{2n-5}$ to obtain an ordering of the faces of $G$ that satisfies the conditions of the lemma.
+  
   \begin{enumerate}
-    \item The face $f_i$ is incident to $v$ (and not $u$) in $G$. See \cref{replacement}.
-    \begin{figure}
-      \begin{center}
-        \begin{tabular}{cc}
-          \includegraphics{figs/case1-1} & \includegraphics{figs/case1-2}
-        \end{tabular}
-      \end{center}
-      \caption{Case 1 in the proof of \cref{face_trick}}
-      \label{replacement}
-    \end{figure}
-
-    In this case we claim that $G_j'=G_j/uv$ for each $j\in\{0,\ldots,2n-5\}$. That is, $G_j'$ is obtained from $G_j$ by contracting the edge $uv$ into $u$.  To prove this, it suffices to show that $\overline{Y}_j'=\overline{Y}_j$ for each $j\in\{0,\ldots,2n-5\}$ since this implies that
-    \[
-      G_j/uv = (G_{j-1}\cup\overline{Y}_j)/uv=(G_{j-1}/uv) \cup (\overline{Y}_j/uv) = G_{j-1}'\cup \overline{Y}_j' = G_j' \enspace .
-    \]
-
-    Above, we have already argued that $G_j=G_j'$, $Y_j=Y_j'$, and $\overline{Y}_j=\overline{Y}_j'$ for each $j\in\{0,\ldots,i-1\}$, so the first interesting case occurs when $j=i$.  We will finish the proof of the claim by induction on $j\ge i$. The case $j=i$ is special.  Since $f_i$ is incident on $v$, $v$ is contained in the tripod $Y_i$.  Indeed, $Y_i$ is identical to $Y_i'$ except that the leg with bottom vertex $u$ is extended so that its bottom vertex is $v$. Therefore $Y_i'=Y_i/uv$.
-
-    Suppose $j\ge i$ and consider the face $f'$ of $G_{j-1}'$ that contains $f_j'$.  By the inductive hypothesis, there is a face $f$ of $G_{j-1}$ that corresponds to $f'$. The tripods $Y_j$ and $Y_j'$ are identical; each contains three maximal vertical paths from the vertices of $f'_j=f_j$ up to, but not including the first vertex in $f'$, respectively $f$.  The closures $\overline{tau}_j$ and $\overline{Y}_j'$ of these tripods are also identical except that, possibly the vertex $u$ appears as a foot in one leg of $\overline{Y}_j'$ but is replaced by $v$ in $\overline{Y}_j$.  Nevertheless $\overline{Y}_j'=Y_j/uv$, as required.  This completes the proof that $G_j'=G_j/uv$.
-
-    Since $G$ contains no separating triangle with the edge $uv$, neither does $G_j$.  It now follows that $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-
-    Since $G_j'=G_j/uv$, there is an injective function from the faces of $G_j'$ onto the faces of $G_j$.  Therefore, for any face $f\not\in\{f_{2n-3},f_{2n-4}\}$ of $G_j$ there is a corresponding face $f'$ of $G_j'$.  It is straightforward to verify that $J_\mathcal{F}(f)=J_\mathcal{F'}(f')$ and therefore $f$ satisfies (\ref{three_faces}) since $f'$ satisfies (\ref{three_faces}).
-
-    \item The face $f_i$ is not incident to $v$ in $G$.  Since $v$ is a leaf of $F$, this implies that $v\not\in Y_j$ for any $j\in\{0,\ldots,i\}$.  In fact, $v$ is the bottom vertex of the leg of the tripod $Y_r$ that contains $v$.  In particular, $v\in Y_r$ for the minimum $r$ such that $f_r$ is incident to $v$ in $G$.  Note that this implies $r\ge i$ since otherwise $u$ would already be included in $Y_r'$ and not in $Y_i'$. Case~1 above considers the case $i=r$.  Furthermore, $r\le 2n-5$, since  $f_{2n-4}$ and $f_{2n-3}$ account for only two of the at least three faces of $G$ incident to $v$.  Therefore $r\in\{i+1,\ldots,2n-5\}$ and $Y_r'$ is a tripod with one empty leg whose foot is $u$.
-
-    Again, we claim that $G_j'=G_j/uv$ for each $j\in\{0,2n-5\}$.  The proof of this claim is similar to the previous case except that we already know that $G_j=G_j'$ for each $j\in\{0,\ldots,r-1\}$, so the first interesting case occurs when $j=r$. This case is handled easily because, from the discussion in the preceding paragraph $\overline{Y}_r'=\overline{Y}_r/uv$.  The cases in which $j\in\{r+1,\ldots,2n-5\}$ are handled as in the previous case.
-
-    As in the previous case, the fact that $G$ has no separating triangle with the edge $uv$ implies $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-
-
-    \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $Y_s'$ that has feet on $Y_i'$, $Y_r'$ and $Y_q'$ for some $q$.  But now $Y_s$ has two feet on $Y_r$ and no feet on $Y_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.  The problem seems to go away if $v$ has degree at most $5$, and looks}
-
-
-    Now consider any face $f$ of $G_j$ for some $j\in\{r,\ldots,2n-5\}$.  If $f$ contains no edge of $\overline{Y}_r$ and no vertex of $\overline{Y}_r$.
-
-    Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{Y}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{Y}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and
-
-
-
-
-
-
-    \todo{define foot of a tripod}.  In $Y_r$ this leg contains the length-$0$ path that contains only $v$.  We now verify that $\mathcal{F}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}).  This verification is similar to the verification in the first case, except for the proof that $\mathcal{F}$ satisfies (\ref{three_faces}) for a face $f$ that contains $v$.
-
-    Let $f$ be a face of $G$ that contains $v$.  If $|J_{\mathcal{F}'}(f)|\in\{1,2\}$ then $|J_{\mathcal{F}}(f)|\le 3$ and its easy since $J_{\mathcal{F}}(f)\subseteq J_{\mathcal{F'}}(f)\cup\{r\}$.  If $f$ also contains $u$ then it contains the edge uv and [argue that we can swap an element of $J_{\mathcal{F}'}(f)$ for $r$].  If $f$ does not contain $u$ then [argue that we can swap $i$ out of $J_{\mathcal{F}'}(f)$ and use $r$ instead.]  \qedhere
+    \item $\deg_G(v)>4$.  In this case, $u$ has only one child in the tree $T$ and no children in $T'$.  Now $u$ is a vertex of $G'$ so $u$ appears in some tripod $Y_i'$ that corresponds to some face $f_i'$ of $G'$.  Since $u$ has no children in $T'$, $u$ is the bottom vertex in the leg of $Y_i'$ that contains $u$.  In this case $Y_i:=Y_{i}'\cup\{v\}$ and $Y_{\ell}=Y_\ell'$ for each $\ell\in\{0,\ldots,2n-5\}\setminus\{i\}$.  
+    
+    \begin[inline]{todo}
+      Specify locations of $f'$ and $f''$.  I think moving $f'$ immediately after the first $f_i$ for which $G_i$ contains all three vertices of $f'$ works.
+    \end{todo}
+    
+    Now, the feet of $Y_i$ are exactly the same as the feet of $Y_i'$ and a tripod $Y_j'=Y_j$ with a foot in $Y_i'$ also has a foot in $Y_i$, so this satisfies the conditions of the lemma.
+    
+    \item $\deg_G(v)=4$.  In this case we consider the tripod $Y_i'$ that contains $u$.  $Y_i'$ corresponds to a face $f_i'$ of $G'$ and $f_i'$ corresponds to a face $f_i$ of $G$.  We distinguish between two cases:
+    \begin{compactenum}
+      \item If $f_i$ is not incident to $v$, then consider the minimum $r$ such that $f_r$ is incident to $v$. Such an $r$ must exist because $v$ is incident on at least $3$ faces of $G$ and at least one of these faces has a corresponding face in $G'$.  By definition $r\neq i$ and $r\not\le i$ since, otherwise $u$ would be part of $Y_r$.
+      
+      In this case $Y_r:=Y_r'\cup\{v\}$ and $Y_{\ell}=Y_\ell'$ for each $\ell\in\{0,\ldots,2n-5\}\setminus\{r\}$.  For each $j\in\{0,\ldots,r-1\}$, the feet of $Y_j$ in $G_{j-1}$ are the same as the feet of $Y_j'$ in $G_{j-1}'$, so there is nothing to worry about there. 
+      
+      For $Y_r$, there are two cases to consider.
+      \begin{compactenum}
+        \item  If $Y_r'$ is empty then all three vertices of $f_r$ are in $G_{r-1}$ and all of them are feet.  In $G$, $v$ is adjacent to each vertex of $f_r$, so the feet of $Y_r$ are a superset of the feet of of $Y_r'$.
+      
+        For $Y_j$ with $j>r$, we have to be a bit careful.  One of the non-triangular faces of $G_{r}$ incident on $v$ has $Y_r$ on its boundary.  In $G_{r}'$, this face had at most two tripods on its boundary, the tripod $Y_i$ containing $u$ and the tripod $Y'$ containing the neighbour of $v$.  When an additional tripod appears, it may or may not put a foot on $Y_r$.  This would be bad!  So let's rely instead on the greedy property that is mentioned above.  This property say that if the triangle opposite $f_r$ did not already appear before $f_r$, then it will be the first triangle to appear inside $f$.  That tripod definitely has a foot on $f_r$, phew!.
+        
+        \item If $Y_r'$ has one vertex $w$ of $f_r'$ and $uw\in E(G)$. Do some case analysis\ldots
+        
+        \item If $Y_r'$ has one vertex $w$ of $f_r'$ and $uw\not\in E(G)$. [Tricky case, requires moving $f'$ or $f''$ forward to preserve the greedy property.]
+        
+        \item If $Y_r$ has two vertices of $f_r'$, then this is a clean one.
+      \end{compactenum}
+    \end{compactenum}
+      
+      \item If $f_i$ is incident to $v$, then $v\in Y_i$ and things are easy.  
   \end{enumerate}
+  
+  % 
+  % '
+  % 
+  % 
+  % 
+  % \begin{enumerate}
+  %   \item $\deg_{G_i}(v_i)>4$. 
+  % 
+  % 
+  % 
+  %   \item $\deg_{G'_j}(v_j)=3$ then we create a new tripod that contains only $v$.  This creates three new faces 
+  % 
+  % 
+  %     Then there is one face $f_i$ of $G'_j$ that is incident to $v$ and that corresponds to a face $f_i'$ in $G'_{j+1}$ that is incident to $u$.  We add $v$ to the tripod $Y_i$. 
+  % 
+  % 
+  % 
+  %    Now there are two cases to consider:
+  %   \begin{compactenum}
+  %     \item $u\in Y_i$ then 
+  % 
+  % 
+  %   \item $\deg_{G'_j}(v_j)= 4$.  Consider the tripod $Y_i$ that contains $u_i$
+  % 
+  % 
+  % 
+  % \end{enumerate}
+  % 
+  % 
+  % $n-1$ vertices.
+  % 
+  % Let $uv\in E(G)$ be an edge of $G$ satisfying the conditions of \cref{good_edge}.  If $uv$ is part of a separating triangle $uvw$ then [handle separating triangles separately]\todo{Or avoid those edges if possible.} Let $G'$ and $F'$ be obtained by contracting the edge $uv$ in $G$ and $F$, respectively. We use the convention that $G'$ and $F'$ contain the vertex $u$ but not $v$ so that $N_{G'}(u)=N_G(u)\cup N_G(v)$ and $N_{F'}(u)=N_F(u)\cup N_F(v)$.  Observe that $G'$ is a triangulation on $n-1$ vertices and $F$ is a BFS forest of $G'$ rooted at the vertices of $f_0$.   Apply the inductive hypothesis to obtain an ordering $\mathcal{F}':=f_0,\ldots,f_{2n-5}$ of the faces of $G'$ that satisfies the conditions of the lemma.
+  % 
+  % Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.
+  % % Because of this, there is no need to distinguish between a face that is in $G'$ and the corresponding face in $G$.
+  % Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f_{2n-4}$ and $f_{2n-3}$ of $G$ that contain the edge $uv$.
+  % 
+  % We claim that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}). To prove this claim, consider the unique tripod $Y_i'$ in the tripod decomposition $\mathcal{D}_{\mathcal{F'}}:=Y_0',\ldots,Y_{2n-3}'$ that contains $u$. For each $j\in\{0,\ldots,i-1\}$, $G_j=G_j'$ and $Y_j=Y_j'$ so it suffices to check conditions (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-3\}$. Furthermore, $G_{2n-3}=G_{2n-4}=G_{2n-5}$, so it suffices to verify (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-5\}$.
+  % 
+  % 
+  % Now there are two cases to consider:
+  % 
+  % \begin{enumerate}
+  %   \item The face $f_i$ is incident to $v$ (and not $u$) in $G$. See \cref{replacement}.
+  %   \begin{figure}
+  %     \begin{center}
+  %       \begin{tabular}{cc}
+  %         \includegraphics{figs/case1-1} & \includegraphics{figs/case1-2}
+  %       \end{tabular}
+  %     \end{center}
+  %     \caption{Case 1 in the proof of \cref{face_trick}}
+  %     \label{replacement}
+  %   \end{figure}
+  % 
+  %   In this case we claim that $G_j'=G_j/uv$ for each $j\in\{0,\ldots,2n-5\}$. That is, $G_j'$ is obtained from $G_j$ by contracting the edge $uv$ into $u$.  To prove this, it suffices to show that $\overline{Y}_j'=\overline{Y}_j$ for each $j\in\{0,\ldots,2n-5\}$ since this implies that
+  %   \[
+  %     G_j/uv = (G_{j-1}\cup\overline{Y}_j)/uv=(G_{j-1}/uv) \cup (\overline{Y}_j/uv) = G_{j-1}'\cup \overline{Y}_j' = G_j' \enspace .
+  %   \]
+  % 
+  %   Above, we have already argued that $G_j=G_j'$, $Y_j=Y_j'$, and $\overline{Y}_j=\overline{Y}_j'$ for each $j\in\{0,\ldots,i-1\}$, so the first interesting case occurs when $j=i$.  We will finish the proof of the claim by induction on $j\ge i$. The case $j=i$ is special.  Since $f_i$ is incident on $v$, $v$ is contained in the tripod $Y_i$.  Indeed, $Y_i$ is identical to $Y_i'$ except that the leg with bottom vertex $u$ is extended so that its bottom vertex is $v$. Therefore $Y_i'=Y_i/uv$.
+  % 
+  %   Suppose $j\ge i$ and consider the face $f'$ of $G_{j-1}'$ that contains $f_j'$.  By the inductive hypothesis, there is a face $f$ of $G_{j-1}$ that corresponds to $f'$. The tripods $Y_j$ and $Y_j'$ are identical; each contains three maximal vertical paths from the vertices of $f'_j=f_j$ up to, but not including the first vertex in $f'$, respectively $f$.  The closures $\overline{tau}_j$ and $\overline{Y}_j'$ of these tripods are also identical except that, possibly the vertex $u$ appears as a foot in one leg of $\overline{Y}_j'$ but is replaced by $v$ in $\overline{Y}_j$.  Nevertheless $\overline{Y}_j'=Y_j/uv$, as required.  This completes the proof that $G_j'=G_j/uv$.
+  % 
+  %   Since $G$ contains no separating triangle with the edge $uv$, neither does $G_j$.  It now follows that $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
+  % 
+  %   Since $G_j'=G_j/uv$, there is an injective function from the faces of $G_j'$ onto the faces of $G_j$.  Therefore, for any face $f\not\in\{f_{2n-3},f_{2n-4}\}$ of $G_j$ there is a corresponding face $f'$ of $G_j'$.  It is straightforward to verify that $J_\mathcal{F}(f)=J_\mathcal{F'}(f')$ and therefore $f$ satisfies (\ref{three_faces}) since $f'$ satisfies (\ref{three_faces}).
+  % 
+  %   \item The face $f_i$ is not incident to $v$ in $G$.  Since $v$ is a leaf of $F$, this implies that $v\not\in Y_j$ for any $j\in\{0,\ldots,i\}$.  In fact, $v$ is the bottom vertex of the leg of the tripod $Y_r$ that contains $v$.  In particular, $v\in Y_r$ for the minimum $r$ such that $f_r$ is incident to $v$ in $G$.  Note that this implies $r\ge i$ since otherwise $u$ would already be included in $Y_r'$ and not in $Y_i'$. Case~1 above considers the case $i=r$.  Furthermore, $r\le 2n-5$, since  $f_{2n-4}$ and $f_{2n-3}$ account for only two of the at least three faces of $G$ incident to $v$.  Therefore $r\in\{i+1,\ldots,2n-5\}$ and $Y_r'$ is a tripod with one empty leg whose foot is $u$.
+  % 
+  %   Again, we claim that $G_j'=G_j/uv$ for each $j\in\{0,2n-5\}$.  The proof of this claim is similar to the previous case except that we already know that $G_j=G_j'$ for each $j\in\{0,\ldots,r-1\}$, so the first interesting case occurs when $j=r$. This case is handled easily because, from the discussion in the preceding paragraph $\overline{Y}_r'=\overline{Y}_r/uv$.  The cases in which $j\in\{r+1,\ldots,2n-5\}$ are handled as in the previous case.
+  % 
+  %   As in the previous case, the fact that $G$ has no separating triangle with the edge $uv$ implies $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
+  % 
+  % 
+  %   \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $Y_s'$ that has feet on $Y_i'$, $Y_r'$ and $Y_q'$ for some $q$.  But now $Y_s$ has two feet on $Y_r$ and no feet on $Y_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.  The problem seems to go away if $v$ has degree at most $5$, and looks}
+  % 
+  % 
+  %   Now consider any face $f$ of $G_j$ for some $j\in\{r,\ldots,2n-5\}$.  If $f$ contains no edge of $\overline{Y}_r$ and no vertex of $\overline{Y}_r$.
+  % 
+  %   Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{Y}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{Y}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and
+  % 
+  % 
+  % 
+  % 
+  % 
+  % 
+  %   \todo{define foot of a tripod}.  In $Y_r$ this leg contains the length-$0$ path that contains only $v$.  We now verify that $\mathcal{F}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}).  This verification is similar to the verification in the first case, except for the proof that $\mathcal{F}$ satisfies (\ref{three_faces}) for a face $f$ that contains $v$.
+  % 
+  %   Let $f$ be a face of $G$ that contains $v$.  If $|J_{\mathcal{F}'}(f)|\in\{1,2\}$ then $|J_{\mathcal{F}}(f)|\le 3$ and its easy since $J_{\mathcal{F}}(f)\subseteq J_{\mathcal{F'}}(f)\cup\{r\}$.  If $f$ also contains $u$ then it contains the edge uv and [argue that we can swap an element of $J_{\mathcal{F}'}(f)$ for $r$].  If $f$ does not contain $u$ then [argue that we can swap $i$ out of $J_{\mathcal{F}'}(f)$ and use $r$ instead.]  \qedhere
+  % \end{enumerate}
 \end{proof}
 
 
