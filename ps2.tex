@@ -17,6 +17,8 @@
 
 \usepackage[longnamesfirst,numbers,sort&compress]{natbib}
 
+\newcommand{\Rho}{\mathrm{P}}
+
 \usepackage[mathlines]{lineno}
 \setlength{\linenumbersep}{2em}
 % \linenumbers
@@ -125,13 +127,12 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 
 
 \begin{lem}\label{good_edge}
-  Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
   Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
   \begin{compactenum}[(a)]
-    \item $\deg_G(v)\le 4$, or\label{low_degree}
+    \item $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$ , or\label{low_degree}
     \item $|N_G(u)\cap L_h|=1$.\label{only_child}
   \end{compactenum}
-  \todo{Add a condition on $uv$ not being part of a separating triangle?}
 \end{lem}
 
 \begin{proof}
@@ -162,12 +163,63 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
   Suppose therefore that $|\Gamma_1\cap L_h|\ge 2$.  Partition $\Gamma_1$ into two subarcs $\Gamma_{1,a}$ and $\Gamma_{1,b}$ each having an endpoint at $uv\cap C_h$, with $\Gamma_{1,a}$ having an endpoint at $u_0v\cap C_h$ and $\Gamma_{1,b}$ having an endpoint on $u_2v\cap C_h$.   Define $\Gamma_{0,a}$ and $\Gamma_{0,b}$ similarly as the two arcs obtained by cutting $\Gamma_0$ at $u$.  Without loss of generality, we may assume that $Q:=\Gamma_{1,a}\cap L_h\setminus\{v\}$ is non-empty.  Then $G[Q\cup\{v\}]$ is an outerplanar graph with at least two vertices, so it contains at least two vertices of degree at most $2$.  Let $v'$ be a vertex in $Q$ such that $\deg_{G[Q\cup\{v\}}(v')\le 2$.  Observe that $\deg_{G[L_h]}(v')=\deg_{G[Q\cup\{v\}]}(v')\le 2$.  Therefore, we may repeat the entire argument, from the beginning, using $v'$ in place of $v$.  This will either show that some edge $u'v'$ incident on $v'$ satisifies the conditions of the lemma, or will lead to the same situation with arcs $\Gamma_0'$ and $\Gamma_1'$ defined analagously to $\Gamma_0$ and $\Gamma_1$.  The key observation is that $\Gamma_0'\subseteq\Gamma_{0,a}$ and therefore $|\Gamma_0'\cap L_{h-1}| < |\Gamma_0\cap L_{h-1}|$ since $\Gamma_0'$ does not contain $u_2$.  This cannot continue indefinitely so it will eventually lead to an edge $u''v''$ satisfying the conditions of the lemma.
 \end{proof}
 
-The next lemma talks about edge contractions.  Contraction of an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
+
+In the following, we work with edge contractions, which we treat as a directed operation.  Contraction of an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
+
+
+\begin{cor}\label{good_edge_triangulation}
+  Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be an $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Then $G$ contains a contractible edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
+  \begin{compactenum}[(a)]
+    \item $\deg_G(v)\le 4$, or
+    \item $|N_G(u)\cap L_h|=1$.
+  \end{compactenum}
+\end{cor}
+
+\begin{proof}
+  If $G$ contains no separating triangle $xzy$ with $x\in L_{h-1}$ and $z\in L_h$ then the result follows immediately from \cref{good_edge}.
+  
+  Otherwise let $xyz$ be a separating triangle of $G$ with $x\in L_{h-1}$ and $z\in L_h$ that contains the fewest possible number of vertices of $G$ in its interior. Let $Z$ be the set of vertices of $G$ contained in the interior of $xyz$, let $Y:=\{x,y,z\}\cap L_{h-1}$, and let $G'$ be the graph obtained from $G[X\cup S]$ by adding an additional vertex $v$ adjacent to each vertex in $S$.  Observe that $\langle X,Y,Z\rangle$ is a $\{v\}$-rooted BFS layering of $G'$ so by \cref{good_edge}, it contains an edge $uv$ with $u\in\{Y\}\subseteq L_{h-1}$ and $v\in\{Z\}\subseteq L_h$ satisfying (\ref{low_degree}) or (\ref{only_child}). By the minimality of $xyz$, $uv$ is not part of any separating triangle in $G$, so $uv$ is a contractible edge of $G$'.
+\end{proof}
+
+
+We will assign each vertex $v\in L_h$ a \emph{parent} $\rho(v)$ as follows:  For each $v\in L_h$, let $\Rho(v):=\{N_G(v)\cap L_{h-1}\}$ be the set of \emph{possible parents} of $v$. Observe that $\Rho(v)$ is non-empty for each $v\in L_h$.  We proceed in two stages:
+\begin{enumerate}
+  \item Repeat the following operation as long as there exists a vertex $u\in L_{h-1}$ with exactly one neighbour, $v$, in $L_h$: 
+  \begin{compactenum}
+    \item If $u\in\Rho(v)$ then set $\rho(v):=u$ and contract the edge $uv$.  
+    \item If $u\not\in\Rho(v)$ then remove the edge $uv$ from $G$.
+  \end{compactenum}
+  \item Once this is no longer possible, complete the assignment by choosing, for each $v\in L_h$, an arbitrary vertex $u\in\Rho(v)$, and setting $\rho(v):=u$.  Note that \cref{good_edge_triangulation} implies that, by this point each vertex in $L_h$ has degree at most $4$. 
+\end{enumerate}
+
+\todo[inline]{
+  Separating triangles are still an issue when we try to turn this into a contraction sequence.
+}
+
+Next, contract each edge 
+
+
+
+At this point, 
+
+
+
+Now define a sequence of graphs $G_0,\ldots,G_{k}$ ($k=|L_h|$)
+
+
+
+
+
 
 This is the lemma we really want:
 
 \begin{lem}\label{contraction_sequence}
-  Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
+
+
+  Let $G$ be a planar graph triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
   Then there exists a sequence $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ that can be contracted, in order, to give a sequence of graphs $\langle G_i\rangle_{i=0}^{|L_h|}$ (with $G_0=G$ and $G_i$ the result of contracting edges $u_1v_1,\ldots,u_{i-1}v_{i-1}$) that has the following properties:
   \begin{compactenum}[(i)]
     \item $u_iv_i$ is a contractible edge of $G_{i-1}$; and
