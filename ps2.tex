@@ -178,62 +178,46 @@ In the following, we work with edge contractions, which we treat as a directed o
 
 \begin{proof}
   If $G$ contains no separating triangle $xzy$ with $x\in L_{h-1}$ and $z\in L_h$ then the result follows immediately from \cref{good_edge}.
-  
+
   Otherwise let $xyz$ be a separating triangle of $G$ with $x\in L_{h-1}$ and $z\in L_h$ that contains the fewest possible number of vertices of $G$ in its interior. Let $Z$ be the set of vertices of $G$ contained in the interior of $xyz$, let $Y:=\{x,y,z\}\cap L_{h-1}$, and let $G'$ be the graph obtained from $G[X\cup S]$ by adding an additional vertex $v$ adjacent to each vertex in $S$.  Observe that $\langle X,Y,Z\rangle$ is a $\{v\}$-rooted BFS layering of $G'$ so by \cref{good_edge}, it contains an edge $uv$ with $u\in\{Y\}\subseteq L_{h-1}$ and $v\in\{Z\}\subseteq L_h$ satisfying (\ref{low_degree}) or (\ref{only_child}). By the minimality of $xyz$, $uv$ is not part of any separating triangle in $G$, so $uv$ is a contractible edge of $G$'.
 \end{proof}
 
-
-We will assign each vertex $v\in L_h$ a \emph{parent} $\rho(v)$ as follows:  For each $v\in L_h$, let $\Rho(v):=\{N_G(v)\cap L_{h-1}\}$ be the set of \emph{possible parents} of $v$. Observe that $\Rho(v)$ is non-empty for each $v\in L_h$.  We proceed in two stages:
-\begin{enumerate}
-  \item Repeat the following operation as long as there exists a vertex $u\in L_{h-1}$ with exactly one neighbour, $v$, in $L_h$: 
-  \begin{compactenum}
-    \item If $u\in\Rho(v)$ then set $\rho(v):=u$ and contract the edge $uv$.  
-    \item If $u\not\in\Rho(v)$ then remove the edge $uv$ from $G$.
-  \end{compactenum}
-  \item Once this is no longer possible, complete the assignment by choosing, for each $v\in L_h$, an arbitrary vertex $u\in\Rho(v)$, and setting $\rho(v):=u$.  Note that \cref{good_edge_triangulation} implies that, by this point each vertex in $L_h$ has degree at most $4$. 
-\end{enumerate}
-
-\todo[inline]{
-  Separating triangles are still an issue when we try to turn this into a contraction sequence.
-}
-
-Next, contract each edge 
+% The following does't work
+% We will assign each vertex $v\in L_h$ a \emph{parent} $\rho(v)$ as follows:  For each $v\in L_h$, let $\Rho(v):=\{N_G(v)\cap L_{h-1}\}$ be the set of \emph{possible parents} of $v$. Observe that $\Rho(v)$ is non-empty for each $v\in L_h$.  We proceed in two stages:
+% \begin{enumerate}
+%   \item Repeat the following operation as long as there exists a vertex $u\in L_{h-1}$ with exactly one neighbour, $v$, in $L_h$:
+%   \begin{compactenum}
+%     \item If $u\in\Rho(v)$ then set $\rho(v):=u$ and contract the edge $uv$.
+%     \item If $u\not\in\Rho(v)$ then remove the edge $uv$ from $G$.
+%   \end{compactenum}
+%   \item Once this is no longer possible, complete the assignment by choosing, for each $v\in L_h$, an arbitrary vertex $u\in\Rho(v)$, and setting $\rho(v):=u$.  Note that \cref{good_edge_triangulation} implies that, by this point each vertex in $L_h$ has degree at most $4$.
+% \end{enumerate}
+%
+% \todo[inline]{
+%   Separating triangles are still an issue when we try to turn this into a contraction sequence.
+% }
 
 
-
-At this point, 
-
-
-
-Now define a sequence of graphs $G_0,\ldots,G_{k}$ ($k=|L_h|$)
-
-
-
-
-
-
-This is the lemma we really want:
-
-\begin{lem}\label{contraction_sequence}
-  Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
-  Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
-
-
-  Let $G$ be a planar graph triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
-  Then there exists a sequence $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ that can be contracted, in order, to give a sequence of graphs $\langle G_i\rangle_{i=0}^{|L_h|}$ (with $G_0=G$ and $G_i$ the result of contracting edges $u_1v_1,\ldots,u_{i-1}v_{i-1}$) that has the following properties:
-  \begin{compactenum}[(i)]
-    \item $u_iv_i$ is a contractible edge of $G_{i-1}$; and
-    \item
-    \begin{compactenum}[(a)]
-      \item $\deg_{G_{i-1}}(v_i)\le 4$; or\label{low_degree2}
-      \item $\deg_{G_{i-1}}(v_i)> 4$, $|N_{G_i}(u_i)\cap L_{h-1}|=1$, and $u_i$ appears as an endpoint of exactly one edge in $S$.\label{only_child2}
-    \end{compactenum}
-  \end{compactenum}
-\end{lem}
-
-\begin{proof}
-  TODO
-\end{proof}
+% \begin{lem}\label{contraction_sequence}
+%   Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+%   Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
+%
+%
+%   Let $G$ be a planar graph triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+%   Then there exists a sequence $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ that can be contracted, in order, to give a sequence of graphs $\langle G_i\rangle_{i=0}^{|L_h|}$ (with $G_0=G$ and $G_i$ the result of contracting edges $u_1v_1,\ldots,u_{i-1}v_{i-1}$) that has the following properties:
+%   \begin{compactenum}[(i)]
+%     \item $u_iv_i$ is a contractible edge of $G_{i-1}$; and
+%     \item
+%     \begin{compactenum}[(a)]
+%       \item $\deg_{G_{i-1}}(v_i)\le 4$; or\label{low_degree2}
+%       \item $\deg_{G_{i-1}}(v_i)> 4$, $|N_{G_i}(u_i)\cap L_{h-1}|=1$, and $u_i$ appears as an endpoint of exactly one edge in $S$.\label{only_child2}
+%     \end{compactenum}
+%   \end{compactenum}
+% \end{lem}
+%
+% \begin{proof}
+%   TODO
+% \end{proof}
 
 % Using \cref{good_edge} we can establish the following vertex ordering:
 
@@ -249,6 +233,9 @@ This is the lemma we really want:
 %
 % \end{proof}
 
+
+
+\todo[inline]{This lemma, as stated, is not true.  If $Y_1$ and $Y_2$ form a cycle and $Y_3$ is a pendant vertex attached only to $Y_1$ then, after adding $Y_4$ there can be a face with all four sets on its boundary.  The issue is that, in this case $Y_1$ appears as two disconnected components on the facial walk of $G[Y_1\cup Y_2\cup Y_3]$}
 
 \begin{lem}\label{tripod_blobs}
   Let $G$ be an embedded planar graph, let $S:=Y_1\uplus Y_2\uplus Y_3\subseteq V(G)$ be such that $G[S]$ is connected, let $f$ be an internal face of $G[S]$ and let $Y_4\subseteq V(G)\setminus S$ such that $Y_4$ is in the interior of $f$, $G[Y_4]$ is connected, and, for each $i\in\{1,2,3\}$ such that $V(f)\cap Y_i$ is non-empty, there exists an edge $u_i,v_i$ of $G$ with $u_i\in Y_4$ and $v_i\in Y_i$.  Then, for each face $g$ of $G[S\cup Y]$, $V(g)\cap Y_j$ is empty, for at least one $j\in\{1,2,3,4\}$.
@@ -355,7 +342,7 @@ For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u
     % \begin[inline]{todo}
     %   Specify locations of $f'$ and $f''$.  I think moving $f'$ immediately after the first $f_i$ for which $G_i$ contains all three vertices of $f'$ works.
     % \end{todo}
-    
+
     Now, the feet of $Y_i$ are exactly the same as the feet of $Y_i'$ and a tripod $Y_j'=Y_j$ with a foot in $Y_i'$ also has a foot in $Y_i$, so this satisfies the conditions of the lemma.
 
     \item $\deg_G(v)=4$.  In this case we consider the tripod $Y_i'$ that contains $u$.  $Y_i'$ corresponds to a face $f_i'$ of $G'$ and $f_i'$ corresponds to a face $f_i$ of $G$.  We distinguish between two cases:
