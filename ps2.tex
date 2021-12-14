@@ -127,7 +127,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 
 
 \begin{lem}\label{good_edge}
-  Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+  Let $G$ be a planar graph with $n\ge 2$ vertices, let $r$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{r\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
   Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
   \begin{compactenum}[(a)]
     \item $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$ , or\label{low_degree}
@@ -178,46 +178,31 @@ In the following, we work with edge contractions, which we treat as a directed o
 
 \begin{proof}
   If $G$ contains no separating triangle $xzy$ with $x\in L_{h-1}$ and $z\in L_h$ then the result follows immediately from \cref{good_edge}.
-  
+
   Otherwise let $xyz$ be a separating triangle of $G$ with $x\in L_{h-1}$ and $z\in L_h$ that contains the fewest possible number of vertices of $G$ in its interior. Let $Z$ be the set of vertices of $G$ contained in the interior of $xyz$, let $Y:=\{x,y,z\}\cap L_{h-1}$, and let $G'$ be the graph obtained from $G[X\cup S]$ by adding an additional vertex $v$ adjacent to each vertex in $S$.  Observe that $\langle X,Y,Z\rangle$ is a $\{v\}$-rooted BFS layering of $G'$ so by \cref{good_edge}, it contains an edge $uv$ with $u\in\{Y\}\subseteq L_{h-1}$ and $v\in\{Z\}\subseteq L_h$ satisfying (\ref{low_degree}) or (\ref{only_child}). By the minimality of $xyz$, $uv$ is not part of any separating triangle in $G$, so $uv$ is a contractible edge of $G$'.
 \end{proof}
 
+% The following does't work
 % We will assign each vertex $v\in L_h$ a \emph{parent} $\rho(v)$ as follows:  For each $v\in L_h$, let $\Rho(v):=\{N_G(v)\cap L_{h-1}\}$ be the set of \emph{possible parents} of $v$. Observe that $\Rho(v)$ is non-empty for each $v\in L_h$.  We proceed in two stages:
 % \begin{enumerate}
-%   \item Repeat the following operation as long as there exists a vertex $u\in L_{h-1}$ with exactly one neighbour, $v$, in $L_h$: 
+%   \item Repeat the following operation as long as there exists a vertex $u\in L_{h-1}$ with exactly one neighbour, $v$, in $L_h$:
 %   \begin{compactenum}
-%     \item If $u\in\Rho(v)$ then set $\rho(v):=u$ and contract the edge $uv$.  
+%     \item If $u\in\Rho(v)$ then set $\rho(v):=u$ and contract the edge $uv$.
 %     \item If $u\not\in\Rho(v)$ then remove the edge $uv$ from $G$.
 %   \end{compactenum}
-%   \item Once this is no longer possible, complete the assignment by choosing, for each $v\in L_h$, an arbitrary vertex $u\in\Rho(v)$, and setting $\rho(v):=u$.  Note that \cref{good_edge_triangulation} implies that, by this point each vertex in $L_h$ has degree at most $4$. 
+%   \item Once this is no longer possible, complete the assignment by choosing, for each $v\in L_h$, an arbitrary vertex $u\in\Rho(v)$, and setting $\rho(v):=u$.  Note that \cref{good_edge_triangulation} implies that, by this point each vertex in $L_h$ has degree at most $4$.
 % \end{enumerate}
-% 
+%
 % \todo[inline]{
 %   Separating triangles are still an issue when we try to turn this into a contraction sequence.
 % }
-% 
-% Next, contract each edge 
-% 
-% 
-% 
-% At this point, 
-% 
-% 
-% 
-% Now define a sequence of graphs $G_0,\ldots,G_{k}$ ($k=|L_h|$)
-% 
-% 
-% 
-% 
-% 
-% 
-% This is the lemma we really want:
-% 
+
+
 % \begin{lem}\label{contraction_sequence}
 %   Let $G$ be a planar graph with $n\ge 2$ vertices, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{v\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
 %   Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
-% 
-% 
+%
+%
 %   Let $G$ be a planar graph triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
 %   Then there exists a sequence $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ that can be contracted, in order, to give a sequence of graphs $\langle G_i\rangle_{i=0}^{|L_h|}$ (with $G_0=G$ and $G_i$ the result of contracting edges $u_1v_1,\ldots,u_{i-1}v_{i-1}$) that has the following properties:
 %   \begin{compactenum}[(i)]
@@ -229,12 +214,35 @@ In the following, we work with edge contractions, which we treat as a directed o
 %     \end{compactenum}
 %   \end{compactenum}
 % \end{lem}
-% 
+%
 % \begin{proof}
 %   TODO
 % \end{proof}
 
 % Using \cref{good_edge} we can establish the following vertex ordering:
+
+The last piece of the puzzle that we need is (something close to) the following lemma:
+
+\begin{lem}\label{contraction_sequence}
+    Let $G$, $f_0$, $S$, and $\mathcal{L}$ be as in the previous lemma.  Then there exists a sequence $\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ with the following properties:
+    \begin{compactenum}
+        \item $u_iv_i\in E(G_i)\cap E(G)$ for each $i\in\{1,\ldots,h\}$.
+        \item $u_i\in L_{h-1}$ and $v_i\in L_h$ for each $i\in\{1,\ldots,|L_h|\}$.
+        \item For each $i\in\{0,\ldots,|L_h|\}$, let $G_i$ be the graph obtained from $G$ after contracting $u_jv_j$ for each $j\in\{1,\ldots,i\}$.  Then, for each $i\in\{1,\ldots,|L_h|\}$,  $u_iv_i$ is contractible in $G_{i-1}$.
+        \item For each $i\in\{1,\ldots,|L_h|\}$,
+        \begin{compactenum}[(a)]
+            \item $|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
+                $|N_{G_{i-1}}(v_i)\cap L_{h-1}\cap V(G_{i-1})|\le 2$; or
+            \item $N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$.
+        \end{compactenum}
+    \end{compactenum}
+\end{lem}
+
+\begin{proof}
+    I'm struggling to prove this because we need to avoid a situation in which the only edges we can find in $G_{i-1}$ are of type (\ref{only_child}) but none of those edges are actually edges of $G$.
+\end{proof}
+
+Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence} and adding all the edges $u_i,v_i$ to $F$ and the recursive on the graph $G_{|L_h|}$, whose BFS layering from $S$ only has height $h-1$.
 
 % \begin{lem}\label{good_ordering}
 %   Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.  Then there exists an $S$-rooted BFS spanning forest $F$ of $G$ and an ordering $v_0,\ldots,v_m$ on the vertices $G$ such that, for each $i\in\{0,\ldots,m\}$, $\depth_F(v_i)=\height(F-\{v_0,\ldots,v_{i-1}\}$ and
@@ -248,14 +256,17 @@ In the following, we work with edge contractions, which we treat as a directed o
 %
 % \end{proof}
 
-
-\begin{lem}\label{tripod_blobs}
-  Let $G$ be an embedded planar graph, let $S:=Y_1\uplus Y_2\uplus Y_3\subseteq V(G)$ be such that $G[S]$ is connected, let $f$ be an internal face of $G[S]$ and let $Y_4\subseteq V(G)\setminus S$ such that $Y_4$ is in the interior of $f$, $G[Y_4]$ is connected, and, for each $i\in\{1,2,3\}$ such that $V(f)\cap Y_i$ is non-empty, there exists an edge $u_i,v_i$ of $G$ with $u_i\in Y_4$ and $v_i\in Y_i$.  Then, for each face $g$ of $G[S\cup Y]$, $V(g)\cap Y_j$ is empty, for at least one $j\in\{1,2,3,4\}$.
-\end{lem}
-
-\begin{proof}[Proof Sketch]
-  Consider the multigraph $M$ obtained from $G[S\cup Y]$ by contracting $Y_i$ for each $i\in\{1,2,3,4\}$, keeping parallel and edges and self-loops.  Since each $Y_i$ is connected, $M$ inherits a planar embedding from the embedding of $G$. For each $i\in\{1,2,3,4\}$, let $y_i$ be the vertex of $M$ obtained by contracting $Y_i$.  For each $i\in\{1,2,3\}$, the edge $u_iv_i$ in $G$ implies that $M$ contains at least one edge $e$ with endpoints $y_4$ and $y_i$.  Therefore, $M$ contains a subgraph isomorphic to the complete graph $K_4$ on four vertices, which is a triangulation.\todo{Mistake here, $y_1,y_2,y_3$ may not be a $K_3$.}  Therefore each face of $M$ contains at most three vertices of $M$. The face $g$ has a corresponding face $g'$ in $M$ and, if $g$ contains a vertex of $Y_i$ then $g'$ contains $y_i$, for each $i\in\{1,2,3,4\}$. Since $g'$ contains at most three vertices of $M$, $g$ does not contain a vertex of $Y_i$ for some $i\in\{1,2,3,4\}$.
-\end{proof}
+%
+%
+% \todo[inline]{This lemma, as stated, is not true.  If $Y_1$ and $Y_2$ form a cycle and $Y_3$ is a pendant vertex attached only to $Y_1$ then, after adding $Y_4$ there can be a face with all four sets on its boundary.  The issue is that, in this case $Y_1$ appears as two disconnected components on the facial walk of $G[Y_1\cup Y_2\cup Y_3]$.}
+%
+% \begin{lem}\label{tripod_blobs}
+%   Let $G$ be an embedded planar graph, let $S:=Y_1\uplus Y_2\uplus Y_3\subseteq V(G)$ be such that $G[S]$ is connected, let $f$ be an internal face of $G[S]$ and let $Y_4\subseteq V(G)\setminus S$ such that $Y_4$ is in the interior of $f$, $G[Y_4]$ is connected, and, for each $i\in\{1,2,3\}$ such that $V(f)\cap Y_i$ is non-empty, there exists an edge $u_i,v_i$ of $G$ with $u_i\in Y_4$ and $v_i\in Y_i$.  Then, for each face $g$ of $G[S\cup Y]$, $V(g)\cap Y_j$ is empty, for at least one $j\in\{1,2,3,4\}$.
+% \end{lem}
+%
+% \begin{proof}[Proof Sketch]
+%   Consider the multigraph $M$ obtained from $G[S\cup Y]$ by contracting $Y_i$ for each $i\in\{1,2,3,4\}$, keeping parallel and edges and self-loops.  Since each $Y_i$ is connected, $M$ inherits a planar embedding from the embedding of $G$. For each $i\in\{1,2,3,4\}$, let $y_i$ be the vertex of $M$ obtained by contracting $Y_i$.  For each $i\in\{1,2,3\}$, the edge $u_iv_i$ in $G$ implies that $M$ contains at least one edge $e$ with endpoints $y_4$ and $y_i$.  Therefore, $M$ contains a subgraph isomorphic to the complete graph $K_4$ on four vertices, which is a triangulation.  Therefore each face of $M$ contains at most three vertices of $M$. The face $g$ has a corresponding face $g'$ in $M$ and, if $g$ contains a vertex of $Y_i$ then $g'$ contains $y_i$, for each $i\in\{1,2,3,4\}$. Since $g'$ contains at most three vertices of $M$, $g$ does not contain a vertex of $Y_i$ for some $i\in\{1,2,3,4\}$.
+% \end{proof}
 
 \section{Tripod Decompositions}
 
@@ -285,10 +296,10 @@ It is straightforward to verify from these definitions that $\mathcal{D}_\mathca
 
 For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u$ in $G_{i-1}$ is a \emph{foot} of the tripod $Y_i$ if $u\in V(f_i)$ or if there exists an edge $uv$ of $G$ with $v\in Y_i$.  (Note that a tripod may have much more than three feet!)
 
-
-\todo[inline]{
-  Describe greedy face orderings.  These are orderings with the property that, if $f_i$ has an edge $xy$ with both $x$ and $y$ in $G_{i-1}$ then the next face of $G$ to appear in the face $f$ opposite $xy$ should be the other face with $xy$ on its boundary.  Make sure that whatever ordering we do is greedy.
-}
+% Don't need these anymore
+% \todo[inline]{
+%   Describe greedy face orderings.  These are orderings with the property that, if $f_i$ has an edge $xy$ with both $x$ and $y$ in $G_{i-1}$ then the next face of $G$ to appear in the face $f$ opposite $xy$ should be the other face with $xy$ on its boundary.  Make sure that whatever ordering we do is greedy.
+% }
 
 % For each $i\in\{1,\ldots,2n-3\}$ define the \emph{feet} of $Y_i$ as the set of vertices in $G_{i-1}$ adjacent to at least one vertex in $Y_i$.
 % For each vertex $v$ of $G$, let $Y_v$ be the unique index $j$ such that $v\in Y_j$.
@@ -354,7 +365,7 @@ For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u
     % \begin[inline]{todo}
     %   Specify locations of $f'$ and $f''$.  I think moving $f'$ immediately after the first $f_i$ for which $G_i$ contains all three vertices of $f'$ works.
     % \end{todo}
-    
+
     Now, the feet of $Y_i$ are exactly the same as the feet of $Y_i'$ and a tripod $Y_j'=Y_j$ with a foot in $Y_i'$ also has a foot in $Y_i$, so this satisfies the conditions of the lemma.
 
     \item $\deg_G(v)=4$.  In this case we consider the tripod $Y_i'$ that contains $u$.  $Y_i'$ corresponds to a face $f_i'$ of $G'$ and $f_i'$ corresponds to a face $f_i$ of $G$.  We distinguish between two cases:
