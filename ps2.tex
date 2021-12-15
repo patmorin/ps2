@@ -266,53 +266,51 @@ In the following, we work with edge contractions, which we will treat as a direc
 \end{lem}
 
 \begin{proof}
-    We will prove a strengthening of this result by induction.  Consider an ordered concentric representation of $G$ whose existence is give by \cref{pupyrev}.  We will not distinguish between vertices and edges of $G$ and the corresponding points and curves in the ordered concentric representation of $G$. Let $J$ be a Jordan curve that intersects $\ell_{h-1}$ in exactly one or two points and let $C$ be the simple open curve consisting of the part of $J$ that is below $\ell_{h-1}$.  For either $j\in\{h-1,h\}$ and any $v\in L_j$ we say that $v$ is \emph{above} $C$ if $v$ is in the interior of $J$. Otherwise we say that $v$ is \emph{below} $C$.  Similarly, we say that an edge $xy$ of $G$ with $x,y\in L_{h-1}\cup L_h$ is \emph{above} $C$ if the interior of (the curve representing $xy$) is in the interior of $J$.
+  We will prove a strengthening of this result by induction.  Consider an ordered concentric representation of $G$ whose existence is give by \cref{pupyrev}.  We will not distinguish between vertices and edges of $G$ and the corresponding points and curves in the ordered concentric representation of $G$. Let $J$ be a Jordan curve that intersects $\ell_{h-1}$ in exactly one or two points and let $C$ be the simple open curve consisting of the part of $J$ that is below $\ell_{h-1}$.  For either $j\in\{h-1,h\}$ and any $v\in L_j$ we say that $v$ is \emph{above} $C$ if $v$ is in the interior of $J$. Otherwise we say that $v$ is \emph{below} $C$.  Similarly, we say that an edge $xy$ of $G$ with $x,y\in L_{h-1}\cup L_h$ is \emph{above} $C$ if the interior of (the curve representing $xy$) is in the interior of $J$.
 
-    Let $x$ and $z$ be two (not necessarily distinct) vertices of $L_{h-1}$ and let $P$ be a path in $G$ of length at most $2$ whose endpoints are $x$ and $z$ and whose interior vertex (if any) is in $L_{h-1}\cup L_h$. Let $V_P$ the subset of $L_{h-1}\cup L_h$ that are on or above $P$.   We will prove, by induction on the number of vertices of $L_h$ that are on or above $P$, that there is a sequence of contractions of edges of $G_P$
-    \begin{inparaenum}[(1)]
-        \item that satisfies the requirements of the lemma,
-        \item that does not include any edge of $P$,
-        \item that eliminates all the vertices of $L_h$ that are above $P$, and
-        \item such that each contracted edge that is incident to $x$ or $z$ satisfies (\ref{low_degree}).  (Contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
-    \end{inparaenum}
+  Let $x$ and $z$ be two (not necessarily distinct) vertices of $L_{h-1}$ and let $P$ be a path in $G$ of length at most $2$ whose endpoints are $x$ and $z$ and whose interior vertex (if any) is in $L_{h-1}\cup L_h$. For each $i\in\{h-1,h\}$, let $S_i:=\{v\in L_i:\mbox{$v$ is above $P$}\}$.  Let $S:=S_{h-1}\cup S_{h}$ and let $\overline{S}:=S\cup V(P)$. Our proof is by induction on $(|S_h|,|S_{h-1}|,|V(P)|)$ with a total ordering given by lexicographic comparison.   We will prove that there is a sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ of edges of $G$ that yield a sequence of graphs $\langle G_i\rangle_{i=0}^{|S_h|}$ with the following properties:
+  \begin{compactenum}[(E1)]
+    \item \label{e_first}\label{original_conditions} $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ satisfy conditions 1--4 of the lemma,
+    \item For each $i\in\{1,\ldots,S_h\}$, $v_i\in S_h$.
+    \item \label{e_last} For each $i\in\{1,\ldots,S_h\}$, if $u_i\in\{x,z\}$, then $u_iv_i$ satisfies (\ref{low_degree}). 
+    % (By (E\ref{original_conditions}) contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
+  \end{compactenum}
 
-    We first observe that, if $G$ contains a separating triangle with all of its vertices on or above $P$
+  \todo[inline]{first deal with separating triangles}
 
-    \todo[inline]{first deal with separating triangles}
+  If $|S_h|=0$, then there is nothing to prove since an empty sequence of edges already satisfies the conditions of the lemma.  If $V(G_P)\cap L_{h-1}=\{x,z\}$ then the proof is rather easy because $N_G(v)\cap L_{h-1}\subseteq \{x,z\}$ for each $v\in S_h$.  This implies that $N_{G_{i-1}}(v)\cap L_{h-1}\subseteq\{x,z\}$ for each $v\in V(G_{i-1})\cap S_h$, so $|N_{G_{i-1}}(v)\cap L_{h-1}|\le 2$ for each $v\in V(G_{i-1})\cap S_h$.  It is well know that any BFS layer of a planar graph induces an outerplanar graph and that any outerplanar graph with at least one vertex contains a vertex of degree at most $2$.  Therefore, for each $i\in\{1,\ldots,|S_h|\}$, $G_{i-i}$ contains a vertex $v\in S_h$ with $|N_{G_{i-1}}(v)\cap L_h|\le 2$.  This gives an edge sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ that satisfies (E\ref{e_first})--(E\ref{e_last}).
 
-    If $|V(G_P)\cap L_h|=0$, then there is nothing to prove since an empty sequence of edges already satisfies the conditions of the lemma.  If $V(G_P)\cap L_{h-1}=\{x,z\}$ then the proof is rather easy because $N_G(v)\cap L_{h-1}\subseteq \{x,z\}$, so $|N_G(v)\cap L_{h-1}|\le 2$ for each $v\in V(G_P)\cap L_h$.  It is well know that any BFS layer of a planar graph induces an outerplanar graph and that any outerplanar graph with at least one vertex contains a vertex of degree at most $2$.  Therefore there exists a vertex $v\in V(G_P)\cap L_h$ with $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$.  By definition, $N_G(v)$ includes some vertex $u\in L_{h-1}$  (in fact $u\in \{x,z\}$).  The edge $uv$ becomes the first edge in the contraction sequence and then the inductive hypothesis provides the rest of the sequence.  Note that the preceding discussion includes the case in which $x=z$, so we may now assume that $x\neq z$.  Furthermore, if there exists any $v\in V(G_P)\cap L_h$ such that $N_G(v)=\{x,z\}$, then $V(G_P)\cap L_{h-1}=\{x,z\}$ which is also covered by the preceding discussion. Thus, we may assume that each vertex $v\in V(G_P)\cap L_h$ has at least one neighbour $u\in L_{h-1}\setminus\{x,z\}$.
+  The rest of the proof is divided into two cases, depending on the length of $P$.
 
-    The rest of the proof is divided into two cases, depending on the length of $P$.
+  \begin{enumerate}
+    \item If $P$ has length $1$ then consider the unique face $f:=xzx'$ of $G$ for which $x'$ is above $xz$.  There are two cases to consider:
+    \begin{compactenum}
+      \item If $x'\in S_{h-1}$, then we can apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ that are above $xx'$ and an edge contraction sequence that eliminates all vertices of $S_h$ that are above $x'z$. Since $xzx'$ is a face of $G_P$, the concatenation of these two sequences eliminates all vertices of $S_h$, as required.
 
-    \begin{enumerate}
-        \item If $P$ has length $1$ then consider the unique face $f:=xzx'$ of $G$ for which $x'$ is above $xz$.  There are two cases to consider:
-        \begin{compactenum}
-            \item If $x'\in L_{h-1}$, then we can apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $V(G_P)\cap L_h$ that are above $xx'$. We can then immediately follow this with the edge contraction sequence obtained by using the inductive hypothesis to find a contraction sequence that eliminates all vertices of $G_P\cap L_H$ that are above the edge $x'z$.  Since $xzx'$ is a face of $G_P$, this eliminates all vertices of $V(G_P)\cap L_h$ as required.
+      \item If $x'\in L_h$, then we first choose an edge $z'x'$ of $G$ as follows: If $N_G(x')$ contains a vertex $a$ in $S_{h-1}$, then let $z':=a$, otherwise let $z'$ be any vertex in $N_G(z')$. Observe that, in the latter case, $z'\in\{x,z\}$.  Next, apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ above the paths $xx'z'$ and $z'x'z$.  The concatenation of these two sequences leaves us with a graph $G_{|L_h|-1}$ that contains only one vertex, namely $x'$, of $S_h$.  Then $N_{G_{|L_h|-1}}(z')=\{x'\}$,  so the edge $z'x'$ satisfies (\ref{only_child}).  Furthermore, if $z'\in\{x,z\}$, then $N_{G_{|L_h|-1}}(x')=\subseteq\{x,z\}$ so the edge $z'x'$ satisfies (\ref{low_degree}).  In either case, making $z'x'$ be the final edge in the sequence gives a sequence of edges that satisfies (E\ref{e_first})--(E\ref{e_last}).
+    \end{compactenum}
 
-            \item If $x'\in L_h$ then let $z'$ be a neighbour of $x'$ in $L_{h-1}\setminus\{x,z\}$. Next, apply the inductive hypothesis to eliminate all vertices of $V(G_P)\cap L_h$ above the paths $P_1:=xx'z'$ and $P_2:=z'x'z$.  This leaves only one vertex, namely $x'$, of $V(G_P)\cap L_h$.  At this point, the neighbourhood of $z'$ contains only one vertex in $L_h$, namely $x'$, so the edge $z'x'$ satisfies (\ref{only_child}). We finish by contracting the edge $z'x'$.
-        \end{compactenum}
+    \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
+    \begin{compactenum}
+      \item If $y\in S_{h-1}$ then we apply the inductive hypothesis to find a an edge contraction sequence that eliminates the subset of $S_h$ above $xy$ and then to find an edge contraction sequence that eliminates the subset of $S_h$ above $yz$.  The concatenation of these two sequences satisfies (E\ref{e_first})--(E\ref{e_last}). 
+      
+      
+      % \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
 
-        \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
-        \begin{compactenum}
-            \item If $y\in L_{h-1}$ then we apply the inductive hypothesis to (the subgraphs of $G_P$ on or above) $P_1:=xy$ and to $P_2:=yz$.
-
-            \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
-
-            \item If $y\in L_h$ then there is more work to do.  In this case we consider the unique face $xyx'$ of $G$ for which $x'$ is above $xy$. Note that, if $x'=z$
-
-
-
-            If $x'\in L_{h-1}$ then we can apply induction on the paths $P_1:=xx'$ and $P_2:=x'yz$ to obtain an edge contraction sequence that eliminates all vertices of $V(G_P)\cap L_h$ except for $y$. At this point $x$ has only one neighbour, namely $y$, in $L_{h}$, so the edge $x'y$ satisifes (\ref{only_child}).
-
-
-
-            Furthermore, if $x'=z$ then \ldots\todo{Finish the $x'=z$ argument}  We finish by contracting the edge $x'z$.
-        \end{compactenum}
-
-
-        we consider the face $f$ of $G$
-    \end{enumerate}
-
+      \item If $y\in S_h$ then consider the vertex set $Q:=N_G(y)\cap (S_{h-1}\cup\{x,y\})$.  The fact that $G$ is a triangulation ensures that $Q$ is non-empty. In particular, $y$ is on the boundary of some face of $G$ that has points above $y$ in its interior. This face must have a vertex in $L_{h-1}$ and this vertex can only be in $Q$.  Let $x'$ be any vertex in $Q$.  Apply induction on the that paths $xyx'$ and $x'yz$ and concatenate the two resulting sequences of edges to obtain a sequence satisfying (E\ref{e_first})--(\ref{e_last}).
+      % 
+      % 
+      % 
+      % 
+      % In this case we consider the unique face $xyx'$ of $G$ for which $x'$ is above $xy$ or $x'=z$.   
+      % \begin{compactenum}
+      %   \item If $x'=z$ then we can immediately apply the inductive hypothesis on the edge $xz$ to find a sequence satisfying (E\ref{e_first})--(E\ref{e_last}).
+      %   \item If $x'\in S_{h-1}$ then we can apply the inductive hypothesis to find contraction sequences that eliminate all vertices of $S_h$ that are above $xx'$ and all vertices of $S_h$ that are above $x'yz$.
+      %   \item If $x'\in S_h$
+      %   and $N_G(x')$ contains a vertex $a$ in $S_{h-1}$, then let $z':=a$, otherwise let $z'$ be any vertex in $N_G(z')\cap\{x,z\}$.  Next, apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ the paths $P_1:=xx'z'$ and $P_2:=z'x'z$.  The concatenation of these two sequences leaves us with a graph $G_{|L_h|-1}$ that contains only one vertex, namely $x'$, of $S_h$.  Then $N_{G_{|L_h|-1}}(z')=\{x'\}$,  so the edge $z'x'$ satisfies (\ref{only_child}).  Furthermore, if $z'\in\{x,z\}$, then $N_{G_{|L_h|-1}}(x')=\subseteq\{x,z\}$ so the edge $z'x'$ satisfies (\ref{low_degree}).  In either case, making $z'x'$ be the final edge in the sequence gives a sequence of edges that satisfies (E\ref{e_first})--(E\ref{e_last}).
+      % \end{compactenum}
+    \end{compactenum}
+  \end{enumerate}
 \end{proof}
 
 Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence} and adding all the edges $u_i,v_i$ to $F$ and the recursive on the graph $G_{|L_h|}$, whose BFS layering from $S$ only has height $h-1$.
