@@ -126,61 +126,87 @@ A \emph{layering} $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ of a graph $G$ is a
 For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $v\in L_d$. For a set $S\subseteq V(G)$, the \emph{$S$-rooted BFS layering} of $G$ is the layering obtained by setting $L_i:=\{v\in V(G):\dist_G(v,S)=i\}$ for each $i\in\N$.
 
 
-\begin{lem}\label{good_edge}
-  Let $G$ be a planar graph with $n\ge 2$ vertices, let $r$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{r\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
-  Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
-  \begin{compactenum}[(a)]
-    \item $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$ , or\label{low_degree}
-    \item $|N_G(u)\cap L_h|=1$.\label{only_child}
-  \end{compactenum}
-\end{lem}
+We will make use of the following result of \citet{pupyrev:mixed} on \emph{ordered concentric representations}:
 
-\begin{proof}
-  It is well known that the subgraph induced by any single BFS layer of a planar graph is an outerplanar graph.  Therefore $G[L_h]$ is outerplanar.  It is also well known that any non-empty outerplanar graph has a vertex of degree at most $2$ and that any outerplanar graph with at least two vertices has at least two vertices of degree at most $2$.  Since $L_h$ is non-empty, there exists $v\in L_h$ with  $\deg_{G[L_h]}(v)\le 2$.  Since $n\ge 4$, $h\ge 1$.  Therefore, the vertex $v$ has at least one neighbour $u$ in $L_{h-1}$.  If $v$ has at most two neighbours in $L_{h-1}$, then $\deg_G(v)=\deg_{G[L_h]}(v)+|N_G(v)\cap L_{h-1}|\le 2+2=4$ and the edge $uv$ satisfies (\ref{low_degree}) and we are done.
+\begin{thm}\label{pupyrev}
+    Let $G$ be any connected planar graph, let $v$ be any vertex of $G$, and let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$.  Then there exists a planar embedding of $G$ such that, for each $i\in\N$:
+    \begin{compactenum}
+      \item the vertices of of $L_i$ are on the line $\ell_i:=\{(x,-i):x\in\R\}$;
+      \item each edge $xy$ of $G$ with $x,y\in L_i$ is embedded as a curve whose interior is below the line $\ell_i$;
+      \item each edge $xy$ of $G$ with $x\in L_i$ and $y\in L_{i+1}$ is embedded as a curve whose interior is the union of
+      \begin{inparaenum}[(i)]
+        \item a curve that is below $\ell_i$ but above $\ell_{i+1}$,
+        \item a point on $\ell_{i+1}$, and
+        \item a curve that is below $\ell_{i+1}$.
+      \end{inparaenum}
+    \end{compactenum}
+\end{thm}
 
-  Suppose therefore that $v$ has at least three neighbours in $L_{h-1}$. We recall a result of \citet{pupyrev:mixed} on \emph{ordered concentric representations} which states that $G$ has a planar embedding with $S$ on the outer face and, for each $i\in\{0,\ldots,h\}$,
-  \begin{compactenum}
-    \item the vertices of $L_i$ are embedded on the circle $C_i$ of radius $i+1$ centred at the origin;
-    \item each edge $xy$ of $G$ with $x,y\in L_i$ is embedded as a curve whose interior is outside of the circle $C_i$;
-    \item each edge $xy$ of $G$ with $x\in L_i$ and $y\in L_{i+1}$ is embedded as  a curve whose interior is the union of
-    \begin{inparaenum}[(i)]
-      \item a curve that is outside of $C_i$ but inside of $C_{i+1}$,
-      \item a point on $C_{i+1}$, and
-      \item a curve that is outside of $C_{i+1}$.
-    \end{inparaenum}
-  \end{compactenum}
-  Identify each vertex of $G$ with the point that represents it in such an ordered concentric representation and each edge of $G$ with the curve that represents it.  Refer to \cref{gammas}.  If $v$ has at least three neighbours in $L_{h-1}$ then there exists an arc $\Gamma_0$ of $C_{h-1}$ with endpoints $u_0$ and $u_2$ that contains exactly three neighbours $u_0$, $u$, and $u_2$ of $v$.  Let $\Gamma_1$ be the minimal arc of $C_h$ that contains $v$ and the intersections of the edges $u_0v$ and $u_2v$ with $C_h$.  Observe that $N_G(u)\cap L_h\subseteq \Gamma_1\cap L_h$.  Therefore, if $\Gamma_1\cap L_h=\{v\}$, then the edge $uv$ satisfies (\ref{only_child}) and we are done.
-  \begin{figure}
+In the following, we work with edge contractions, which we will treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves on of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
+
+\begin{figure}
     \begin{center}
-      \begin{tabular}{c@{\hspace{1cm}}c}
-        \includegraphics{figs/gammas-1} & \includegraphics{figs/gammas-2}
-      \end{tabular}
+        \begin{tabular}{cc}
+            \includegraphics{figs/contraction-1} &
+            \includegraphics{figs/contraction-2}
+        \end{tabular}
     \end{center}
-    \caption{A step in the proof of \cref{good_edge}.}
-    \label{gammas}
-  \end{figure}
-
-  Suppose therefore that $|\Gamma_1\cap L_h|\ge 2$.  Partition $\Gamma_1$ into two subarcs $\Gamma_{1,a}$ and $\Gamma_{1,b}$ each having an endpoint at $uv\cap C_h$, with $\Gamma_{1,a}$ having an endpoint at $u_0v\cap C_h$ and $\Gamma_{1,b}$ having an endpoint on $u_2v\cap C_h$.   Define $\Gamma_{0,a}$ and $\Gamma_{0,b}$ similarly as the two arcs obtained by cutting $\Gamma_0$ at $u$.  Without loss of generality, we may assume that $Q:=\Gamma_{1,a}\cap L_h\setminus\{v\}$ is non-empty.  Then $G[Q\cup\{v\}]$ is an outerplanar graph with at least two vertices, so it contains at least two vertices of degree at most $2$.  Let $v'$ be a vertex in $Q$ such that $\deg_{G[Q\cup\{v\}}(v')\le 2$.  Observe that $\deg_{G[L_h]}(v')=\deg_{G[Q\cup\{v\}]}(v')\le 2$.  Therefore, we may repeat the entire argument, from the beginning, using $v'$ in place of $v$.  This will either show that some edge $u'v'$ incident on $v'$ satisifies the conditions of the lemma, or will lead to the same situation with arcs $\Gamma_0'$ and $\Gamma_1'$ defined analagously to $\Gamma_0$ and $\Gamma_1$.  The key observation is that $\Gamma_0'\subseteq\Gamma_{0,a}$ and therefore $|\Gamma_0'\cap L_{h-1}| < |\Gamma_0\cap L_{h-1}|$ since $\Gamma_0'$ does not contain $u_2$.  This cannot continue indefinitely so it will eventually lead to an edge $u''v''$ satisfying the conditions of the lemma.
-\end{proof}
+    \caption{Contracting the edge $uv$ in a planar embedding of $G$.}
+    \label{contraction}
+\end{figure}
 
 
-In the following, we work with edge contractions, which we treat as a directed operation.  Contraction of an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
 
 
-\begin{cor}\label{good_edge_triangulation}
-  Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be an $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
-  Then $G$ contains a contractible edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
-  \begin{compactenum}[(a)]
-    \item $\deg_G(v)\le 4$, or
-    \item $|N_G(u)\cap L_h|=1$.
-  \end{compactenum}
-\end{cor}
 
-\begin{proof}
-  If $G$ contains no separating triangle $xzy$ with $x\in L_{h-1}$ and $z\in L_h$ then the result follows immediately from \cref{good_edge}.
 
-  Otherwise let $xyz$ be a separating triangle of $G$ with $x\in L_{h-1}$ and $z\in L_h$ that contains the fewest possible number of vertices of $G$ in its interior. Let $Z$ be the set of vertices of $G$ contained in the interior of $xyz$, let $Y:=\{x,y,z\}\cap L_{h-1}$, and let $G'$ be the graph obtained from $G[X\cup S]$ by adding an additional vertex $v$ adjacent to each vertex in $S$.  Observe that $\langle X,Y,Z\rangle$ is a $\{v\}$-rooted BFS layering of $G'$ so by \cref{good_edge}, it contains an edge $uv$ with $u\in\{Y\}\subseteq L_{h-1}$ and $v\in\{Z\}\subseteq L_h$ satisfying (\ref{low_degree}) or (\ref{only_child}). By the minimality of $xyz$, $uv$ is not part of any separating triangle in $G$, so $uv$ is a contractible edge of $G$'.
-\end{proof}
+
+
+% \begin{lem}\label{good_edge}
+%   Let $G$ be a planar graph with $n\ge 2$ vertices, let $r$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be a $\{r\}$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+%   Then $G$ contains an edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
+%   \begin{compactenum}[(a)]
+%     \item $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$ , or\label{low_degree}
+%     \item $|N_G(u)\cap L_h|=1$.\label{only_child}
+%   \end{compactenum}
+% \end{lem}
+%
+% \begin{proof}
+%   It is well known that the subgraph induced by any single BFS layer of a planar graph is an outerplanar graph.  Therefore $G[L_h]$ is outerplanar.  It is also well known that any non-empty outerplanar graph has a vertex of degree at most $2$ and that any outerplanar graph with at least two vertices has at least two vertices of degree at most $2$.  Since $L_h$ is non-empty, there exists $v\in L_h$ with  $\deg_{G[L_h]}(v)\le 2$.  Since $n\ge 4$, $h\ge 1$.  Therefore, the vertex $v$ has at least one neighbour $u$ in $L_{h-1}$.  If $v$ has at most two neighbours in $L_{h-1}$, then $\deg_G(v)=\deg_{G[L_h]}(v)+|N_G(v)\cap L_{h-1}|\le 2+2=4$ and the edge $uv$ satisfies (\ref{low_degree}) and we are done.
+%
+%   Suppose therefore that $v$ has at least three neighbours in $L_{h-1}$.
+%
+%   Identify each vertex of $G$ with the point that represents it in such an ordered concentric representation and each edge of $G$ with the curve that represents it.  Refer to \cref{gammas}.  If $v$ has at least three neighbours in $L_{h-1}$ then there exists an arc $\Gamma_0$ of $C_{h-1}$ with endpoints $u_0$ and $u_2$ that contains exactly three neighbours $u_0$, $u$, and $u_2$ of $v$.  Let $\Gamma_1$ be the minimal arc of $C_h$ that contains $v$ and the intersections of the edges $u_0v$ and $u_2v$ with $C_h$.  Observe that $N_G(u)\cap L_h\subseteq \Gamma_1\cap L_h$.  Therefore, if $\Gamma_1\cap L_h=\{v\}$, then the edge $uv$ satisfies (\ref{only_child}) and we are done.
+%   \begin{figure}
+%     \begin{center}
+%       \begin{tabular}{c@{\hspace{1cm}}c}
+%         \includegraphics{figs/gammas-1} & \includegraphics{figs/gammas-2}
+%       \end{tabular}
+%     \end{center}
+%     \caption{A step in the proof of \cref{good_edge}.}
+%     \label{gammas}
+%   \end{figure}
+%
+%   Suppose therefore that $|\Gamma_1\cap L_h|\ge 2$.  Partition $\Gamma_1$ into two subarcs $\Gamma_{1,a}$ and $\Gamma_{1,b}$ each having an endpoint at $uv\cap C_h$, with $\Gamma_{1,a}$ having an endpoint at $u_0v\cap C_h$ and $\Gamma_{1,b}$ having an endpoint on $u_2v\cap C_h$.   Define $\Gamma_{0,a}$ and $\Gamma_{0,b}$ similarly as the two arcs obtained by cutting $\Gamma_0$ at $u$.  Without loss of generality, we may assume that $Q:=\Gamma_{1,a}\cap L_h\setminus\{v\}$ is non-empty.  Then $G[Q\cup\{v\}]$ is an outerplanar graph with at least two vertices, so it contains at least two vertices of degree at most $2$.  Let $v'$ be a vertex in $Q$ such that $\deg_{G[Q\cup\{v\}}(v')\le 2$.  Observe that $\deg_{G[L_h]}(v')=\deg_{G[Q\cup\{v\}]}(v')\le 2$.  Therefore, we may repeat the entire argument, from the beginning, using $v'$ in place of $v$.  This will either show that some edge $u'v'$ incident on $v'$ satisifies the conditions of the lemma, or will lead to the same situation with arcs $\Gamma_0'$ and $\Gamma_1'$ defined analagously to $\Gamma_0$ and $\Gamma_1$.  The key observation is that $\Gamma_0'\subseteq\Gamma_{0,a}$ and therefore $|\Gamma_0'\cap L_{h-1}| < |\Gamma_0\cap L_{h-1}|$ since $\Gamma_0'$ does not contain $u_2$.  This cannot continue indefinitely so it will eventually lead to an edge $u''v''$ satisfying the conditions of the lemma.
+% \end{proof}
+
+
+
+
+% \begin{cor}\label{good_edge_triangulation}
+%   Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be an $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.
+%   Then $G$ contains a contractible edge $uv$ with $u\in L_{h-1}$ and $v\in L_{h}$ such that
+%   \begin{compactenum}[(a)]
+%     \item $\deg_G(v)\le 4$, or
+%     \item $|N_G(u)\cap L_h|=1$.
+%   \end{compactenum}
+% \end{cor}
+%
+% \begin{proof}
+%   If $G$ contains no separating triangle $xzy$ with $x\in L_{h-1}$ and $z\in L_h$ then the result follows immediately from \cref{good_edge}.
+%
+%   Otherwise let $xyz$ be a separating triangle of $G$ with $x\in L_{h-1}$ and $z\in L_h$ that contains the fewest possible number of vertices of $G$ in its interior. Let $Z$ be the set of vertices of $G$ contained in the interior of $xyz$, let $Y:=\{x,y,z\}\cap L_{h-1}$, and let $G'$ be the graph obtained from $G[X\cup S]$ by adding an additional vertex $v$ adjacent to each vertex in $S$.  Observe that $\langle X,Y,Z\rangle$ is a $\{v\}$-rooted BFS layering of $G'$ so by \cref{good_edge}, it contains an edge $uv$ with $u\in\{Y\}\subseteq L_{h-1}$ and $v\in\{Z\}\subseteq L_h$ satisfying (\ref{low_degree}) or (\ref{only_child}). By the minimality of $xyz$, $uv$ is not part of any separating triangle in $G$, so $uv$ is a contractible edge of $G$'.
+% \end{proof}
 
 % The following does't work
 % We will assign each vertex $v\in L_h$ a \emph{parent} $\rho(v)$ as follows:  For each $v\in L_h$, let $\Rho(v):=\{N_G(v)\cap L_{h-1}\}$ be the set of \emph{possible parents} of $v$. Observe that $\Rho(v)$ is non-empty for each $v\in L_h$.  We proceed in two stages:
@@ -221,26 +247,72 @@ In the following, we work with edge contractions, which we treat as a directed o
 
 % Using \cref{good_edge} we can establish the following vertex ordering:
 
-The last piece of the puzzle that we need is (something close to) the following lemma:
 
 \begin{lem}\label{contraction_sequence}
-    Let $G$, $f_0$, $S$, and $\mathcal{L}$ be as in the previous lemma.  Then there exists a sequence $\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ with the following properties:
+    Let $G$ be a triangulation, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$, and let $h:=\height(\mathcal{L})$.
+    Then there exists a sequence $\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ with the following properties:
     \begin{compactenum}
-        \item $u_iv_i\in E(G_i)\cap E(G)$ for each $i\in\{1,\ldots,h\}$.
         \item $u_i\in L_{h-1}$ and $v_i\in L_h$ for each $i\in\{1,\ldots,|L_h|\}$.
         \item For each $i\in\{0,\ldots,|L_h|\}$, let $G_i$ be the graph obtained from $G$ after contracting $u_jv_j$ for each $j\in\{1,\ldots,i\}$.  Then, for each $i\in\{1,\ldots,|L_h|\}$,  $u_iv_i$ is contractible in $G_{i-1}$.
+        \item $u_iv_i\in E(G_i)\cap E(G)$ for each $i\in\{1,\ldots,h\}$.
         \item For each $i\in\{1,\ldots,|L_h|\}$,
         \begin{compactenum}[(a)]
-            \item $|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
+            \item \label{low_degree}$|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
                 $|N_{G_{i-1}}(v_i)\cap L_{h-1}\cap V(G_{i-1})|\le 2$; or
-            \item $N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$. 
+            \item \label{only_child}$N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$.
             \todo[inline]{We can weaken this second condition a little:  If $|N_{G_{i-1}}(v_i)|>4$, then $u_i\neq u_j$ for any $j\in\{i+1,\ldots,|L_h|\}$.}
         \end{compactenum}
     \end{compactenum}
 \end{lem}
 
 \begin{proof}
-    I'm struggling to prove this because we need to avoid a situation in which the only edges we can find in $G_{i-1}$ are of type (\ref{only_child}) but none of those edges are actually edges of $G$.
+    We will prove a strengthening of this result by induction.  Consider an ordered concentric representation of $G$ whose existence is give by \cref{pupyrev}.  We will not distinguish between vertices and edges of $G$ and the corresponding points and curves in the ordered concentric representation of $G$. Let $J$ be a Jordan curve that intersects $\ell_{h-1}$ in exactly one or two points and let $C$ be the simple open curve consisting of the part of $J$ that is below $\ell_{h-1}$.  For either $j\in\{h-1,h\}$ and any $v\in L_j$ we say that $v$ is \emph{above} $C$ if $v$ is in the interior of $J$. Otherwise we say that $v$ is \emph{below} $C$.  Similarly, we say that an edge $xy$ of $G$ with $x,y\in L_{h-1}\cup L_h$ is \emph{above} $C$ if the interior of (the curve representing $xy$) is in the interior of $J$.
+
+    Let $x$ and $z$ be two (not necessarily distinct) vertices of $L_{h-1}$ and let $P$ be a path in $G$ of length at most $2$ whose endpoints are $x$ and $z$ and whose interior vertex (if any) is in $L_{h-1}\cup L_h$. Let $V_P$ the subset of $L_{h-1}\cup L_h$ that are on or above $P$.   We will prove, by induction on the number of vertices of $L_h$ that are on or above $P$, that there is a sequence of contractions of edges of $G_P$
+    \begin{inparaenum}[(1)]
+        \item that satisfies the requirements of the lemma,
+        \item that does not include any edge of $P$,
+        \item that eliminates all the vertices of $L_h$ that are above $P$, and
+        \item such that each contracted edge that is incident to $x$ or $z$ satisfies (\ref{low_degree}).  (Contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
+    \end{inparaenum}
+
+    We first observe that, if $G$ contains a separating triangle with all of its vertices on or above $P$
+
+    \todo[inline]{first deal with separating triangles}
+
+    If $|V(G_P)\cap L_h|=0$, then there is nothing to prove since an empty sequence of edges already satisfies the conditions of the lemma.  If $V(G_P)\cap L_{h-1}=\{x,z\}$ then the proof is rather easy because $N_G(v)\cap L_{h-1}\subseteq \{x,z\}$, so $|N_G(v)\cap L_{h-1}|\le 2$ for each $v\in V(G_P)\cap L_h$.  It is well know that any BFS layer of a planar graph induces an outerplanar graph and that any outerplanar graph with at least one vertex contains a vertex of degree at most $2$.  Therefore there exists a vertex $v\in V(G_P)\cap L_h$ with $|N_G(v)\cap L_h|\le 2$ and $|N_G(v)\cap L_{h-1}|\le 2$.  By definition, $N_G(v)$ includes some vertex $u\in L_{h-1}$  (in fact $u\in \{x,z\}$).  The edge $uv$ becomes the first edge in the contraction sequence and then the inductive hypothesis provides the rest of the sequence.  Note that the preceding discussion includes the case in which $x=z$, so we may now assume that $x\neq z$.  Furthermore, if there exists any $v\in V(G_P)\cap L_h$ such that $N_G(v)=\{x,z\}$, then $V(G_P)\cap L_{h-1}=\{x,z\}$ which is also covered by the preceding discussion. Thus, we may assume that each vertex $v\in V(G_P)\cap L_h$ has at least one neighbour $u\in L_{h-1}\setminus\{x,z\}$.
+
+    The rest of the proof is divided into two cases, depending on the length of $P$.
+
+    \begin{enumerate}
+        \item If $P$ has length $1$ then consider the unique face $f:=xzx'$ of $G$ for which $x'$ is above $xz$.  There are two cases to consider:
+        \begin{compactenum}
+            \item If $x'\in L_{h-1}$, then we can apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $V(G_P)\cap L_h$ that are above $xx'$. We can then immediately follow this with the edge contraction sequence obtained by using the inductive hypothesis to find a contraction sequence that eliminates all vertices of $G_P\cap L_H$ that are above the edge $x'z$.  Since $xzx'$ is a face of $G_P$, this eliminates all vertices of $V(G_P)\cap L_h$ as required.
+
+            \item If $x'\in L_h$ then let $z'$ be a neighbour of $x'$ in $L_{h-1}\setminus\{x,z\}$. Next, apply the inductive hypothesis to eliminate all vertices of $V(G_P)\cap L_h$ above the paths $P_1:=xx'z'$ and $P_2:=z'x'z$.  This leaves only one vertex, namely $x'$, of $V(G_P)\cap L_h$.  At this point, the neighbourhood of $z'$ contains only one vertex in $L_h$, namely $x'$, so the edge $z'x'$ satisfies (\ref{only_child}). We finish by contracting the edge $z'x'$.
+        \end{compactenum}
+
+        \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
+        \begin{compactenum}
+            \item If $y\in L_{h-1}$ then we apply the inductive hypothesis to (the subgraphs of $G_P$ on or above) $P_1:=xy$ and to $P_2:=yz$.
+
+            \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
+
+            \item If $y\in L_h$ then there is more work to do.  In this case we consider the unique face $xyx'$ of $G$ for which $x'$ is above $xy$. Note that, if $x'=z$
+
+
+
+            If $x'\in L_{h-1}$ then we can apply induction on the paths $P_1:=xx'$ and $P_2:=x'yz$ to obtain an edge contraction sequence that eliminates all vertices of $V(G_P)\cap L_h$ except for $y$. At this point $x$ has only one neighbour, namely $y$, in $L_{h}$, so the edge $x'y$ satisifes (\ref{only_child}).
+
+
+
+            Furthermore, if $x'=z$ then \ldots\todo{Finish the $x'=z$ argument}  We finish by contracting the edge $x'z$.
+        \end{compactenum}
+
+
+        we consider the face $f$ of $G$
+    \end{enumerate}
+
 \end{proof}
 
 Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence} and adding all the edges $u_i,v_i$ to $F$ and the recursive on the graph $G_{|L_h|}$, whose BFS layering from $S$ only has height $h-1$.
