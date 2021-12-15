@@ -233,7 +233,8 @@ The last piece of the puzzle that we need is (something close to) the following 
         \begin{compactenum}[(a)]
             \item $|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
                 $|N_{G_{i-1}}(v_i)\cap L_{h-1}\cap V(G_{i-1})|\le 2$; or
-            \item $N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$.
+            \item $N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$. 
+            \todo[inline]{We can weaken this second condition a little:  If $|N_{G_{i-1}}(v_i)|>4$, then $u_i\neq u_j$ for any $j\in\{i+1,\ldots,|L_h|\}$.}
         \end{compactenum}
     \end{compactenum}
 \end{lem}
