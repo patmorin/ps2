@@ -126,6 +126,40 @@ A \emph{layering} $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ of a graph $G$ is a
 For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $v\in L_d$. For a set $S\subseteq V(G)$, the \emph{$S$-rooted BFS layering} of $G$ is the layering obtained by setting $L_i:=\{v\in V(G):\dist_G(v,S)=i\}$ for each $i\in\N$.
 
 
+
+\subsection{New Strategy}
+
+
+Let $G$ be a triangulation and let $T$ be a rooted spanning tree of $G$.  For any face $f$ of $G$, $Y_T(f)$ is the union of the three paths from the vertices of $f$ to the root of $T$.
+
+\begin{lem}\label{retriangulate}
+  Let $G$ be a triangulation with $n\ge 4$ vertices, let $T$ be a BFS tree of $G$, let $h:=\height(T)$, and for each $i\in\{0,\ldots,h\}$, let $L_i:=\{v\in V(G):\depth_T(v)=i\}$.  Then there exists a triangulation\footnote{A graph $H'$ is a triangulation of a planar graph $H$ if $H'$ is a triangulation and $V(H')=V(H)$. In other words, $H'$ a triangulation obtained by adding edges to $H$.} $G'$ of $G-L_h$ such that, for each face $f$ of $G$
+  \begin{compactenum}
+    \item $|V(Y_T(f))\cap L_{h-1}| < 3$; or
+    \item there exists a face $f'$ of $G'$ such that $Y_{T-L_h}(f')\cap L_{h-1}=Y_T(f)\cap L_{h-1}$.
+  \end{compactenum}
+\end{lem}
+
+Now the rest of the proof goes like this:
+\begin{enumerate}
+  \item Compute $G-L_h$ and retriangulate using \cref{retriangulate} to get a triangulation $G'$ and BFS tree $T':=T-L_h$.
+  \item Recursively compute a tripod partition of $(G',T')$, which can be represented as a tripod tree in which each face of $G'$ is the crotch of exactly one (possibly empty) tripod.
+  \item Using the partial correspondence between faces of $G'$ and $G$ this gives a partial tripod decomposition of $G$. Specifically, if $\varphi(f')$ denotes the face of $G$ corresponding to $f'$, then consider the graph  $H:=\bigcup_{f'\in G'} Y_{T}(\varphi(f')))$.
+
+  The faces of $H$ are either (triangular) faces of $G$ or $4$-sided faces, each consisting of an edge $vw$ of $G[L_h]$, an edge $xy$ of $G[L_{h-1}]$, and two edges $vx$ and $wy$ of $T$. The edge $vw$ is on the boundary of one face $f$ of $G$ that is included in $H$. So the vertices $G-V(H)$ contained in a $4$-sided face $f$ of $H$ are exposed to at most three tripods:
+  \begin{inparaenum}[(i)]
+      \item a tripod containing $x$;
+      \item a tripod containing $y$; and
+      \item a tripod containing $vw$.\todo{This needs an argument}
+  \end{inparaenum}
+  The subgraph of $G$ induced by $f$ and the vertices of $G-V(H)$ in the interior of $f$ is therefore a near triangulation and we can apply Sperner's Lemma on it to get a tripod decomposition.  The difference is that, in this case, we will be able to do so in linear time because the internal vertices of this graph all belong to $L_h$ and there are only $4$ external vertices.  This means that each Sperner triangle will contain two vertices that are either on the boundary or in previous Sperner triangles. \hfill\qed
+\end{enumerate}
+
+\subsection{Old Stuff}
+
+
+
+
 We will make use of the following result of \citet{pupyrev:mixed} on \emph{ordered concentric representations}:
 
 \begin{thm}\label{pupyrev}
@@ -272,7 +306,7 @@ In the following, we work with edge contractions, which we will treat as a direc
   \begin{compactenum}[(E1)]
     \item \label{e_first}\label{original_conditions} $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ satisfy conditions 1--4 of the lemma,
     \item For each $i\in\{1,\ldots,S_h\}$, $v_i\in S_h$.
-    \item \label{e_last} For each $i\in\{1,\ldots,S_h\}$, if $u_i\in\{x,z\}$, then $u_iv_i$ satisfies (\ref{low_degree}). 
+    \item \label{e_last} For each $i\in\{1,\ldots,S_h\}$, if $u_i\in\{x,z\}$, then $u_iv_i$ satisfies (\ref{low_degree}).
     % (By (E\ref{original_conditions}) contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
   \end{compactenum}
 
@@ -292,17 +326,17 @@ In the following, we work with edge contractions, which we will treat as a direc
 
     \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
     \begin{compactenum}
-      \item If $y\in S_{h-1}$ then we apply the inductive hypothesis to find a an edge contraction sequence that eliminates the subset of $S_h$ above $xy$ and then to find an edge contraction sequence that eliminates the subset of $S_h$ above $yz$.  The concatenation of these two sequences satisfies (E\ref{e_first})--(E\ref{e_last}). 
-      
-      
+      \item If $y\in S_{h-1}$ then we apply the inductive hypothesis to find a an edge contraction sequence that eliminates the subset of $S_h$ above $xy$ and then to find an edge contraction sequence that eliminates the subset of $S_h$ above $yz$.  The concatenation of these two sequences satisfies (E\ref{e_first})--(E\ref{e_last}).
+
+
       % \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
 
       \item If $y\in S_h$ then consider the vertex set $Q:=N_G(y)\cap (S_{h-1}\cup\{x,y\})$.  The fact that $G$ is a triangulation ensures that $Q$ is non-empty. In particular, $y$ is on the boundary of some face of $G$ that has points above $y$ in its interior. This face must have a vertex in $L_{h-1}$ and this vertex can only be in $Q$.  Let $x'$ be any vertex in $Q$.  Apply induction on the that paths $xyx'$ and $x'yz$ and concatenate the two resulting sequences of edges to obtain a sequence satisfying (E\ref{e_first})--(\ref{e_last}).
-      % 
-      % 
-      % 
-      % 
-      % In this case we consider the unique face $xyx'$ of $G$ for which $x'$ is above $xy$ or $x'=z$.   
+      %
+      %
+      %
+      %
+      % In this case we consider the unique face $xyx'$ of $G$ for which $x'$ is above $xy$ or $x'=z$.
       % \begin{compactenum}
       %   \item If $x'=z$ then we can immediately apply the inductive hypothesis on the edge $xz$ to find a sequence satisfying (E\ref{e_first})--(E\ref{e_last}).
       %   \item If $x'\in S_{h-1}$ then we can apply the inductive hypothesis to find contraction sequences that eliminate all vertices of $S_h$ that are above $xx'$ and all vertices of $S_h$ that are above $x'yz$.
