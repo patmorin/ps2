@@ -127,54 +127,22 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 
 
 
-\subsection{New Strategy}
 
-
-Let $G$ be a triangulation and let $T$ be a rooted spanning tree of $G$.  For any face $f$ of $G$, $Y_T(f)$ is the union of the three paths from the vertices of $f$ to the root of $T$.
-
-\begin{lem}\label{retriangulate}
-  Let $G$ be a triangulation with $n\ge 4$ vertices, let $T$ be a BFS tree of $G$, let $h:=\height(T)$, and for each $i\in\{0,\ldots,h\}$, let $L_i:=\{v\in V(G):\depth_T(v)=i\}$.  Then there exists a triangulation\footnote{A graph $H'$ is a triangulation of a planar graph $H$ if $H'$ is a triangulation and $V(H')=V(H)$. In other words, $H'$ a triangulation obtained by adding edges to $H$.} $G'$ of $G-L_h$ such that, for each face $f$ of $G$
-  \begin{compactenum}
-    \item $|V(Y_T(f))\cap L_{h-1}| < 3$; or
-    \item there exists a face $f'$ of $G'$ such that $Y_{T-L_h}(f')\cap L_{h-1}=Y_T(f)\cap L_{h-1}$.
-  \end{compactenum}
-\end{lem}
-
-Now the rest of the proof goes like this:
-\begin{enumerate}
-  \item Compute $G-L_h$ and retriangulate using \cref{retriangulate} to get a triangulation $G'$ and BFS tree $T':=T-L_h$.
-  \item Recursively compute a tripod partition of $(G',T')$, which can be represented as a tripod tree in which each face of $G'$ is the crotch of exactly one (possibly empty) tripod.
-  \item Using the partial correspondence between faces of $G'$ and $G$ this gives a partial tripod decomposition of $G$. Specifically, if $\varphi(f')$ denotes the face of $G$ corresponding to $f'$, then consider the graph  $H:=\bigcup_{f'\in G'} Y_{T}(\varphi(f')))$.
-
-  The faces of $H$ are either (triangular) faces of $G$ or $4$-sided faces, each consisting of an edge $vw$ of $G[L_h]$, an edge $xy$ of $G[L_{h-1}]$, and two edges $vx$ and $wy$ of $T$. The edge $vw$ is on the boundary of one face $f$ of $G$ that is included in $H$. So the vertices $G-V(H)$ contained in a $4$-sided face $f$ of $H$ are exposed to at most three tripods:
-  \begin{inparaenum}[(i)]
-      \item a tripod containing $x$;
-      \item a tripod containing $y$; and
-      \item a tripod containing $vw$.\todo{This needs an argument}
-  \end{inparaenum}
-  The subgraph of $G$ induced by $f$ and the vertices of $G-V(H)$ in the interior of $f$ is therefore a near triangulation and we can apply Sperner's Lemma on it to get a tripod decomposition.  The difference is that, in this case, we will be able to do so in linear time because the internal vertices of this graph all belong to $L_h$ and there are only $4$ external vertices.  This means that each Sperner triangle will contain two vertices that are either on the boundary or in previous Sperner triangles. \hfill\qed
-\end{enumerate}
-
-\subsection{Old Stuff}
-
-
-
-
-We will make use of the following result of \citet{pupyrev:mixed} on \emph{ordered concentric representations}:
-
-\begin{thm}\label{pupyrev}
-    Let $G$ be any connected planar graph, let $v$ be any vertex of $G$, and let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$.  Then there exists a planar embedding of $G$ such that, for each $i\in\N$:
-    \begin{compactenum}
-      \item the vertices of of $L_i$ are on the line $\ell_i:=\{(x,-i):x\in\R\}$;
-      \item each edge $xy$ of $G$ with $x,y\in L_i$ is embedded as a curve whose interior is below the line $\ell_i$;
-      \item each edge $xy$ of $G$ with $x\in L_i$ and $y\in L_{i+1}$ is embedded as a curve whose interior is the union of
-      \begin{inparaenum}[(i)]
-        \item a curve that is below $\ell_i$ but above $\ell_{i+1}$,
-        \item a point on $\ell_{i+1}$, and
-        \item a curve that is below $\ell_{i+1}$.
-      \end{inparaenum}
-    \end{compactenum}
-\end{thm}
+% We will make use of the following result of \citet{pupyrev:mixed} on \emph{ordered concentric representations}:
+%
+% \begin{thm}\label{pupyrev}
+%     Let $G$ be any connected planar graph, let $v$ be any vertex of $G$, and let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$.  Then there exists a planar embedding of $G$ such that, for each $i\in\N$:
+%     \begin{compactenum}
+%       \item the vertices of of $L_i$ are on the line $\ell_i:=\{(x,-i):x\in\R\}$;
+%       \item each edge $xy$ of $G$ with $x,y\in L_i$ is embedded as a curve whose interior is below the line $\ell_i$;
+%       \item each edge $xy$ of $G$ with $x\in L_i$ and $y\in L_{i+1}$ is embedded as a curve whose interior is the union of
+%       \begin{inparaenum}[(i)]
+%         \item a curve that is below $\ell_i$ but above $\ell_{i+1}$,
+%         \item a point on $\ell_{i+1}$, and
+%         \item a curve that is below $\ell_{i+1}$.
+%       \end{inparaenum}
+%     \end{compactenum}
+% \end{thm}
 
 In the following, we work with edge contractions, which we will treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves on of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
 
@@ -188,6 +156,23 @@ In the following, we work with edge contractions, which we will treat as a direc
     \caption{Contracting the edge $uv$ in a planar embedding of $G$.}
     \label{contraction}
 \end{figure}
+
+
+
+% Now the rest of the proof goes like this:
+% \begin{enumerate}
+%   \item Compute $G-L_h$ and retriangulate using \cref{retriangulate} to get a triangulation $G'$ and BFS tree $T':=T-L_h$.
+%   \item Recursively compute a tripod partition of $(G',T')$, which can be represented as a tripod tree in which each face of $G'$ is the crotch of exactly one (possibly empty) tripod.
+%   \item Using the partial correspondence between faces of $G'$ and $G$ this gives a partial tripod decomposition of $G$. Specifically, if $\varphi(f')$ denotes the face of $G$ corresponding to $f'$, then consider the graph  $H:=\bigcup_{f'\in G'} Y_{T}(\varphi(f')))$.
+%
+%   The faces of $H$ are either (triangular) faces of $G$ or $4$-sided faces, each consisting of an edge $vw$ of $G[L_h]$, an edge $xy$ of $G[L_{h-1}]$, and two edges $vx$ and $wy$ of $T$. The edge $vw$ is on the boundary of one face $f$ of $G$ that is included in $H$. So the vertices $G-V(H)$ contained in a $4$-sided face $f$ of $H$ are exposed to at most three tripods:
+%   \begin{inparaenum}[(i)]
+%       \item a tripod containing $x$;
+%       \item a tripod containing $y$; and
+%       \item a tripod containing $vw$.\todo{This needs an argument}
+%   \end{inparaenum}
+%   The subgraph of $G$ induced by $f$ and the vertices of $G-V(H)$ in the interior of $f$ is therefore a near triangulation and we can apply Sperner's Lemma on it to get a tripod decomposition.  The difference is that, in this case, we will be able to do so in linear time because the internal vertices of this graph all belong to $L_h$ and there are only $4$ external vertices.  This means that each Sperner triangle will contain two vertices that are either on the boundary or in previous Sperner triangles. \hfill\qed
+% \end{enumerate}
 
 
 
@@ -282,56 +267,56 @@ In the following, we work with edge contractions, which we will treat as a direc
 % Using \cref{good_edge} we can establish the following vertex ordering:
 
 
-\begin{lem}\label{contraction_sequence}
-    Let $G$ be a triangulation, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$, and let $h:=\height(\mathcal{L})$.
-    Then there exists a sequence $\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ with the following properties:
-    \begin{compactenum}
-        \item $u_i\in L_{h-1}$ and $v_i\in L_h$ for each $i\in\{1,\ldots,|L_h|\}$.
-        \item For each $i\in\{0,\ldots,|L_h|\}$, let $G_i$ be the graph obtained from $G$ after contracting $u_jv_j$ for each $j\in\{1,\ldots,i\}$.  Then, for each $i\in\{1,\ldots,|L_h|\}$,  $u_iv_i$ is contractible in $G_{i-1}$.
-        \item $u_iv_i\in E(G_i)\cap E(G)$ for each $i\in\{1,\ldots,h\}$.
-        \item For each $i\in\{1,\ldots,|L_h|\}$,
-        \begin{compactenum}[(a)]
-            \item \label{low_degree}$|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
-                $|N_{G_{i-1}}(v_i)\cap L_{h-1}\cap V(G_{i-1})|\le 2$; or
-            \item \label{only_child}$N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$.
-            \todo[inline]{We can weaken this second condition a little:  If $|N_{G_{i-1}}(v_i)|>4$, then $u_i\neq u_j$ for any $j\in\{i+1,\ldots,|L_h|\}$.}
-        \end{compactenum}
-    \end{compactenum}
-\end{lem}
-
-\begin{proof}
-  We will prove a strengthening of this result by induction.  Consider an ordered concentric representation of $G$ whose existence is give by \cref{pupyrev}.  We will not distinguish between vertices and edges of $G$ and the corresponding points and curves in the ordered concentric representation of $G$. Let $J$ be a Jordan curve that intersects $\ell_{h-1}$ in exactly one or two points and let $C$ be the simple open curve consisting of the part of $J$ that is below $\ell_{h-1}$.  For either $j\in\{h-1,h\}$ and any $v\in L_j$ we say that $v$ is \emph{above} $C$ if $v$ is in the interior of $J$. Otherwise we say that $v$ is \emph{below} $C$.  Similarly, we say that an edge $xy$ of $G$ with $x,y\in L_{h-1}\cup L_h$ is \emph{above} $C$ if the interior of (the curve representing $xy$) is in the interior of $J$.
-
-  Let $x$ and $z$ be two (not necessarily distinct) vertices of $L_{h-1}$ and let $P$ be a path in $G$ of length at most $2$ whose endpoints are $x$ and $z$ and whose interior vertex (if any) is in $L_{h-1}\cup L_h$. For each $i\in\{h-1,h\}$, let $S_i:=\{v\in L_i:\mbox{$v$ is above $P$}\}$.  Let $S:=S_{h-1}\cup S_{h}$ and let $\overline{S}:=S\cup V(P)$. Our proof is by induction on $(|S_h|,|S_{h-1}|,|V(P)|)$ with a total ordering given by lexicographic comparison.   We will prove that there is a sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ of edges of $G$ that yield a sequence of graphs $\langle G_i\rangle_{i=0}^{|S_h|}$ with the following properties:
-  \begin{compactenum}[(E1)]
-    \item \label{e_first}\label{original_conditions} $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ satisfy conditions 1--4 of the lemma,
-    \item For each $i\in\{1,\ldots,S_h\}$, $v_i\in S_h$.
-    \item \label{e_last} For each $i\in\{1,\ldots,S_h\}$, if $u_i\in\{x,z\}$, then $u_iv_i$ satisfies (\ref{low_degree}).
-    % (By (E\ref{original_conditions}) contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
-  \end{compactenum}
-
-  \todo[inline]{first deal with separating triangles}
-
-  If $|S_h|=0$, then there is nothing to prove since an empty sequence of edges already satisfies the conditions of the lemma.  If $V(G_P)\cap L_{h-1}=\{x,z\}$ then the proof is rather easy because $N_G(v)\cap L_{h-1}\subseteq \{x,z\}$ for each $v\in S_h$.  This implies that $N_{G_{i-1}}(v)\cap L_{h-1}\subseteq\{x,z\}$ for each $v\in V(G_{i-1})\cap S_h$, so $|N_{G_{i-1}}(v)\cap L_{h-1}|\le 2$ for each $v\in V(G_{i-1})\cap S_h$.  It is well know that any BFS layer of a planar graph induces an outerplanar graph and that any outerplanar graph with at least one vertex contains a vertex of degree at most $2$.  Therefore, for each $i\in\{1,\ldots,|S_h|\}$, $G_{i-i}$ contains a vertex $v\in S_h$ with $|N_{G_{i-1}}(v)\cap L_h|\le 2$.  This gives an edge sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ that satisfies (E\ref{e_first})--(E\ref{e_last}).
-
-  The rest of the proof is divided into two cases, depending on the length of $P$.
-
-  \begin{enumerate}
-    \item If $P$ has length $1$ then consider the unique face $f:=xzx'$ of $G$ for which $x'$ is above $xz$.  There are two cases to consider:
-    \begin{compactenum}
-      \item If $x'\in S_{h-1}$, then we can apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ that are above $xx'$ and an edge contraction sequence that eliminates all vertices of $S_h$ that are above $x'z$. Since $xzx'$ is a face of $G_P$, the concatenation of these two sequences eliminates all vertices of $S_h$, as required.
-
-      \item If $x'\in L_h$, then we first choose an edge $z'x'$ of $G$ as follows: If $N_G(x')$ contains a vertex $a$ in $S_{h-1}$, then let $z':=a$, otherwise let $z'$ be any vertex in $N_G(z')$. Observe that, in the latter case, $z'\in\{x,z\}$.  Next, apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ above the paths $xx'z'$ and $z'x'z$.  The concatenation of these two sequences leaves us with a graph $G_{|L_h|-1}$ that contains only one vertex, namely $x'$, of $S_h$.  Then $N_{G_{|L_h|-1}}(z')=\{x'\}$,  so the edge $z'x'$ satisfies (\ref{only_child}).  Furthermore, if $z'\in\{x,z\}$, then $N_{G_{|L_h|-1}}(x')=\subseteq\{x,z\}$ so the edge $z'x'$ satisfies (\ref{low_degree}).  In either case, making $z'x'$ be the final edge in the sequence gives a sequence of edges that satisfies (E\ref{e_first})--(E\ref{e_last}).
-    \end{compactenum}
-
-    \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
-    \begin{compactenum}
-      \item If $y\in S_{h-1}$ then we apply the inductive hypothesis to find a an edge contraction sequence that eliminates the subset of $S_h$ above $xy$ and then to find an edge contraction sequence that eliminates the subset of $S_h$ above $yz$.  The concatenation of these two sequences satisfies (E\ref{e_first})--(E\ref{e_last}).
-
-
-      % \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
-
-      \item If $y\in S_h$ then consider the vertex set $Q:=N_G(y)\cap (S_{h-1}\cup\{x,y\})$.  The fact that $G$ is a triangulation ensures that $Q$ is non-empty. In particular, $y$ is on the boundary of some face of $G$ that has points above $y$ in its interior. This face must have a vertex in $L_{h-1}$ and this vertex can only be in $Q$.  Let $x'$ be any vertex in $Q$.  Apply induction on the that paths $xyx'$ and $x'yz$ and concatenate the two resulting sequences of edges to obtain a sequence satisfying (E\ref{e_first})--(\ref{e_last}).
+% \begin{lem}\label{contraction_sequence}
+%     Let $G$ be a triangulation, let $v$ be a vertex of $G$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $\{v\}$-rooted BFS layering of $G$, and let $h:=\height(\mathcal{L})$.
+%     Then there exists a sequence $\langle u_iv_i\rangle_{i=1}^{|L_h|}$ of edges of $G$ with the following properties:
+%     \begin{compactenum}
+%         \item $u_i\in L_{h-1}$ and $v_i\in L_h$ for each $i\in\{1,\ldots,|L_h|\}$.
+%         \item For each $i\in\{0,\ldots,|L_h|\}$, let $G_i$ be the graph obtained from $G$ after contracting $u_jv_j$ for each $j\in\{1,\ldots,i\}$.  Then, for each $i\in\{1,\ldots,|L_h|\}$,  $u_iv_i$ is contractible in $G_{i-1}$.
+%         \item $u_iv_i\in E(G_i)\cap E(G)$ for each $i\in\{1,\ldots,h\}$.
+%         \item For each $i\in\{1,\ldots,|L_h|\}$,
+%         \begin{compactenum}[(a)]
+%             \item \label{low_degree}$|N_{G_{i-1}}(v_i)\cap L_h\cap V(G_{i-1})|\le 2$ and
+%                 $|N_{G_{i-1}}(v_i)\cap L_{h-1}\cap V(G_{i-1})|\le 2$; or
+%             \item \label{only_child}$N_{G_{i-1}}(u_i)\cap L_h\cap V(G_{i-1})=\{v_i\}$.
+%             \todo[inline]{We can weaken this second condition a little:  If $|N_{G_{i-1}}(v_i)|>4$, then $u_i\neq u_j$ for any $j\in\{i+1,\ldots,|L_h|\}$.}
+%         \end{compactenum}
+%     \end{compactenum}
+% \end{lem}
+%
+% \begin{proof}
+%   We will prove a strengthening of this result by induction.  Consider an ordered concentric representation of $G$ whose existence is give by \cref{pupyrev}.  We will not distinguish between vertices and edges of $G$ and the corresponding points and curves in the ordered concentric representation of $G$. Let $J$ be a Jordan curve that intersects $\ell_{h-1}$ in exactly one or two points and let $C$ be the simple open curve consisting of the part of $J$ that is below $\ell_{h-1}$.  For either $j\in\{h-1,h\}$ and any $v\in L_j$ we say that $v$ is \emph{above} $C$ if $v$ is in the interior of $J$. Otherwise we say that $v$ is \emph{below} $C$.  Similarly, we say that an edge $xy$ of $G$ with $x,y\in L_{h-1}\cup L_h$ is \emph{above} $C$ if the interior of (the curve representing $xy$) is in the interior of $J$.
+%
+%   Let $x$ and $z$ be two (not necessarily distinct) vertices of $L_{h-1}$ and let $P$ be a path in $G$ of length at most $2$ whose endpoints are $x$ and $z$ and whose interior vertex (if any) is in $L_{h-1}\cup L_h$. For each $i\in\{h-1,h\}$, let $S_i:=\{v\in L_i:\mbox{$v$ is above $P$}\}$.  Let $S:=S_{h-1}\cup S_{h}$ and let $\overline{S}:=S\cup V(P)$. Our proof is by induction on $(|S_h|,|S_{h-1}|,|V(P)|)$ with a total ordering given by lexicographic comparison.   We will prove that there is a sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ of edges of $G$ that yield a sequence of graphs $\langle G_i\rangle_{i=0}^{|S_h|}$ with the following properties:
+%   \begin{compactenum}[(E1)]
+%     \item \label{e_first}\label{original_conditions} $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ satisfy conditions 1--4 of the lemma,
+%     \item For each $i\in\{1,\ldots,S_h\}$, $v_i\in S_h$.
+%     \item \label{e_last} For each $i\in\{1,\ldots,S_h\}$, if $u_i\in\{x,z\}$, then $u_iv_i$ satisfies (\ref{low_degree}).
+%     % (By (E\ref{original_conditions}) contracted edges not incident to $x$ or $z$ satisfy at least one of (\ref{low_degree}) or (\ref{only_child}).)
+%   \end{compactenum}
+%
+%   \todo[inline]{first deal with separating triangles}
+%
+%   If $|S_h|=0$, then there is nothing to prove since an empty sequence of edges already satisfies the conditions of the lemma.  If $V(G_P)\cap L_{h-1}=\{x,z\}$ then the proof is rather easy because $N_G(v)\cap L_{h-1}\subseteq \{x,z\}$ for each $v\in S_h$.  This implies that $N_{G_{i-1}}(v)\cap L_{h-1}\subseteq\{x,z\}$ for each $v\in V(G_{i-1})\cap S_h$, so $|N_{G_{i-1}}(v)\cap L_{h-1}|\le 2$ for each $v\in V(G_{i-1})\cap S_h$.  It is well know that any BFS layer of a planar graph induces an outerplanar graph and that any outerplanar graph with at least one vertex contains a vertex of degree at most $2$.  Therefore, for each $i\in\{1,\ldots,|S_h|\}$, $G_{i-i}$ contains a vertex $v\in S_h$ with $|N_{G_{i-1}}(v)\cap L_h|\le 2$.  This gives an edge sequence $\langle u_iv_i\rangle_{i=1}^{|S_h|}$ that satisfies (E\ref{e_first})--(E\ref{e_last}).
+%
+%   The rest of the proof is divided into two cases, depending on the length of $P$.
+%
+%   \begin{enumerate}
+%     \item If $P$ has length $1$ then consider the unique face $f:=xzx'$ of $G$ for which $x'$ is above $xz$.  There are two cases to consider:
+%     \begin{compactenum}
+%       \item If $x'\in S_{h-1}$, then we can apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ that are above $xx'$ and an edge contraction sequence that eliminates all vertices of $S_h$ that are above $x'z$. Since $xzx'$ is a face of $G_P$, the concatenation of these two sequences eliminates all vertices of $S_h$, as required.
+%
+%       \item If $x'\in L_h$, then we first choose an edge $z'x'$ of $G$ as follows: If $N_G(x')$ contains a vertex $a$ in $S_{h-1}$, then let $z':=a$, otherwise let $z'$ be any vertex in $N_G(z')$. Observe that, in the latter case, $z'\in\{x,z\}$.  Next, apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ above the paths $xx'z'$ and $z'x'z$.  The concatenation of these two sequences leaves us with a graph $G_{|L_h|-1}$ that contains only one vertex, namely $x'$, of $S_h$.  Then $N_{G_{|L_h|-1}}(z')=\{x'\}$,  so the edge $z'x'$ satisfies (\ref{only_child}).  Furthermore, if $z'\in\{x,z\}$, then $N_{G_{|L_h|-1}}(x')=\subseteq\{x,z\}$ so the edge $z'x'$ satisfies (\ref{low_degree}).  In either case, making $z'x'$ be the final edge in the sequence gives a sequence of edges that satisfies (E\ref{e_first})--(E\ref{e_last}).
+%     \end{compactenum}
+%
+%     \item If $P$ has length $2$ then let $y$ denote the internal vertex of $P=xyz$.  We split this into two cases:
+%     \begin{compactenum}
+%       \item If $y\in S_{h-1}$ then we apply the inductive hypothesis to find a an edge contraction sequence that eliminates the subset of $S_h$ above $xy$ and then to find an edge contraction sequence that eliminates the subset of $S_h$ above $yz$.  The concatenation of these two sequences satisfies (E\ref{e_first})--(E\ref{e_last}).
+%
+%
+%       % \item If $xyz$ is a face of $G$, then we can first apply induction on the edge $xz$ to eliminate all vertices of $V(G_P)\cap L_h$ except for $y$.  At this point, the neighbourhood of $y$ includes no vertices in $L_h$ and exactly two vertices, namely $x$ and $z$, of $L_{h-1}$ so the edge $xy$ satisfies (\ref{low_degree}) so we contract $xy$.
+%
+%       \item If $y\in S_h$ then consider the vertex set $Q:=N_G(y)\cap (S_{h-1}\cup\{x,y\})$.  The fact that $G$ is a triangulation ensures that $Q$ is non-empty. In particular, $y$ is on the boundary of some face of $G$ that has points above $y$ in its interior. This face must have a vertex in $L_{h-1}$ and this vertex can only be in $Q$.  Let $x'$ be any vertex in $Q$.  Apply induction on the that paths $xyx'$ and $x'yz$ and concatenate the two resulting sequences of edges to obtain a sequence satisfying (E\ref{e_first})--(\ref{e_last}).
       %
       %
       %
@@ -343,11 +328,11 @@ In the following, we work with edge contractions, which we will treat as a direc
       %   \item If $x'\in S_h$
       %   and $N_G(x')$ contains a vertex $a$ in $S_{h-1}$, then let $z':=a$, otherwise let $z'$ be any vertex in $N_G(z')\cap\{x,z\}$.  Next, apply the inductive hypothesis to find an edge contraction sequence that eliminates all vertices of $S_h$ the paths $P_1:=xx'z'$ and $P_2:=z'x'z$.  The concatenation of these two sequences leaves us with a graph $G_{|L_h|-1}$ that contains only one vertex, namely $x'$, of $S_h$.  Then $N_{G_{|L_h|-1}}(z')=\{x'\}$,  so the edge $z'x'$ satisfies (\ref{only_child}).  Furthermore, if $z'\in\{x,z\}$, then $N_{G_{|L_h|-1}}(x')=\subseteq\{x,z\}$ so the edge $z'x'$ satisfies (\ref{low_degree}).  In either case, making $z'x'$ be the final edge in the sequence gives a sequence of edges that satisfies (E\ref{e_first})--(E\ref{e_last}).
       % \end{compactenum}
-    \end{compactenum}
-  \end{enumerate}
-\end{proof}
+%     \end{compactenum}
+%   \end{enumerate}
+% \end{proof}
 
-Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence} and adding all the edges $u_i,v_i$ to $F$ and the recursive on the graph $G_{|L_h|}$, whose BFS layering from $S$ only has height $h-1$.
+% Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence} and adding all the edges $u_i,v_i$ to $F$ and the recursive on the graph $G_{|L_h|}$, whose BFS layering from $S$ only has height $h-1$.
 
 % \begin{lem}\label{good_ordering}
 %   Let $G$ be a triangulation with $n\ge 4$ vertices, let $f_0$ be the outer face of $G$, let $S\subseteq V(f_0)$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $S$-rooted BFS layering of $G$ and let $h$ be the height of $\mathcal{L}$.  Then there exists an $S$-rooted BFS spanning forest $F$ of $G$ and an ordering $v_0,\ldots,v_m$ on the vertices $G$ such that, for each $i\in\{0,\ldots,m\}$, $\depth_F(v_i)=\height(F-\{v_0,\ldots,v_{i-1}\}$ and
@@ -376,11 +361,18 @@ Finally, we'll use a BFS forest obtained by applying \cref{contraction_sequence}
 \section{Tripod Decompositions}
 
 
-Let $G$ be a $n$-vertex triangulation, let $f_0$ be a face of $G$, let $S$ be a non-empty subset of $V(f_0)$ and let $\mathcal{L}:=\langle L_0,\ldots,L_h$ be a BFS layering of $G$ rooted at $S$.  A path $v_0,\ldots,v_r$ in $G$ is \emph{vertical} (with respect to $S$) if $\depth_\mathcal{L}(v_i)=\depth_{\mathcal{L}}(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$. The vertex $v_0$ is called the \emph{lower endpoint} of the vertical path and $v_r$ is the upper endpoint. A \emph{tripod} $Y$ is a subset of $V(G)$ whose vertices can be partitioned into three vertical paths in $G$.\footnote{Unlike \cite{dujmovic.joret.ea:planar}, we do not require that the lower endpoints of the three paths legs of a tripod form a triangular face in $G$.}
-A tripod $Y$ is \emph{connected} if the induced subgraph $G[Y]$ is connected.  A \emph{(connected) tripod decomposition} $\mathcal{D}$ of $G$ (with respect to $S$) is a partition of $V(G)$ into (connected) tripods.  \citet{dujmovic.joret.ea:planar} proved the following result, which implies the planar product structure theorem:
+Let $G$ be a $n$-vertex triangulation with outer face $f_0$, let $\mathcal{L}:=\langle L_0,\ldots,L_h$ be a $V(f_0)$-rooted BFS layering of $G$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  A path $v_0,\ldots,v_r$ in $F$ is \emph{vertical} (with respect to $F$) if $\depth_\mathcal{F}(v_i)=\depth_{\mathcal{F}}(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$. The vertex $v_0$ is called the \emph{lower endpoint} of the vertical path and $v_r$ is the \emph{upper endpoint}.
+
+% \begin{lem}
+%   There exists an ordering $f_0,\ldots,f_{2n-3}$ of the faces of $G$ with the following properties:
+%
+% \end{lem}
+% A \emph{tripod decomposition}
+
+For a face $uvw$ of $G$, a \emph{$(G,F)$-tripod} with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) vertical paths whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,F)$-tripod decomposition} is a partition of $V(G)$ into $(G,F)$-tripods. \citet{dujmovic.joret.ea:planar} proved the following result, which implies the planar product structure theorem:
 
 \begin{thm}\label{tripod_decomposition}
-  For any triangulation $G$, and face $f_0$ of $G$ and any $S\subseteq V(f_0)$, there exists a connected tripod decomposition $\mathcal{D}$ of $G$ (with respect to $S$) such that $\tw(G/\mathcal{D})\le 3$.
+  Let $G$ be a triangulation with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists a $(G,F)$-tripod decomposition $\mathcal{D}$ such that $\tw(G/\mathcal{D})\le 3$.
 \end{thm}
 
 % \begin{remark}
@@ -389,17 +381,24 @@ A tripod $Y$ is \emph{connected} if the induced subgraph $G[Y]$ is connected.  A
 
 \subsection{Tripod Decompositions from Face Orderings}
 
-We now describe how tripod decompositions can be obtained from total orders on the faces of $G$.  Let $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ be a total ordering of the faces of $G$.  Then $\mathcal{F}$ defines a tripod decomposition $\mathcal{D}_\mathcal{F}:=\{Y_0,\ldots,Y_{2n-3}\}$ with respect to $V(f_0)$ as follows:
-\begin{compactenum}
-  \item $Y_0$ is the tripod whose three paths are three vertices of $f_0$.
-  \item For each $i\in\{0,\ldots,2n-2\}$, let $S_i:=\bigcup_{j=0}^i Y_j$.
-  \item For each $i\in\{1,\ldots,2n-3\}$, let $x_{i,j}$, $j\in\{1,2,3\}$ denote the three vertices of $f_i$.
-  \item For each $i\in\{1,\ldots,2n-3\}$, let $I_{i,j}$ be a vertical path in $F$ defined as follows.  If $x_{i,j}\in S$, then $I_{i,j}$ is empty.  Otherwise, the upper endpoint of $I_{i,j}$ is the minimum $F$-depth ancestor of $x_{i,j}$ that is not in $S$. The lower endpoint of $I_{i,j}$ is obtained by starting at $x_{i,j}$ and walking downward in $F$ as long as the current node has exactly one child and that child has degree at least $5$ in $G$.
-  \item $Y_i:=I_{i,1}\cup I_{i,2}\cup I_{i,3}$.
-\end{compactenum}
-It is straightforward to verify from these definitions that $\mathcal{D}_\mathcal{F}$ is indeed a connected tripod decomposition of $(G,F)$.
+We now describe how $(G,F)$-tripod decompositions can be obtained from total orders on the faces of $G$.  For any vertex $v$ of $G$, we let $P_F(v)$ denote the path from $v$ to the root of its of its tree in $F$.  For any face $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ be a total ordering of the faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,2n-1\}$, define the graph $G_i:=\bigcup_{j=0}^i f_j\cup Y_F(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and observe that $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ is a tripod decomposition of $G$.
 
-For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u$ in $G_{i-1}$ is a \emph{foot} of the tripod $Y_i$ if $u\in V(f_i)$ or if there exists an edge $uv$ of $G$ with $v\in Y_i$.  (Note that a tripod may have much more than three feet!)
+%
+%  define a sequence of graphs $G_0,\ldots,G_{2n-3}$ as follows:
+% \begin{compactenum}
+%   \item $G_0=f_0$.
+%   \item For each $i\in\{1,\ldots,2n-3\}$, $G_i:=G_{i-1}\cup f_i\cup Y_F(f_i)$.
+% .  Then $\mathcal{F}$ defines a tripod decomposition $\mathcal{D}_\mathcal{F}:=\{Y_0,\ldots,Y_{2n-3}\}$ with respect to $V(f_0)$ as follows:
+% \begin{compactenum}
+%   \item $Y_0$ is the tripod whose three paths are three vertices of $f_0$.
+%   \item For each $i\in\{0,\ldots,2n-2\}$, let $S_i:=\bigcup_{j=0}^i Y_j$.
+%   \item For each $i\in\{1,\ldots,2n-3\}$, let $x_{i,j}$, $j\in\{1,2,3\}$ denote the three vertices of $f_i$.
+%   \item For each $i\in\{1,\ldots,2n-3\}$, let $I_{i,j}$ be a vertical path in $F$ defined as follows.  If $x_{i,j}\in S$, then $I_{i,j}$ is empty.  Otherwise, the upper endpoint of $I_{i,j}$ is the minimum $F$-depth ancestor of $x_{i,j}$ that is not in $S$. The lower endpoint of $I_{i,j}$ is obtained by starting at $x_{i,j}$ and walking downward in $F$ as long as the current node has exactly one child and that child has degree at least $5$ in $G$.
+%   \item $Y_i:=I_{i,1}\cup I_{i,2}\cup I_{i,3}$.
+% \end{compactenum}
+% It is straightforward to verify from these definitions that $\mathcal{D}_\mathcal{F}$ is indeed a connected tripod decomposition of $(G,F)$.
+%
+% For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u$ in $G_{i-1}$ is a \emph{foot} of the tripod $Y_i$ if $u\in V(f_i)$ or if there exists an edge $uv$ of $G$ with $v\in Y_i$.  (Note that a tripod may have much more than three feet!)
 
 % Don't need these anymore
 % \todo[inline]{
@@ -411,11 +410,79 @@ For each $i\in\{0,\ldots,2n-3\}$, let $G_i:=G[\bigcup_{j=0}^iY_j]$.  A vertex $u
 
 % \Cref{tripod_decomposition} can be obtained as a simple consequence of the next lemma. Informally, this lemma states that we can find an ordering $\mathcal{F}$ of $G$'s faces so that produces a tripod decomposition $\mathcal{D}_\mathcal{F}$ resulting in a sequence of connected graphs $G_0,\ldots,G_{2n-3}$ such that each face $f$ of each graph $G_j$ is bounded by at most three tripods in the set $Y_0,\ldots,Y_j$.  The connection between \cref{tripod_decomposition} and \cref{face_trick} is that, since each tripod $Y_j$ is contained in a face $f$ of $G_{j-1}$, this naturally defines a partial $3$-tree that contains $H:=G/\mathcal{D}$ where the parent clique of $Y_j$ in the $3$-tree contains the (at most) three tripods on the boundary of the face $f$.
 
+\citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the following lemma:
+
 \begin{lem}\label{face_trick}
-  For any triangulation $G$, any face $f_0$ of $G$, and any $S\subseteq V(f_0)$ there exists an $S$-rooted BFS forest $F$ and an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ of the faces of $G$ that defines a connected tripod decomposition $\mathcal{D}_\mathcal{F}:=Y_0,\ldots,Y_{2n-3}$ such that, for each $j\in\{0,\ldots,2n-3\}$ the tripod $Y_j$ has a foot in each tripod that contains a vertex on the face of $G_{j-1}$ whose interior  contains $Y_j$.
+  Let $G$ be a triangulation $G$ with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, there exists $a_i,b_i,c_i\in\{0,\ldots,i-1\}$ such that $V(f)\subseteq Y_{a_i}\cup Y_{b_i}\cup Y_{c_i}$.
 \end{lem}
 
-\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}$ of $G_{i-1}$ and use (\ref{three_faces}) and Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$.  \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we will now give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.   Before doing so, we first establish an easy consequence of \cref{face_trick} and \cref{tripod_blobs}.
+\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider any some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of $Y_{a_i}$, $Y_{b_i}$, and $Y_{c_i}$. \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.
+
+Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_decomposition} by constructing a chordal graph $H$ that contains $G/\mathcal{D_F}$.  For each $i\in\{1,\ldots,2n-3\}$ we form a clique on  $\{Y_i,Y_{a_i},Y_{b_i},Y_{c_i}\}$.  Inductively, $\{Y_{a_i},Y_{b_i},Y_{c_i}\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to an existing $3$-clique.  Therefore, this results in a chordal graph $H$ that has no clique of size greater than $4$ and therefore has treewidth at most $3$.
+
+\subsection{New Proof of \cref{face_trick}}
+
+\begin{obs}\label{separating_triangle_depth}
+  Let $G$ be a triangulation with outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $V(f_0)$-rooted BFS layering of $G$, let $h:=\height(\mathcal{L})$, and let $uv$ be an edge of $F$ with $u\in L_{h-1}$ and $v\in L_h$.  If $G$ contains a separating triangle $uvw$ then every vertex of $G$ in the interior of $uvw$ is in $L_h$.
+\end{obs}
+
+\begin{proof}
+  Let $x$ be any vertex of $G$ in the interior of $uvw$. By definition $\dist_G(x,V(f_0))\le h$.  Since $v\in L_h$, $w\in L_{h-1}\cup L_h$.  Since $f_0$ is the outer face of $G$, no vertex of $f_0$ is in the interior of $uvw$.  Therefore, every path from $x$ to a vertex of $f_0$ contains at least one of $u$, $v$, or $w$.  Therefore, $i=\dist_G(x,V(f_0))\ge 1+\min\{\dist(z,V(f_0):z\in\{u,v,w\}\}=h$.
+\end{proof}
+
+
+\begin{lem}\label{retriangulate}
+  Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $V(f_0)$-rooted BFS layering of $G$, let $F$ be a $V(f_0)$-rooted BFS tree of $G$, let $h:=\height(\mathcal{F})$, and let $G'$ and $F'$ be the graphs obtained from $G$ and $F$, respectively, by contracting each edge $uv\in E(F)$ with $u\in L_{h-1}$ and $v\in L_h$.  Then
+  \begin{compactenum}[(1)]
+    \item $G'$ is a triangulation.
+    \item $F'$ is a $V(f_0)$-rooted BFS spanning forest of $G'$.
+    \item For every face $f'$ of $G'$, there exists exactly one face $f$ of $G$ such that  $Y_{T'}(f')=Y_{T}(f)[\bigcup_{i=0}^{h-1} L_i]$.
+    % \item For every face $f$ of $G$ such that |V(Y_{T}(f))
+  \end{compactenum}
+\end{lem}
+
+\begin{proof}[Proof Sketch]
+    (1)~follows from \cref{separating_triangle_depth}. (2)~follows from the fact that each edge contraction can only decrease the distance from $f_0$ to a vertex whose distance from $f_0$ is greater than $h$.
+    % \todo[inline]{Now prove (3), which requires some arguing about planarity (and possibly using the fact that $G-L_{h}$ is $3$-connected).}
+    % To prove (3), observe that, for any face $v_1'v_2'v_3'$ of $G'$ there exists (at least one) face $v_1v_2v_3$ of $G$ such that $v_i=v_i'$ or $v_i'v_i$ is an edge of $F$ with $v_i'\in L_{h-1}$ and $v_i\in L_h$, for each $i\in\{1,2,3\}$.  To see that there is exactly one such face, suppose that there were two such triangles $v_1v_2v_3$ and $w_1w_2w_3$ and consider the graph $G'':=G-L_{h}\subseteq G'$.  The graph $G''$ is $3$-connected\todo{prove 3-connectivity}.
+    %
+    %
+    %
+    %  consider the graph $G'':=G-L_h\subseteq G'$.  Some of the faces of $G''$ contain vertices of $L_h$
+    %
+    %
+    % $G''$ let $x'y'z'$ be a face of $G'$.  If $x',y',z'\in \bigcup_{i=0}^{h-2} L_i$ then $x'y'z'$ is also a face of $G$.  Otherwise, at least one of $x
+    %
+    %
+    % edge contractions can only decrease the distance between any pair of vertices, but
+    % Contract every edge of $T$ that one endpoint in $L_{h-1}$ and one endpoint in $L_h$.  The only faces that disappear from this operation are those incident on an edge of $T$, which are of Type~(ii).  The faces of Type~(iii) appear in $G'$ as faces with all three vertices in $L_{h-1}$.
+\end{proof}
+
+
+
+
+
+\begin{proof}[New Proof of \cref{face_trick}]
+    The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ the proof is trivial; $G_0=f_0$ and $Y_0=V(f_0)$.
+
+    If $|V(G)> 3$ then apply \cref{retriangulate} to $(G,F)$ to obtain the graph $G'$ and its BFS spanning forest $F'$.  Apply induction on $G'$ to obtain an ordering $\mathcal{F}':=f_0',\ldots,f_{r}'$ of the faces of $G'$ and this ordering defines graphs $G_0',\ldots,G_r'$ and a $(G',F')$-tripod decomposition $\{Y_0',\ldots,Y_r'\}$.  By \cref{retriangulate}, each face $f_i'$ of $G'$ has a corresponding face $f_i$ in $G$.  The order $\mathcal{F}$ that we construct will begin with $f_0,\ldots,f_{r}$.  This is already sufficient information about $\mathcal{F}$ to define the graph $G_0,\ldots,G_r$ and the tripods $Y_0,\ldots,Y_r$.
+
+    Before explaining how this order is extended to all the face of $G$, we first verify that $G_0,\ldots,G_r$ and $Y_0,\ldots,Y_r$ satisfy the conditions of the lemma.  In particular, we must verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $V(f)$ is contained in union of three tripods $Y_{a_i}\cup Y_{b_i}\cup Y_{c_i}$, for some $a_i,b_i,c_i\in\{0,\ldots,i-1\}$.  By the inductive hypothesis we need only consider the case in which $f$ is one of the (at most four) faces of $G_i$ that contains a vertex of $f_i$ on its boundary.
+
+
+
+
+    % We claim there exists a face $f'$ of $G_i'$ such that $f_
+
+
+    % By the inductive hypothesis we know that the corresponding face
+\end{proof}
+
+
+
+
+
+
 
 \begin{lem}
   Let $G$, $S$, $\mathcal{F}$, $Y_0,\ldots,Y_{2n-3}$, and $G_0,\ldots,G_{2n-3}$ be defined as in \cref{face_trick}. Then, for each $i\in\{0,2n-3\}$, each face of $G_i$ contains vertices of at most three tripods in $Y_0,\ldots,Y_{2n-3}$.
