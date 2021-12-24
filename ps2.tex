@@ -144,7 +144,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 %     \end{compactenum}
 % \end{thm}
 
-In the following, we work with edge contractions, which we will treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves on of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
+In the following, we work with edge contractions, which we treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves on of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
 
 \begin{figure}
     \begin{center}
@@ -410,15 +410,28 @@ We now describe how $(G,F)$-tripod decompositions can be obtained from total ord
 
 % \Cref{tripod_decomposition} can be obtained as a simple consequence of the next lemma. Informally, this lemma states that we can find an ordering $\mathcal{F}$ of $G$'s faces so that produces a tripod decomposition $\mathcal{D}_\mathcal{F}$ resulting in a sequence of connected graphs $G_0,\ldots,G_{2n-3}$ such that each face $f$ of each graph $G_j$ is bounded by at most three tripods in the set $Y_0,\ldots,Y_j$.  The connection between \cref{tripod_decomposition} and \cref{face_trick} is that, since each tripod $Y_j$ is contained in a face $f$ of $G_{j-1}$, this naturally defines a partial $3$-tree that contains $H:=G/\mathcal{D}$ where the parent clique of $Y_j$ in the $3$-tree contains the (at most) three tripods on the boundary of the face $f$.
 
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics{figs/sperner-1} &
+      \includegraphics{figs/sperner-2} &
+      \includegraphics{figs/sperner-3} \\
+      (a) & (b) & (c)
+    \end{tabular}
+  \end{center}
+  \caption{Each face $f$ in $G_{i-1}$ is bounded by three tripods $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$ and the tripod $Y_i$ is chosen so that it connects each of these.}
+  \label{sperner}
+\end{figure}
+
 \citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the following lemma:
 
 \begin{lem}\label{face_trick}
-  Let $G$ be a triangulation $G$ with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, there exists $a_i,b_i,c_i\in\{0,\ldots,i-1\}$ such that $V(f)\subseteq Y_{a_i}\cup Y_{b_i}\cup Y_{c_i}$.
+  Let $G$ be a triangulation $G$ with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, there exists $a_f,b_f,c_f\in\{0,\ldots,i-1\}$ such that $V(f)\subseteq Y_{a_f}\cup Y_{b_f}\cup Y_{c_f}$.
 \end{lem}
 
-\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider any some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of $Y_{a_i}$, $Y_{b_i}$, and $Y_{c_i}$. \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.
+\citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider any some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$. \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.
 
-Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_decomposition} by constructing a chordal graph $H$ that contains $G/\mathcal{D_F}$.  For each $i\in\{1,\ldots,2n-3\}$ we form a clique on  $\{Y_i,Y_{a_i},Y_{b_i},Y_{c_i}\}$.  Inductively, $\{Y_{a_i},Y_{b_i},Y_{c_i}\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to an existing $3$-clique.  Therefore, this results in a chordal graph $H$ that has no clique of size greater than $4$ and therefore has treewidth at most $3$.
+Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_decomposition} by constructing a chordal graph $H$ that contains $G/\mathcal{D_F}$.  Specifically, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we form a clique on  $\{Y_i,Y_{a_i},Y_{b_i},Y_{c_i}\}$.  Inductively, $\{Y_{a_i},Y_{b_i},Y_{c_i}\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to an existing $3$-clique.  Therefore, this results in a chordal graph $H$ that has no clique of size greater than $4$ and therefore has treewidth at most $3$.
 
 \subsection{New Proof of \cref{face_trick}}
 
@@ -477,7 +490,7 @@ We will actually prove a strengthening of \cref{face_trick} in which each vertex
 
     Before explaining how this order is extended to all the face of $G$, we first verify that $G_0,\ldots,G_r$ and $Y_0,\ldots,Y_r$ satisfy the conditions of the lemma.  In particular, we must verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $V(f)\cup E(f)$ is contained in union of three closed tripods $\overline{Y}_{a_i}\cup \overline{Y}_{b_i}\cup \overline{Y}_{c_i}$, for some $a_i,b_i,c_i\in\{0,\ldots,i-1\}$.  We prove this by induction on $i$. The base case $i=0$ is trivial since $G_0=f_0=\overline{Y}_0$ and each of the two faces $f$ of $G_0$ has $V(f)\cup E(f)\subseteq\overline{Y}_0$.
 
-    Now consider the case where $i\in\{1,\ldots,2n-3\}$ and let $f$ be any face of $G_i$.  If $f$ is also a face of $G_{i-1}$ then the result follows from the inductive hypothesis.  Thus, it suffices to consider the case where $f$ is one of the at most four faces of $G_i$ that is not also a face of $G_{i-1}$.  By definition, each of these faces has an edge of $\overline{Y}_i$ on its boundary.\todo{Establish somewhere that each $G_i$ is $2$-connected}  
+    Now consider the case where $i\in\{1,\ldots,2n-3\}$ and let $f$ be any face of $G_i$.  If $f$ is also a face of $G_{i-1}$ then the result follows from the inductive hypothesis.  Thus, it suffices to consider the case where $f$ is one of the at most four faces of $G_i$ that is not also a face of $G_{i-1}$.  By definition, each of these faces has an edge of $\overline{Y}_i$ on its boundary.\todo{Establish somewhere that each $G_i$ is $2$-connected}
 
 
     One of these faces is $f_i$, which satisfies (i), so we may assume $f\neq f_i$.  Since $f_i$ has a corresponding face $f_i'$ in $G'$, none of the three edges of $f_i$ was contracted.
