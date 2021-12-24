@@ -458,16 +458,37 @@ Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_dec
     % Contract every edge of $T$ that one endpoint in $L_{h-1}$ and one endpoint in $L_h$.  The only faces that disappear from this operation are those incident on an edge of $T$, which are of Type~(ii).  The faces of Type~(iii) appear in $G'$ as faces with all three vertices in $L_{h-1}$.
 \end{proof}
 
+We will actually prove a strengthening of \cref{face_trick} in which each vertex and edge of $G$ is assigned to a tripod.  For each $i\in\{0,\ldots,2n-3$, define the \emph{closed tripod} $\overline{Y}_i:=(V(G_i)\setminus V(G_{i-1}))\cup (E(G_i)\setminus E(G_{i-1}))$.  We prove the following strengthening of \cref{face_trick}:
+
+\begin{lem}\label{face_trick2}
+  Let $G$ be an $n$-vertex triangulation $G$ with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ of the faces of $G$ resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and a sequence of closed tripods $\mathcal{\overline{Y}_F}:=\langle \overline{Y}_0,\ldots,\overline{Y}_{2n-3}\rangle$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$,
+  \begin{compactenum}[(i)]
+    \item $f\in\{f_0,\ldots,f_i\}$ or
+    \item there exists $a_i,b_i,c_i\in\{0,\ldots,i-1\}$ such that $V(f)\cup E(f)\subseteq \overline{Y}_{a_i}\cup \overline{Y}_{b_i}\cup \overline{Y}_{c_i}$.
+  \end{compactenum}
+\end{lem}
 
 
 
-
-\begin{proof}[New Proof of \cref{face_trick}]
+\begin{proof}
     The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ the proof is trivial; $G_0=f_0$ and $Y_0=V(f_0)$.
 
     If $|V(G)> 3$ then apply \cref{retriangulate} to $(G,F)$ to obtain the graph $G'$ and its BFS spanning forest $F'$.  Apply induction on $G'$ to obtain an ordering $\mathcal{F}':=f_0',\ldots,f_{r}'$ of the faces of $G'$ and this ordering defines graphs $G_0',\ldots,G_r'$ and a $(G',F')$-tripod decomposition $\{Y_0',\ldots,Y_r'\}$.  By \cref{retriangulate}, each face $f_i'$ of $G'$ has a corresponding face $f_i$ in $G$.  The order $\mathcal{F}$ that we construct will begin with $f_0,\ldots,f_{r}$.  This is already sufficient information about $\mathcal{F}$ to define the graph $G_0,\ldots,G_r$ and the tripods $Y_0,\ldots,Y_r$.
 
-    Before explaining how this order is extended to all the face of $G$, we first verify that $G_0,\ldots,G_r$ and $Y_0,\ldots,Y_r$ satisfy the conditions of the lemma.  In particular, we must verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $V(f)$ is contained in union of three tripods $Y_{a_i}\cup Y_{b_i}\cup Y_{c_i}$, for some $a_i,b_i,c_i\in\{0,\ldots,i-1\}$.  By the inductive hypothesis we need only consider the case in which $f$ is one of the (at most four) faces of $G_i$ that contains a vertex of $f_i$ on its boundary.
+    Before explaining how this order is extended to all the face of $G$, we first verify that $G_0,\ldots,G_r$ and $Y_0,\ldots,Y_r$ satisfy the conditions of the lemma.  In particular, we must verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $V(f)\cup E(f)$ is contained in union of three closed tripods $\overline{Y}_{a_i}\cup \overline{Y}_{b_i}\cup \overline{Y}_{c_i}$, for some $a_i,b_i,c_i\in\{0,\ldots,i-1\}$.  We prove this by induction on $i$. The base case $i=0$ is trivial since $G_0=f_0=\overline{Y}_0$ and each of the two faces $f$ of $G_0$ has $V(f)\cup E(f)\subseteq\overline{Y}_0$.
+
+    Now consider the case where $i\in\{1,\ldots,2n-3\}$ and let $f$ be any face of $G_i$.  If $f$ is also a face of $G_{i-1}$ then the result follows from the inductive hypothesis.  Thus, it suffices to consider the case where $f$ is one of the at most four faces of $G_i$ that is not also a face of $G_{i-1}$.  By definition, each of these faces has an edge of $\overline{Y}_i$ on its boundary.\todo{Establish somewhere that each $G_i$ is $2$-connected}  
+
+
+    One of these faces is $f_i$, which satisfies (i), so we may assume $f\neq f_i$.  Since $f_i$ has a corresponding face $f_i'$ in $G'$, none of the three edges of $f_i$ was contracted.
+
+    The face $f$ contains at least one edge $e$ of $f_i$ on its boundary.  The edge $e$ has a corresponding edge $e'$ in $G'$ (and $e'$ is an edge of $f_i'$).  Consider the face $f'\neq f_i'$ of $G_i'$ that has $e$ on its boundary.
+
+    Each of the remaining faces contains exactly one edge $e$ of $f_i$ on its boundary.  Observe that $e$ is not an edge of $F$ that was contracted, so $e$ is an edge of $G$.   other faces
+
+
+
+    By the inductive hypothesis we need only consider the case in which $f$ is one of the (at most four) faces of $G_i$ that contains a vertex of $f_i$ on its boundary.
 
 
 
