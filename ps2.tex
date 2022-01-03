@@ -19,6 +19,12 @@
 
 \newcommand{\Rho}{\mathrm{P}}
 
+% \newcommand{\harpoon}{\overset{\rightharpoonup}}
+\newcommand{\qa}{\overset{\rightharpoonup}{\varphi}}
+\newcommand{\qb}{\overset{\rightharpoondown}{\varphi}}
+\newcommand{\qap}{\overset{\rightharpoonup}{\psi}}
+\newcommand{\qbp}{\overset{\rightharpoondown}{\psi}}
+
 \usepackage[mathlines]{lineno}
 \setlength{\linenumbersep}{2em}
 % \linenumbers
@@ -144,7 +150,7 @@ For any $v\in V(G)$, $\depth_\mathcal{L}(v)$ is the unique index $d$ such that $
 %     \end{compactenum}
 % \end{thm}
 
-In the following, we work with edge contractions, which we treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves on of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
+In the following, we work with edge contractions, which we treat as a directed operation. See \cref{contraction}. Contracting an edge $uv$ in $G$ produces a new graph $G'$ obtained by removing $v$ from $G$ and adding the edge $uw$ for each $w\in N_G(v)\setminus N_G(u)\setminus\{u\}$.  When $G$ is an embedded planar graph, we treat these contractions as preserving the embedding, so that each edge $ux\in E(G')\setminus E(G)$ is represented as a the union of two curves, one of which is a subcurve of the curve representing $vx$ in $G$ and the other is arbitrarily close to the curve representing $uv$ in $G$, and these are routed so that the ordering of edges around $u$ in $G'$ matches the ordering of the corresponding edges around $uv$ in $G$.  Observe that, if $G'$ is a triangulation with $n\ge 4$ vertices and $uv$ is not part of a separating triangle of $G$, then $G'$ is also a triangulation.  For this reason we say that an edge of $G$ that is not part of any separating triangle of $G$ is a \emph{contractible} edge.
 
 \begin{figure}
     \begin{center}
@@ -157,6 +163,35 @@ In the following, we work with edge contractions, which we treat as a directed o
     \label{contraction}
 \end{figure}
 
+
+\subsection{Quarter-Edge Labellings}
+
+A \emph{quarter-edge labelling} $(\qa,\qb)$ of $(G,F)$ is a pair of functions  defined over the directed edges of $G$ that satisfy the following properties for each vertex $u$ of $G$ with neighbour cycle\todo{Define \emph{neighbour cycle}} $v_1,\ldots,v_d$ where $v_1\prec_F u$:
+\begin{compactenum}[(i)]
+  \item If $uv_i\in E(F)$ then $\qa(uv_i)=\qb(uv_i)$ for each $i\in\{1,\ldots,d\}$.
+  \item If $\depth_F(u)\neq\height(F)-1$ then $\qa(uv_1),\ldots,\qa(uv_d)$ are distinct and $\qa(uv_i)=\qb(uv_i)$ for each $i\in\{1,\ldots,d\}$.
+  \item For each $i\in\{1,\ldots,d-1\}$: If $\qa(uv_i)=\qa(uv_{i+1})$ then $\qb(uv_{i+1})=\qa(uv_i)$.\todo{Modify to ensure no gaps}
+  \item For each $i\in\{1,\ldots,d-1\}$: If $\qb(u_i)=\qb(uv_{i+1})$ then $\qa(uv_{i})=\qb(uv_i)$.
+\end{compactenum}
+Observe that it is straightforward to create a quarter-edge labelling $(\qa,\qb)$ for $(G,F)$ by setting $\qa(uv_i):=\qb(uv_i):=i$ for each vertex $u$ of $v$ with neighbour cycle $v_1,\ldots,v_d$.
+
+\begin{lem}\label{contraction_labelling}
+  Let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$; let $uv$ be an edge of $F$ with $\depth_F(v)=\height(F)$ and that is contractible in $G$; let $c:=\qa(uv)=\qb(uv)$; and let $G'$ and $F'$ be the graphs obtained by contracting $uv$ in $G$ and $F$, respectively.  Then the following defines a quarter-edge labelling $(\qap,\qbp)$ of $(G',F')$:
+  \begin{compactenum}[(a)]
+    \item For the two faces $uvx$ and $vuy$ of $G$, $\qap(ux)=\qa(ux)$, $\qbp(ux):=c$, $\qbp(uy)=\qb(uy)$, and $\qap(uy)=c$.
+    \item For each $uw\in E(G')\setminus E(G)$, $\qap(uw):=\qbp(uv):=\qa(uv)$.
+    \item For each $uv\in E(G)\cap E(G')\setminus \{ux,uy\}$, $\qap(uv)=\qa(uv)$ and $\qbp(uv)=\qb(uv)$
+  \end{compactenum}
+\end{lem}
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{c@{\hspace{1cm}}c}
+      \includegraphics[scale=1.2]{figs/qel-1} & \includegraphics[scale=1.2]{figs/qel-2}
+    \end{tabular}
+  \end{center}
+  \caption{\cref{contraction_labelling}: Adjusting a quarter-edge labelling after contracting $uv$.}
+\end{figure}
 
 
 % Now the rest of the proof goes like this:
@@ -432,6 +467,32 @@ We now describe how $(G,F)$-tripod decompositions can be obtained from total ord
 \citet{dujmovic.joret.ea:planar} essentially prove \cref{face_trick} using a top-down approach, that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider any some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$. \citet{morin:fast} later showed that this approach could be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Below, we give an inductive proof of \cref{face_trick} that has a more bottom-up flavour and leads to an $O(n)$ time algorithm.
 
 Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_decomposition} by constructing a chordal graph $H$ that contains $G/\mathcal{D_F}$.  Specifically, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we form a clique on  $\{Y_i,Y_{a_i},Y_{b_i},Y_{c_i}\}$.  Inductively, $\{Y_{a_i},Y_{b_i},Y_{c_i}\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to an existing $3$-clique.  Therefore, this results in a chordal graph $H$ that has no clique of size greater than $4$ and therefore has treewidth at most $3$.
+
+
+
+\subsection{Tripod Decompositions Respecting Quarter-Edge Labellings}
+
+Let $G$ be a triangulation, let $F$ be a $V(f_0)$-rooted BFS forest of $G$,  let $(\qa,\qb)$ be a quarter edge labelling of $G$, and let $f_0,\ldots,f_{r}$ be a sequence of faces and edges of $G$ that \emph{covers} $V(G)$, so that $\bigcup_{i=0}^r V(f_i)=V(G)$.  Extend the definition of $Y_F$ to the case where the argument $f$ is an edge $xy$ of $G$ by setting $Y_F(xy):=xy\cup P_F(x)\cup P_F(y)$.\footnote{Here we are treating the edge $xy$ as a graph so that $xy\cup P_F(x)\cup P_F(y)$ is a graph obtained by taking the union of an edge and two paths.}  Now define $G_0,\ldots,G_r$ and $Y_{0,\ldots,Y_r}$ as in the previous section.
+
+For each $i\in\{0,\ldots,r\}$, let $\overline{Y}_i:=V(G_i)\setminus V(G_{i-1})\cup E(G_i)\setminus E(G_{i-1})$.  We say that a face $f=v_0,\ldots,v_r$ of $G_p$ \emph{strongly touches} $\overline{Y}_i$ if $(V(f)\cup E(f))\cap \overline{Y}_i\neq\emptyset$.  We say that $f$ \emph{touches} $\overline{Y}_i$ if $f$ strongly touches $\overline{Y}_i$ or if $f_i:=x_0x_1x_2$ and
+\begin{compactenum}
+  \item there exists $i\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_i=v_j$ and $\qa(x_ix_{i-1})=\qa(v_jv_{j+1})$; or
+  \item there exists $i\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_i=v_j$ and $\qb(x_ix_{i+1})=\qb(v_jv_{j-1})$.
+\end{compactenum}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics{figs/touches}
+  \end{center}
+  \caption{A face $f$ of $G_p$ that touches $\overline{Y}_i$}
+\end{figure}
+
+
+
+
+
+
+
 
 \subsection{New Proof of \cref{face_trick}}
 
