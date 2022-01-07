@@ -116,7 +116,7 @@
 
 \section{Preliminaries}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are finite.  A \emph{triangulation} is an edge-maximal planar graph.  We will assume that any triangulation is embedded without crossings in $\R^2$ so that any cycle in a triangulation defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  The \emph{outer face} of a triangulation $G$ is the unique $3$-cycle in $G$ with no vertices of $G$ in its interior.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  For an embedded planar graph $G$, $F(G)$ denotes the set of faces of (the given embedding of) $G$.  A \emph{triangulation} is an edge-maximal embedded planar graph.  Any cycle in a triangulation defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  The \emph{outer face} of a triangulation $G$ is the unique $3$-cycle in $G$ with no vertices of $G$ in its interior.
 
 A \emph{cutset} in a graph $G$ is a subset $S$ of $V(G)$ such that $G-S$ has more than one connected component.  A \emph{separating triangle} in a triangulation $G$ is a $3$-cycle $uvw$ in $G$ whose vertices form a cutset.  It is well known that any $3$-vertex cutset $\{u,v,w\}$ in a triangulation is a separating triangle and that $G-\{u,v,w\}$ has exactly two components, one contained in the interior of $uvw$ and one contained in the exterior of $uvw$.
 
@@ -162,6 +162,18 @@ In the following, we work with edge contractions, which we treat as a directed o
     \caption{Contracting the edge $uv$ in a planar embedding of $G$.}
     \label{contraction}
 \end{figure}
+
+Suppose that $G'$ is a triangulation obtained by contracting a contractible edge $uv$ of a triangulation $G$.  We can define the function $\psi:V(G)\to V(G')$ where $\psi(v):=u$ and $\psi(x)=x$ for each $x\in V(G)\setminus\{u\}$. The function $\psi$ extends naturally to edges of $G$ as $\psi(xy):=\psi(x)\psi(y)$ and faces of $G$ as $\psi(xyz):=\psi(x)\psi(y)\psi(z)$.  For any edge $xy\in E(G)\setminus\{uv\}$,  $\psi(xy)\in E(G')$.  If $tuv$ and $wvu$ are the two faces of $G$ that share an edge with $uv$ then $\psi(xyz)\in F(G')$ for any $xyz\in F(G)\setminus\{tuv,uvw\}$.  We will make use of the fact that $\psi$ is a bijection between $F(G')$ and $F(G)\setminus\{tuv,uvw\}$.  In particular, for any face $x'y'z'\in F(G')$ we will call the unique element of $\psi^{-1}(x'y'z')$ the \emph{corresponding face} of $G$.  For any $xyz\in F(G)\setminus\{tuv,uvw\}$ we will call $\psi(xyz)$ the \emph{corresponding face} of $G'$.  We say that a face $xyz\in F(G)$ is represented in $G'$ if $G'$ contains a face that corresponds to $xyz$.
+
+\begin{lem}\label{good_edge}
+  Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $F$ be a $V(f_0)$-rooted BFS forest of $G$ and let $h$ be the height of $F$.
+  Then $G$ contains an edge $uv$ with $\depth_F(v)=h$
+\end{lem}
+
+\begin{proof}
+  TODO
+\end{proof}
+
 
 
 
@@ -367,7 +379,6 @@ In the following, we work with edge contractions, which we treat as a directed o
 
 \section{Tripod Decompositions}
 
-
 Let $G$ be a $n$-vertex triangulation with outer face $f_0$, let $\mathcal{L}:=\langle L_0,\ldots,L_h$ be a $V(f_0)$-rooted BFS layering of $G$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  A path $v_0,\ldots,v_r$ in $F$ is \emph{vertical} (with respect to $F$) if $\depth_\mathcal{F}(v_i)=\depth_{\mathcal{F}}(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$. The vertex $v_0$ is called the \emph{lower endpoint} of the vertical path and $v_r$ is the \emph{upper endpoint}.
 
 % \begin{lem}
@@ -443,7 +454,7 @@ Before doing so, we first explain how \cref{face_trick} implies \cref{tripod_dec
 
 \section{The New Proof}
 
-In this section we present a new proof of (a strengthening of ) \cref{face_trick}.  We first explain why a naïve attempt at an inductive proof using edge contractions does not work. Consider a proof with the following structure:
+In this section we present a new proof of \cref{face_trick}.  We first explain why a naïve attempt at an inductive proof using edge contractions does not work. Consider a proof with the following structure:
 \begin{compactenum}
   \item Contract an edge $uv$ that maximized $\depth_F(v)$ to obtain a graph $G'$.
   \item Apply induction on $G'$ to obtain an ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ of the faces of $G'$.
@@ -472,101 +483,221 @@ Of course, this approach does not work.  A primary obstacle is illustrated in \c
   \label{obstacle}
 \end{figure}
 
-This obstacle ultimately comes from the fact that the tripod $f_j'$ should, in some sense, be regarded as contributing to the boundary of $f'$ because $f_k'$ is ``really'' attached to $v$ not $u$.  Making this idea precise takes some effort and is the purpose of quarter-edge labellings introduced next.
+To overcome the obstacle discussed above we avoid working with individual edge contractions and instead work with sequences of contractions that reduce the height of the forest of $F$.  Let $G$, $F$, and $uv$ be as defined in \cref{good_edge} and observe that, if $G'$ and $F'$ are the result of contracting $uv$ in $G$ and $F$, respectively, then $F'$ is a $V(f_0)$ rooted BFS forest of $G'$.  Therefore, repeated contracting the edge guaranteed by \cref{good_edge} will eventually result in a graph $\overline{G}_{h-1}$ and a $V(f_0)$-rooted BFS forest of $F_{h-1}$ of $\overline{G}_{h-1}$ each of which contains exactly those vertices of $F$ having $F$-depth at most $h-1$.  Repeating this yields a sequence of graphs $G=\overline{G}_h,\overline{G}_{h-1},\ldots,\overline{G}_0=f_0$.  For any $0\le i< j\le h$, $G_i$ is obtained from $\overline{G}_j$ by a sequence of edge contractions so, for any face $f$ of $\overline{G}_i$ there is a well-defined corresponding face of $\overline{G}_j$ and we say that a face $f$ of $G$ is \emph{represented} in $\overline{G}_i$ if there is a face of $\overline{G}_i$ that corresponds to $f$.
+
+We will incrementally construct an ordering $\mathcal{F}$ of the faces of $G$ in a sequence of $h+1$ rounds.  For each $i\in\{0,\ldots,h\}$, we let $\mathcal{F}_i:=f_0,\ldots,f_{\ell_i}$ denote the sequence constructed by the end of round $i$.  For each $i\in\{0,\ldots,h-1\}$, $\mathcal{F}_i$ is a prefix $\mathcal{F}_{i+1}$ and includes all the faces of $G$ that are represented in $G_i$.  For each $i\in\{0,\ldots,h\}$, $\mathcal{F}_i$ satisfies all the conditions of \cref{face_trick} except (when  $i<h$) that it does not necessarily include all faces of $G$.   Since $G_h=G$, it follows that the final sequence $\mathcal{F}_h=\mathcal{F}$ satisfies all the conditions of \cref{face_trick}.
+
+The sequence $\mathcal{F}_0:=f_0,f_1$ where $f_0$ is the outer face of $G$ and $f_1$ is the face of $G$ corresponding to the inner face of $\overline{G}_0$. $\mathcal{F}_0$ satisfies the conditions of \cref{face_trick} because each face of $G_1$ $G_0=G_1$ contains vertices of at most two tripods, $Y_0$, and $Y_1$.
+
+When extending $\mathcal{F}_{i-1}$ to create $\mathcal{F}_{i}$ there are a few different types of subproblems that occur.  Refer to \cref{cases}.
+
+\begin{compactenum}[(a)]
+  \item A subgraph of $G$ whose outer face is bounded by four vertical paths $P_a:=a\rightsquigarrow x$, $P_b:=b\rightsquigarrow y$, $P_c:=c\rightsquigarrow x$, and $P_d:=d\rightsquigarrow y$ of $F$.  The vertices $x$ and $y$ each $F$-depth $i-1$.  The graph $G$ contains faces $f_{ab}$ and $f_{cd}$ that is represented in $G_{i-1}$.  No vertex not on the outer face of this subgraph is contained in any tripod $Y_j$ for $j\le \ell_{i-1}$.
+
+  Since $f_{ab}$ and $f_{cd}$ are represented in $G_{i-1}$, each vertex on the outer face of this subgraph is contained in a tripod $Y_{j}$ for some $j\le\ell_{i-1}$.  Therefore the outer face of this subgraph is a face of $\overline{G}_{\ell_{i-1}}$.
+
+  Since the sequence $\mathcal{F}_{i-1}$ satisfies the conditions of \cref{face_trick}, the edges and vertices of the outer face of this subgraph belong to at most $3$ tripods:  $Y_{ab}\subseteq Y_F(f_{ab})$, $Y_{cd}\subseteq Y_{F(f_cd)}$ and, possibly, a third tripod $Y$ that contains one of $x$ or $y$.\todo{Make sure subproblems that come from special case also behave like this.}
+
+  We will prove that $\overline{G}_{i}$ contains a face whose corresponding face $f$ of $G$ defines a tripod that works.  This is easy. If there is no third tripod, then take any face of $\overline{G}_{i}$ inside this cycle.  Otherwise, one of $Y_{ab}$ or $Y_{cd}$ comes last among the three, say it's $Y_{ab}$.  the only face that can work has one of the vertices of $Y_{ab}\cap L_{i}$ on its boundary.
+
+  \item Like the previous case, but $P_F(c)$ and $P_f(a)$ have a common vertex of depth $i$.  Without loss of generality, $z$ is a child of $x$ in $F$.  The vertex $x$ belongs to one of $Y_{ab}$ or $Y{cd}$.  Without loss of generality, assume $x\in Y_{cd}$.
+
+  This is a tricky case.  We first check if we can find a Steiner triangles using an edge of $Y_{bc}$ (this is a Steiner triangle in $\overline{G}_i$.) If that doesn't work, then we try using an edge of $T_{ab}$.  If neither of those work, it's because both of those tripods have two feet on $Y_{ab}$.  No triangle represented in $\overline{G}_i$ will work.
+
+  When this happens we need to dig deeper and find an ``edge triangle'' $f$.  (See \cref{cases}.c.)  The tripod $Y_f$ generated by $f$ has one foot on $Y_{ab}$, one foot on $Y_{cd}$ and one foot on $y$.
+
+  This creates two subproblems,
+  \begin{compactitem}
+     \item one bounded by $Y$, $Y_{ab}$, and $Y_f$.  This is another problem of the same type.
+     \item one bounded by $Y$, $Y_{cd}$, and $Y_f$.  This is another problem of the same type.
+     \item the third problem we would normally have, we don't need to deal with yet, because none of its faces are represented in $\overline{G}_i$.  We can finish this round by without using any of those faces.
+ \end{compactitem}
+\end{compactenum}
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics{figs/edge-case-1} &
+      \includegraphics{figs/edge-case-2} &
+      \includegraphics{figs/edge-case-3} \\
+      (a) & (b) & (c)
+    \end{tabular}
+  \end{center}
+  \caption{Types of subproblems we must handle.}
+  \label{cases}
+\end{figure}
+ constructed at the end of round $i$.
+
+
+
+
+
+
+
+
+\noindent
+\hrule
+Everything after this is crap
+\hrule
+
+
+
+
+
+
+
+
+
+Each graph $G_i$ in this sequence has a corresponding tripod decomposition $\mathcal{Y}_i$ that satisfies the requirements of \cref{tripod_decomposition}.  The following lemma establishes a relationship between $\mathcal{Y}_i$ and $\mathcal{Y}_{i+1}$ are closely related.
+
+\begin{lem}\label{next_step}
+  For any $i\in\{0,\ldots,h-1\}$, if $\mathcal{Y}_i$ is a tripod decomposition of $G_i$ that satisfies the requirements of \cref{tripod_decomposition} then there exists a tripod decomposition $\mathcal{Y}_{i+1}$ of $G_{i+1}$ such that, for each tripod $Y\in \mathcal{Y}_i$ with crotch $f$, at least one of the following is true:
+  \begin{compactenum}[(i)]
+    \item at least one leg of $Y$ is empty and the corresponding vertex of $f$ has $F$-depth equal to $i$; or
+    \item $\mathcal{Y}_{i+1}$ contains a tripod $Y'$ whose crotch $f'$ is the face of $G_{i+1}$ corresponding to $f$.
+  \end{compactenum}
+\end{lem}
+
+\cref{next_step} is important for the following reason.  The obstacle described above occurs because the tripod $f_{j}'$ has an empty leg that is hiding the contracted vertex $v$.  Up until that point, the tripod decomposition of $G$ obtained from $f_0,\ldots,f_j$ is correct.  The first problematic tripod is created by $f_k$, which mistakenly attaches to $v$ while the corresponding tripod obtained from $f_k'$ attaches to $u$.  If $f'_j$ did not have an empty leg then this mistake would not have occurred.  Furthermore, if $f_j$ and $f_j'$ both had the vertex $u$ in common then this mistake would not have occurred.
+
+
+
+
+
+% This obstacle ultimately comes from the fact that the tripod $f_j'$ should, in some sense, be regarded as contributing to the boundary of $f'$ because $f_k'$ is ``really'' attached to $v$ not $u$.  Making this idea precise takes some effort and is the purpose of quarter-edge labellings introduced next.
 
 % Note that it is not obvious from the outset that an approach like this will lead to anything other than a representation of
 
 
 % one and it is not obvious from the outset that one can do so without it leading to some augmentation of the contracted graph $G'$ that contains all the information needed to reconstruct $G$.
 
-\subsection{Quarter-Edge Labellings}
-
-A \emph{quarter-edge labelling} $(\qa,\qb)$ of $(G,F)$ is a pair of functions  defined over the directed edges of $G$ that satisfy the following properties for each vertex $u$ of $G$ with neighbour cycle\todo{Define \emph{neighbour cycle}} $v_1,\ldots,v_d$ where $v_1\prec_F u$:
-\begin{compactenum}[(i)]
-  \item If $uv_i\in E(F)$ or $\depth_F(v_i)<\depth_F(u)$ or $\depth_F(u)<\height(F)-1$ then $\qa(uv_i)=\qb(uv_i)=c$ and $c\not\in \{\qa(uv_i),\qb(uv_i)$ for any $i\in\{1,\ldots,d\}\setminus\{i\}$.
-  % \item If $\depth_F(u)<\height(F)-1$ then $\qa(uv_1),\ldots,\qa(uv_d)$ are distinct and $\qa(uv_i)=\qb(uv_i)$ for each $i\in\{1,\ldots,d\}$.
-  \item For each $i\in\{1,\ldots,d-1\}$: If $\qa(uv_i)=\qa(uv_{i+1})$ then $\qb(uv_{i+1})=\qa(uv_i)$.\todo{Modify to ensure no gaps}
-  \item For each $i\in\{1,\ldots,d-1\}$: If $\qb(u_i)=\qb(uv_{i+1})$ then $\qa(uv_{i})=\qb(uv_i)$.
-\end{compactenum}
-Observe that it is straightforward to create a quarter-edge labelling $(\qa,\qb)$ for $(G,F)$ by setting $\qa(uv_i):=\qb(uv_i):=i$ for each vertex $u$ of $v$ with neighbour cycle $v_1,\ldots,v_d$.  The next lemma, illustrated in \cref{contracting} shows how to update a quarter-edge labelling during an edge contraction.
-
-\begin{lem}\label{contraction_labelling}
-  Let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$; let $uv$ be an edge of $F$ with $\depth_F(v)=\height(F)$ and that is contractible in $G$; let $c:=\qa(uv)=\qb(uv)$; and let $G'$ and $F'$ be the graphs obtained by contracting $uv$ in $G$ and $F$, respectively.  Then the following defines a quarter-edge labelling $(\qap,\qbp)$ of $(G',F')$:
-  \begin{compactenum}[(a)]
-    \item Let $uvx$ and $vuy$ be the two faces of $G$ with $uv$ on their boundary.  Set $\qap(ux):=\qa(ux)$, $\qbp(ux):=c$, $\qbp(uy)=\qb(uy)$, and $\qap(uy)=c$.
-    \item For each edge $uv\in E(G')\setminus E(G)$, $\qap(xy):=\qbp(xy):=c$.
-    \item For each edge $e\in E(G)\cap E(G')\setminus \{ux,uy\}$, $\qap(e)=\qa(e)$ and $\qbp(e)=\qb(e)$
-  \end{compactenum}
-\end{lem}
-
-
-\begin{figure}[htbp]
-  \begin{center}
-    \begin{tabular}{c@{\hspace{1cm}}c}
-      \includegraphics[scale=1.2]{figs/qel-1} & \includegraphics[scale=1.2]{figs/qel-2}
-    \end{tabular}
-  \end{center}
-  \caption{\cref{contraction_labelling}: Adjusting a quarter-edge labelling after contracting $uv$.}
-  \label{contracting}
-\end{figure}
-
-\begin{proof}
-   TODO
-\end{proof}
-
-
-\subsection{Tripod Decompositions Respecting Quarter-Edge Labellings}
-
-Let $G$ be a triangulation, let $F$ be a $V(f_0)$-rooted BFS forest of $G$,  let $(\qa,\qb)$ be a quarter edge labelling of $G$, and let $f_0,\ldots,f_{r}$ be a sequence of faces and edges of $G$ that \emph{covers} $V(G)$, so that $\bigcup_{i=0}^r V(f_i)=V(G)$.  Extend the definition of $Y_F$ to the case where the argument $f$ is an edge $xy$ of $G$ by setting $Y_F(xy):=xy\cup P_F(x)\cup P_F(y)$.\footnote{Here we are treating the edge $xy$ as a graph so that $xy\cup P_F(x)\cup P_F(y)$ is a graph obtained by taking the union of an edge and two paths.}  Now define $G_0,\ldots,G_r$ and $Y_{0,\ldots,Y_r}$ as in the previous section.
-
-For each $i\in\{0,\ldots,r\}$, let $\overline{Y}_i:=V(G_i)\setminus V(G_{i-1})\cup E(G_i)\setminus E(G_{i-1})$.  We say that a face $f=v_0,\ldots,v_r$ of $G_p$ \emph{strongly touches} $Y_i$ if $(V(f)\cup E(f))\cap \overline{Y}_i\neq\emptyset$.
-% For any $0\le i\le p\le r$, we say that a face $f$ of $G_p$ \emph{strongly touches} $Y_i$ if $Y_i\cap V(f)\neq\emptyset$.
-We say that $f$ \emph{weakly touches} $Y_i$ with respect to $(\qa,\qb)$ if $f_i:=x_0x_1x_2$ and
-\begin{compactenum}
-  \item there exists $i\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_i=v_j$ and $\qa(x_ix_{i-1})=\qa(v_jv_{j+1})$; or
-  \item there exists $i\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_i=v_j$ and $\qb(x_ix_{i+1})=\qb(v_jv_{j-1})$.
-\end{compactenum}
-We say that $f$ \emph{touches} $Y_i$ with respect to $(\qa,\qb)$ if it strongly touches $Y_i$ or it weakly touches $Y_i$ with respect to $(\qa,\qb)$.  We treat touching a symmetric relation so that $Y_i$ touches $f$ if and only if $f$ touches $Y_i$.
-
-\begin{figure}
-  \begin{center}
-    \begin{tabular}{c@{\hspace{1cm}}c}
-      \includegraphics{figs/touches-1} & \includegraphics{figs/touches-2}
-    \end{tabular}
-  \end{center}
-  \caption{A face $f$ of $G_p$ that touches $Y_i$}
-\end{figure}
-
-Note that, if $V(f)\cap Y_i\neq\emptyset$ then $f$ strongly touches $Y_i$ and therefore touches $Y_i$.  This implies that the following lemma is a strengthening of \cref{face_trick}, and therefore also implies \cref{tripod_decomposition}.
-
-\begin{lem}\label{face_trick2}
-  Let $G$ be a triangulation with outer face $f_0$, let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$, and let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$.  Then there exists a sequence $\mathcal{F}:=f_0,\ldots,f_{r}$ of edges and faces of $G$ that contains every face of $G$ and resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$ and a tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ such that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]:=G[\bigcup_{j=0}^i Y_j]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $(\qa,\qb)$.
-\end{lem}
-
-Note that, unlike \cref{face_trick} this lemma only places requirements on the faces of the induced graphs $G[0],\ldots,G[r]$ and not on the subgraphs $G_0,\ldots,G_r$.
-
-\begin{proof}
-  The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ then the result is trivial: Use the sequence $\mathcal{F}:=f_0,f_1$.  Then there are only two tripods $Y_0=V(f_0)$ and $Y_1=\emptyset$.  Any face of $G[0]$ or $G[1]$ clearly touches at most two tripods regardless of the quarter-edge labelling $(\qa,\qb)$.
-
-  If $|V(G)|>3$ then $F$ contains at least one edge and it contains at least one edge $uv$ with $\depth_F(v)=\height(F)$ that is contractible in $G$.\todo{Uncomment the proof of existence of $uv$.}  Let $G'$ and $F'$ be the result of contracting $uv$ in $G$ and $F$, respectively.  Let $(\qap,\qbp)$ be the quarter-edge labelling of $(G',F')$ defined in \cref{contraction_labelling}.  Applying induction on $(G',F')$ and $(\qap,\qbp)$ gives a sequence $\mathcal{F}':=f_0',\ldots,f_{r'}'$ of edges and vertices of $G'$ that satisfy the conditions of the lemma for $G'$, $F'$, and $(\qap,\qbp)$.
-
-  Each face or edge $f_i'$ of $\mathcal{F}$ has a corresponding face or edge $g_i$ in $G$. With two possible exceptions we will let $f_i:=g_i$ for each $i\in\{1,\ldots,r'\}$.  Let $uvx$ and $vuy$ be the two faces of $G$ incident to $uv$. If $g_i=ux$ then we use $f_i:=uvx$ and if $g_i=uy$ then we let $f_i:=uvy$.  Finally we append each of $uvx$ and $vuy$ to $f_0,\ldots,f_{r'}$ if they do not appear already and we let $\mathcal{F}:=f_0,\ldots,f_r$ denote the resulting sequence of edges and faces of $G$.  We claim that $\mathcal{F}$ satisfies the conditions of the lemma, for $G$, $F$, and $(\qa,\qb)$.
-
-  By construction $\mathcal{F}$ contains every face of $G$.  All that remains is to verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $\qa$ and $\qb$, which is what we now show.  Let $c:=\qa(uv)$. Since $uv\in E(F)$, $\qb(uv)=c$.  Let $f:=v_0,\ldots,v_r$.  We distinguish between some cases:
-
-  \begin{enumerate}
-    \item $v\not\in\{v_0,\ldots,v_r\}$. In this case, $f$ also a face of $G_i'$ and, by induction, $f$ touches at most three tripods among $Y_0',\ldots,Y_i'$.  If  $\qa(e)=\qap(e)$ and $\qb(e)=\qbp(e)$ for each edge $e\in E(f)$ then $f$ touches $Y_j$ with respect to $(\qa,\qb)$ for some $j\in\{0,\ldots,i\}$ if and only if $f$ touches $Y_j'$ with respect to $(\qap,\qbp)$.  Thus we need only consider the case where $u=v_i$ for some $i\in\{0,\ldots,t\}$ and $\qap(uv_{i+1})=c$ or $\qbp(uv_{i-1})=c$.  We claim that this case does not occur.  Indeed, if (say) $\qap(uv_{i+1})=c$ then $uv_{i+1}\not\in E(G)$.  But since $uv_{i+1}\in E(f)$, this implies that that $f$ contains $v$, contradicting the assumption that leads to this case.
-
-    \item $u=v_0$ and $v=v_1$.\footnote{There is a symmetric case in which $v=v_0$ and $u=v_{1}$ which is identical except that $\qb$ and $\qbp$ are used in place of $\qa$ and $\qap$, respectively.} Suppose $t>2$ so that $f$ has four or more edges.\todo{Deal with the $t=2$ case later.}  Then the face $f':=v_0,v_{2},v_3,\ldots,v_t$ is a face of $G_i'$ and $\qap(uv_{2})=c$.  Therefore, if $Y_j$ is the tripod that contains $v$ then $f'$ touches $Y_j'$.  Suppose that $f$ touches some other tripod $Y_a\neq Y_j$ and $f'$.  If $f$ strongly touches $Y_a$ then $f'$ strongly touches $Y_a'$ so we need only consider the case where $f$ weakly touches $Y_a$.   This happens because $f_a:=vxy$ and $\qa(vy)=\qa(vv_{2})$.  If $uv_{2}\not\in E(G)$ then this implies that $\qa(uv_{1})=c$ so $f$ weakly touches $Y_a$ and we are done.  If $uv_{1}\in E(G)$ then either $uvv_{2}$ is a separating triangle or $f=uvv_{2}$ and $t=2$.  Either case is a contradiction since $uv$ is contractible and $t>2$.
-
-    \item $u\not\in V(f)$ and $v=v_0$.  Note that in this case $u\in V(G_i)$ since the tripod $Y_j$ that contains $v$ either contains $u$ or $u\in G_{j-1}$.  In this case $f=v,v_1,\ldots,v_t$ has a corresponding face $f':=u,v_1,\ldots,v_t$ in $G_i'$.
-  \end{enumerate}
-\end{proof}
-
-
-
-
-
+% \subsection{Quarter-Edge Labellings}
+%
+%
+% An \emph{directed edge labelling} $\varphi$ of a graph $G$ is a function that takes pairs of endpoints of edges in $E(G)$ and maps them onto some set $X$.  For an edge $uv\in E(G)$, we write $\varphi(uv)$ as shorthand for $\varphi(u,v)$.  We say that $\varphi$ is \emph{globally unique} if $\varphi(uv)\neq \varphi(xy)$ for any $uv,xy\in E(G)$ with $x\neq u$.  We say that $\varphi(uv)$ is \emph{locally unique} if $\varphi(uv)\neq \varphi(uw)$ for any $uv,uw\in E(G)$ with $v\neq w$.
+%
+% A \emph{quarter-edge labelling} $(\qa,\qb)$ of $(G,F)$ is a pair of directed edge labellings of $G$ that satisfies the following properties, each stated as requirement on $\qa$ that must also be satisfied for $\qb$:
+% \begin{compactenum}[(i)]
+%   \item Each of $\qa$ and $\qb$ is globally unique.
+%
+%   \item If $uv\in E(F)$ or $\depth_F(v)<\depth_F(u)$ or $\depth_F(u)<\height(F)-1$ then $\qa(uv)$ and $\qb(uv)$ are locally unique.
+%
+%   \item If $uv\in E(F)$ then $\qa(uv)=\qb(uv)$.
+%
+%   \item If $v_0v_1v_2$ is a face of $G$ and $v_0v_1\in E(F)$ then $\qa(v_iv_i+1)$ is locally unique for each $i\in\{0,1,2\}$.
+%
+%   \item If $v_0,\ldots,v_d$ are the neighbours of $u$ in counterclockwise order and $\qa(uv_i)=\qa(uv_j)$ then $\qa(uv_i)=\qa(uv_{i+1})=\cdots=\qa(uv_{j})$ or $\qa(uv_j)=\qa(uv_{j+1})=\cdots\qa(uv_i)$\todo{Note about subscripts mod $d$}\ and the same statement holds for $\qb$.
+% \end{compactenum}
+% Observe that it is straightforward to create a quarter-edge labelling $(\qa,\qb)$ for $(G,F)$ by setting $\qa(uv):=\qb(uv_i):=(u,v)$ for each edge $uv$ of $G$.  The next lemma, illustrated in \cref{contracting} shows how to update a quarter-edge labelling when contracting certain edges of $F$.
+%
+% \begin{lem}\label{contraction_labelling}
+%   Let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$; let $uv$ be an edge of $F$ with $\depth_F(v)=\height(F)$ and that is contractible in $G$; let $c:=\qa(uv)=\qb(uv)$; and let $G'$ and $F'$ be the graphs obtained by contracting $uv$ in $G$ and $F$, respectively.  Then the following defines a quarter-edge labelling $(\qap,\qbp)$ of $(G',F')$:
+%   \begin{compactenum}[(a)]
+%     \item Let $uvx$ and $vuy$ be the two faces of $G$ with $uv$ on their boundary.  Set $\qap(ux):=\qa(ux)$, $\qbp(ux):=c$, $\qbp(uy)=\qb(uy)$, and $\qap(uy)=c$.
+%     \item For each edge $uv\in E(G')\setminus E(G)$, $\qap(xy):=\qbp(xy):=c$.
+%     \item For each edge $e\in E(G)\cap E(G')\setminus \{ux,uy\}$, $\qap(e)=\qa(e)$ and $\qbp(e)=\qb(e)$
+%   \end{compactenum}
+% \end{lem}
+%
+%
+% \begin{figure}[htbp]
+%   \begin{center}
+%     \begin{tabular}{c@{\hspace{1cm}}c}
+%       \includegraphics[scale=1.2]{figs/qel-1} & \includegraphics[scale=1.2]{figs/qel-2}
+%     \end{tabular}
+%   \end{center}
+%   \caption{\cref{contraction_labelling}: Adjusting a quarter-edge labelling after contracting $uv$.}
+%   \label{contracting}
+% \end{figure}
+%
+% \begin{proof}
+%    TODO
+% \end{proof}
+%
+%
+% \subsection{Tripod Decompositions Respecting Quarter-Edge Labellings}
+%
+% Let $G$ be a triangulation, let $F$ be a $V(f_0)$-rooted BFS forest of $G$,  let $(\qa,\qb)$ be a quarter edge labelling of $G$, and let $f_0,\ldots,f_{r}$ be a sequence of faces and edges of $G$ that \emph{covers} $V(G)$, so that $\bigcup_{i=0}^r V(f_i)=V(G)$.  Extend the definition of $Y_F$ to the case where the argument $f$ is an edge $xy$ of $G$ by setting $Y_F(xy):=xy\cup P_F(x)\cup P_F(y)$.\footnote{Here we are treating the edge $xy$ as a graph so that $xy\cup P_F(x)\cup P_F(y)$ is a graph obtained by taking the union of an edge and two paths.}  Now define $G_0,\ldots,G_r$ and $Y_{0,\ldots,Y_r}$ as in the previous section.
+%
+% For each $i\in\{0,\ldots,r\}$, let $\overline{Y}_i:=V(G_i)\setminus V(G_{i-1})\cup E(G_i)\setminus E(G_{i-1})$.  We say that a face $f=v_0,\ldots,v_r$ of $G_p$ \emph{strongly touches} $Y_i$ if $(V(f)\cup E(f))\cap \overline{Y}_i\neq\emptyset$.
+% % For any $0\le i\le p\le r$, we say that a face $f$ of $G_p$ \emph{strongly touches} $Y_i$ if $Y_i\cap V(f)\neq\emptyset$.
+% We say that $f$ \emph{weakly touches} $Y_i$ with respect to $(\qa,\qb)$ if $f_i:=x_0x_1x_2$ and
+% \begin{compactenum}
+%   \item there exists $k\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_k=v_j$ and $\qa(x_kx_{k-1})=\qa(v_jv_{j+1})$; or
+%   \item there exists $k\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_k=v_j$ and $\qb(x_kx_{k+1})=\qb(v_jv_{j-1})$.
+% \end{compactenum}
+% When this occurs we say that $Y_i$ weakly touches $f$ at $v_j$.
+% We say that $f$ \emph{touches} $Y_i$ with respect to $(\qa,\qb)$ if it strongly touches $Y_i$ or it weakly touches $Y_i$ with respect to $(\qa,\qb)$.  We treat touching a symmetric relation so that $Y_i$ touches $f$ if and only if $f$ touches $Y_i$.
+%
+% \begin{figure}
+%   \begin{center}
+%     \begin{tabular}{c@{\hspace{1cm}}c}
+%       \includegraphics{figs/touches-1} & \includegraphics{figs/touches-2}
+%     \end{tabular}
+%   \end{center}
+%   \caption{A face $f$ of $G_p$ that touches $Y_i$}
+% \end{figure}
+%
+% Note that, if $V(f)\cap Y_i\neq\emptyset$ then $f$ strongly touches $Y_i$ and therefore touches $Y_i$.  This implies that the following lemma is a strengthening of \cref{face_trick}, and therefore also implies \cref{tripod_decomposition}.
+%
+% \begin{lem}\label{face_trick2}
+%   Let $G$ be a triangulation with outer face $f_0$, let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$, and let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$.  Then there exists a sequence $\mathcal{F}:=f_0,\ldots,f_{r}$ of edges and faces of $G$ that contains every face of $G$ and resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$ and a tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ such that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]:=G[\bigcup_{j=0}^i Y_j]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $(\qa,\qb)$.
+% \end{lem}
+%
+% Note that, unlike \cref{face_trick} this lemma only places requirements on the faces of the induced graphs $G[0],\ldots,G[r]$ and not on the subgraphs $G_0,\ldots,G_r$.
+%
+% \begin{proof}
+%   The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ then the result is trivial: Use the sequence $\mathcal{F}:=f_0,f_1$.  Then there are only two tripods $Y_0=V(f_0)$ and $Y_1=\emptyset$.  Any face of $G[0]$ or $G[1]$ clearly touches at most two tripods regardless of the quarter-edge labelling $(\qa,\qb)$.
+%
+%   If $|V(G)|>3$ then $F$ contains at least one edge and it contains at least one edge $uv$ with $\depth_F(v)=\height(F)$ that is contractible in $G$.\todo{Uncomment the proof of existence of $uv$.}  Let $G'$ and $F'$ be the result of contracting $uv$ in $G$ and $F$, respectively.  Let $(\qap,\qbp)$ be the quarter-edge labelling of $(G',F')$ defined in \cref{contraction_labelling}.  Applying induction on $(G',F')$ and $(\qap,\qbp)$ gives a sequence $\mathcal{F}':=f_0',\ldots,f_{r'}'$ of edges and vertices of $G'$ that satisfy the conditions of the lemma for $G'$, $F'$, and $(\qap,\qbp)$.
+%
+%   Each face or edge $f_i'$ of $\mathcal{F}$ has a corresponding face or edge $g_i$ in $G$. With two possible exceptions we will let $f_i:=g_i$ for each $i\in\{1,\ldots,r'\}$.  Let $uvx$ and $vuy$ be the two faces of $G$ incident to $uv$. If $g_i=ux$ then we use $f_i:=uvx$ and if $g_i=uy$ then we let $f_i:=uvy$.  Finally we append each of $uvx$ and $vuy$ to $f_0,\ldots,f_{r'}$ if they do not appear already and we let $\mathcal{F}:=f_0,\ldots,f_r$ denote the resulting sequence of edges and faces of $G$.  We claim that $\mathcal{F}$ satisfies the conditions of the lemma, for $G$, $F$, and $(\qa,\qb)$.
+%
+%   By construction $\mathcal{F}$ contains every face of $G$.  All that remains is to verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $\qa$ and $\qb$.  Let $c:=\qa(uv)$. Since $uv\in E(F)$, $\qa(uv)=\qb(uv)=c$.  Let $f:=v_0,\ldots,v_r$.  We will show that if any tripod $Y_a$ touches $f$ then the corresponding tripod $Y_a'$ touches a corresponding object $f'$ in $G_i'$.   We distinguish between some cases:
+%
+%   \begin{enumerate}
+%     \item $u\not\in V(f)$ and $v\not\in V(f)$.  In this case, $f$ is also a face of $G_i'$.  Since neither $u$ nor $v$ is in $V(f)$,  $\qa(e)=\qap(e)$ and $\qb(e)=\qbp(e)$ for each edge $e\in E(f)$.  Therefore $f$ touches $Y_j$ with respect to $(\qa,\qb)$ for some $j\in\{0,\ldots,i\}$ if and only if $f$ touches $Y_j'$ with respect to $(\qap,\qbp)$. By induction, $f$ touches at most three tripods among $Y_0',\ldots,Y_i'$ so $f$ touches at most three tripods among $Y_0,\ldots,Y_i$.
+%
+%     \item $u\in V(f)$ and $v\not\in V(f)$. Refer to \cref{case_2}. We claim that, in this case, $\qa(e)=\qap(e)$ and $\qb(e)=\qbp(e)$ for each edge $e\in E(f)$. Without loss of generality let $u=v_0$. The functions $\qa$ and $\qb$ agree with $\qap$ and $\qbp$ (respectively) except possibly when their argument is an edge incident to $u$.   Thus we need only consider the case where  $\qap(uv_{1})=c$ or $\qbp(uv_{-1})=c$.  Assume for the sake of contradiction, and without loss of generality that $\qap(uv_1)=c$.  But this implies that $uv_1\not\in E(G)$.  But this implies that $f$ contains $v$, a contradiction.
+%     \begin{figure}[htbp]
+%       \begin{center}
+%         \begin{tabular}{c@{\hspace{1cm}}c}
+%           \includegraphics{figs/case_a-1} & \includegraphics{figs/case_a-2}
+%         \end{tabular}
+%       \end{center}
+%       \caption{Case 2}
+%       \label{case_2}
+%     \end{figure}
+%
+%
+%     \item $u\in V(f)$ and $v\in V(f)$. Refer to \cref{case_3}. Without loss of generality, let $u=v_0$ and $v=v_1$.\footnote{There is a symmetric case in which $v=v_0$ and $u=v_{1}$ which is identical except that $\qb$ and $\qbp$ are used in place of $\qa$ and $\qap$, respectively.} Suppose $t>2$ so that $f$ has four or more edges.\todo{Deal with the $t=2$ case later.}  Then the face $f':=v_0,v_{2},v_3,\ldots,v_t$ is a face of $G_i'$ and $\qap(uv_{2})=c$.  Therefore, if $Y_j$ is the tripod that contains $v$ then $f'$ touches $Y_j'$.  Suppose that $f$ touches some other tripod $Y_a\neq Y_j$.  If $f$ strongly touches $Y_a$ then $f'$ strongly touches $Y_a'$ so we need only consider the case where $f$ weakly touches $Y_a$.   This happens because $f_a:=vxy$ and $\qa(vy)=\qa(vv_{2})$.  If $uv_{2}\not\in E(G)$ then this implies that $\qa(uv_{1})=c$ so $f$ weakly touches $Y_a$ and we are done.  If $uv_2\in E(G)$ then either $uvv_{2}$ is a separating triangle in $G$ or $f=uvv_{2}$ and $t=2$.  Either case is a contradiction since $uv$ is contractible and $t>2$.
+%     \begin{figure}[htbp]
+%       \begin{center}
+%         \begin{tabular}{c@{\hspace{1cm}}c}
+%           \includegraphics{figs/case_b-1} & \includegraphics{figs/case_b-2}
+%         \end{tabular}
+%       \end{center}
+%       \caption{Case 3, when $|V(f)|=t+1>3$}
+%       \label{case_3}
+%     \end{figure}
+%
+%     \item $u\not\in V(f)$ and $v\in V(f)$.  Without loss of generality, let $v=v_1$.  Let $Y_j$ be the tripod that contains $v$ and let $Y_\alpha$ be the tripod that contains $u$ and observe that $\alpha \le j$.  Since $v\in V(G)\subseteq V(G[i])$, $j\le i$.  Suppose that some tripod $Y_a$ touches $f$.
+%     \begin{compactitem}
+%        \item If $Y_a \cap V(f)\setminus\{v\}\neq\emptyset$ then $Y_a'\cap V(f')\neq\emptyset$ so $Y_a'$ touches $f'$.
+%        \item If $v\in Y_a\cap V(f)$ and $u\in Y_a'$ then $u\in Y_a\cap V(f)$ so $Y_a'$ touches $f'$.
+%        \item If $v\in Y_a\cap V(f)$ and $u\not\in Y_a'$ then let $f_a:=vxy$. In this case $\qap(ux)=\qap(uv_2)=c$ or $\qbp(uy)=\qbp(ux_0)=c$.  In either case $Y_a'$ weakly touches $f'$.
+%        \item If $\overline{Y}_a\cap E(f)\neq\emptyset$ then
+%        $\overline{Y}_a'\cap E(f')\neq\emptyset$ so $Y_a'$ touches $f'$.
+%        \item If $Y_a$ weakly touches $f$ at any vertex other than $v$ then $Y_a'$ weakly touches $f'$ at the same vertex.
+%        \item If $Y_a$ weakly touches $f$ at $v$ then this is because $f_a$ contain an edge $vx$ where $\qa(vx)=\qa(vv_2)$ or $\qb(vx)=\qb(vv_0)$.  Without loss of generality, assume the former.  Then $\qa(ux)=c$ (even if $uxv$ is a face of $G$).  Furthermore, since $u$ is outside of $f$ and $uv$ is contractible $uv_1\not\in E(G)$.  Therefore $\qap(uv_1)=c$.  Therefore $Y_a'$ weakly touches $f'$ (at $u$).
+%    \end{compactitem}
+%   \end{enumerate}
+% \end{proof}
+%
+%
+%
+%
+%
 
 
 % \subsection{New Proof of \cref{face_trick}}
