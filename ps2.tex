@@ -111,73 +111,106 @@
 
 For two graph $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$.  Throughout this paper $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.  The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs.
 
-\begin{thm}[\citet{dujmovic.joret.ea:planar, ueckerdt.wood.ea:XX}]\label{meta}
+\begin{thm}[\citet{dujmovic.joret.ea:planar, ueckerdt.wood.ea:improved}]\label{meta}
   Let $P$ denote the infinite path.  For any planar graph $G$, there exists:
   \begin{compactenum}[(a)]
     \item \label{three_tree} a planar graph $H$ of treewidth at most $3$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_3$ \cite{dujmovic.joret.ea:planar};
     \item a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$; and
-    \item a planar graph $H$ of treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:XX}.
+    \item a planar graph $H$ of treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
   \end{compactenum}
 \end{thm}
 
 The proofs of these theorems are constructive and lead to $O(n^2)$ time algorithms.  \citet{morin:fast} showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.
 
 
-\section{The Algorithm}
-
-% Take a BFS tree $T$ with root on the outer face and consider its cotree $\overline{T}$.  Root $\overline{T}$ on the outer face and preprocess it for constant time lowest-common ancestor queries.  Now when you're faced with a subproblem bounded by three tripods and you want to find a Sperner triangle you do three lowest common ancestor queries for the three pairs faces attached to the three edges that span pairs of boundary tripods.  One of these is the Sperner triangle.
-
 \section{Preliminaries}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively. An \emph{embedding} $\psi$ of a graph $G$ associates each vertex $v$ of $G$ with a point $\psi(v)\in \R^2$ and each edge $vw$ of $G$ with a simple open curve $\psi(vw):(0,1)\to\R^2$ whose endpoints\footnote{The \emph{endpoints} of an open curve $\psi:(0,1)\to\R^2$ are the two points $\lim_{\epsilon\downarrow 0} \psi(\epsilon)$ and $\lim_{\epsilon\downarrow 0}\psi(1-\epsilon)$.} are $\psi(v)$ and $\psi(w)$ and we let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \psi(vw)$, and $\psi(G):=\psi(V(G))\cup\psi(E(G))$.  An embedding $\psi$ of $G$ is \emph{plane} if $\psi(vw)\cap\psi(V(G))=\{\psi(v),\psi(w)\}$ and $\psi(vw)\cap\psi(xy)=\emptyset$ for each distinct pair of edges $vw,xy\in E(G)$.  A graph $G$ is \emph{planar} if it has an plane embedding. A \emph{triangulation} is an edge-maximal planar graph.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.
 
-If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,\psi)$ an \emph{embedded graph} and we will not distinguish between a vertex $v$ of $G$ and the point $\psi(v)$ or between an edge $vw$ of $G$ and the curve $\psi(vw)$.  Similarly, we will not distinguish between $G$ and the  point set $\psi(G)$.  Any cycle in an embedded graph defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.
+\section{Quotient Graphs}
+
+Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $H:=G/\mathcal{Y}$ is the graph with vertex set $V(H):=\mathcal{P}$ and two nodes $X,Y\in V(H)$ are adjacent in $H$ if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
+
+\subsection{Embeddings}
+
+An \emph{embedding} $\psi$ of a graph $G$ associates each vertex $v$ of $G$ with a point $\psi(v)\in \R^2$ and each edge $vw$ of $G$ with a simple open curve $\psi(vw):(0,1)\to\R^2$ whose endpoints\footnote{The \emph{endpoints} of an open curve $\psi:(0,1)\to\R^2$ are the two points $\lim_{\epsilon\downarrow 0} \psi(\epsilon)$ and $\lim_{\epsilon\downarrow 0}\psi(1-\epsilon)$.} are $\psi(v)$ and $\psi(w)$.
+We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \psi(vw)$, and $\psi(G):=\psi(V(G))\cup\psi(E(G))$.  An embedding $\psi$ of $G$ is \emph{plane} if $\psi(vw)\cap\psi(V(G))=\emptyset$ and $\psi(vw)\cap\psi(xy)=\emptyset$ for each distinct pair of edges $vw,xy\in E(G)$.  A graph $G$ is \emph{planar} if it has an plane embedding. A \emph{triangulation} is an edge-maximal planar graph.
+
+If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,\psi)$ an \emph{embedded graph} and we will not distinguish between a vertex $v$ of $G$ and the point $\psi(v)$ or between an edge $vw$ of $G$ and the curve $\psi(vw)$.  Similarly, we will not distinguish between $G$ and the  point set $\psi(G)$.  Any cycle in an embedded graph defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  If $G$ is an embedded triangulation, then the subgraph of $G$ consisting of all edges and vertices of $G$ contained in the closure of the interior of $C$ is called a \emph{near-triangulation}.
 
 Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ form a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face, the \emph{outer face} that is unbounded.
 
+\subsection{Duals and Cotrees}
+
 The \emph{dual} $G^\star$ of an embedded planar graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.  If $T$ is a spanning tree of an embedded triangulation $G$ then the \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.  It is well known that such a cotree is a spanning tree of $G^\star$.
+
+\subsection{Paths and Distances}
 
 A \emph{path} in $G$ is a (possibly empty) sequence of vertices $v_0,\ldots,v_r$ with the property that $v_{i-1}v_i\in E(G)$, for each $i\in\{1,\ldots,r\}$.  The \emph{endpoints} of a path $v_0,\ldots,v_r$ are the vertices $v_0$ and $v_r$.
 % We will treat a path $v_0,\ldots,v_r$ interchangeably with the subgraph of $G$ having vertex set $\{v_0,\ldots,v_r\}$ and edge set $\{v_{i-1}v_i:i\in\{1,\ldots,r\}\}$.
-The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of edges in the path.  The \emph{length} of an empty path is $-1$. For two vertices $v$ and $w$ in a connected graph $G$, $\dist_G(v,w)$ denotes the minimum length of a path in $G$ that contains both $v$ and $w$.
+The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of edges in the path.  For two vertices $v$ and $w$ in a connected graph $G$, $\dist_G(v,w)$ denotes the minimum length of a path in $G$ that contains both $v$ and $w$.
 % For a non-empty subset $S\subseteq V(G)$, $\dist_G(v,S):=\min\{\dist_G(v,w):w\in S\}$.
 %
 
-Let $T$ be a tree rooted at a vertex $v\in V(T)$.  The \emph{$T$-depth} of $w$ is $\depth_T(w):=\dist_T(v,w)$.  The \emph{height} of $T$ is $\height(T):=\max\{\depth_T(v):v\in V(T)\}$.  A \emph{upward path} in $T$ is a path $v_0,\ldots,v_r$ in $T$ with $\depth_T(v_i)=\depth_F(v_{i-1})-1$ for each $i\in\{1,\ldots,r\}$.  The \emph{lower endpoint} of $v_0,\ldots,v_r$ is $v_0$ and $v_r$ is the \emph{upper endpoint}.  For a connected graph $G$ and a vertex $v\in V(G)$,  a \emph{$v$-rooted breadth-first-search (BFS) tree} $T$ of $G$ is a spanning tree of $G$ rooted at $v$ with the property that $\depth_T(w)=\dist_G(v,w)$ for each $w\in V(G)$.
+\subsection{Trees, Depth, Ancestors, and Descendants}
 
+Let $T$ be a tree rooted at a vertex $v\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $v$ to $w$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $v_0$ is the \emph{lower endpoint} of this path and $v_r$ is the \emph{upper endpoint}.
+
+The \emph{$T$-depth} of a node $w\in V(T)$ is $\depth_T(w):=\dist_T(v,w)$.  A vertex $a\in V(T)$ is an \emph{ancestor} of $v\in V(T)$ if $a\in V(P_T(v))$.
+
+
+\subsection{Lowest Common Ancestors}
+
+For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the vertex $a$ of $P_T(v)\cap P_T(w)$ that maximizes $\depth_T(a)$.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{X}.  Recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{X}.
+
+% \subsection{Nearest Marked Ancestors}
+%
+% The \emph{nearest marked ancestor problem} is another well-studied data structuring problem that asks to preprocess an $n$-vertex rooted tree $T$ whose nodes are all initially \emph{unmarked} with the exception of the root which is \emph{marked}.  The data structure supports two operations:
+% \begin{inparaenum}[(i)]
+%     \item \emph{mark} a node $u$ of $T$;
+%     \item find the \emph{nearest marked ancestor} of a node $u$ of $T$, i.e., the ancestor of $u$ of maximum depth that is marked.
+% \end{inparaenum}
+% There exists data structures for this problem that use $O(n)$ space and preprocessing and can perform each of these operations in $O(1)$ time  \cite{X}.  Especially simple and efficient solutions exist when the operations are restricted so that the set of marked nodes always induce a connected subtree of $T$.  In this paper we only require this simple version of the data structure.
 
 \section{Tripod Decompositions}
 
 Let $G$ be a $n$-vertex triangulation and $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) vertical paths whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
 
 \begin{thm}\label{tripod_decomposition}
-  Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $\tw(G/\mathcal{Y})\le 3$.\todo{Define graph quotient}
+  Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
 \end{thm}
 
-It is straightforward to verify that \cref{tripod_decomposition} implies \cref{meta}.\ref{three_tree} by first triangulating the given graph and then taking $T$ to be a breadth-first search tree of the resulting triangulated graph.
+It is straightforward to verify that \cref{tripod_decomposition} implies \cref{meta}.\ref{three_tree} by first triangulating the given graph and then taking $T$ to be a breadth-first search tree of the resulting triangulated graph \cite[Observation~35]{dujmovic.joret.ea:planar}.
 
 % \begin{remark}
 %   The result of \citett{dujmovic.joret.ea:planar} provides tripods with somewhat more structure.  Every tripod has three legs whose lower endpoints are on a common face of $G$.  It is possible to fix, in advance, an $S$-rooted BFS tree $T$ and produce tripods whose legs are paths in $T$.
 % \end{remark}
 
 \subsection{Tripod Decompositions from Face Orderings}
+\label{orderings}
 
-We now describe how $(G,T)$-tripod decompositions can be obtained from total orders on the faces of $G$.  For any vertex $v$ of $G$, we let $P_T(v)$ denote the unique path from $v$ to the root of $T$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ be a total ordering of the faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,2n-1\}$, define the graph $G_i:=\bigcup_{j=0}^i f_j\cup Y_F(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.
+We now describe how $(G,T)$-tripod decompositions can be obtained from total orders on the faces of $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ be a total ordering of the faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,2n-1\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_F(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.
 Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and
 observe that $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ is a tripod decomposition of $G$.
 
 
-\citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the next lemma.  In words, this lemma states that if each face of each graph in $\mathcal{G}_{\mathcal{F}}$ has vertices from at most three tripods on its boundary then $G/\mathcal{Y}_\mathcal{F}$ has treewidth at most $3$.
+Let us say that a sequence $\mathcal{F}:=f_0,\ldots,f_i$ of distinct faces of $G$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_i$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_i$ satisfy the following condition:  For each $j\in\{0,\ldots, i\}$ and each face $f$ of $G_j$,
+\[
+   |\{\ell\in\{0,\ldots,j\}: V(f)\cap Y_{\ell}\neq\emptyset\}|\le 3 \enspace .
+\]
+In words, each face of $G_j$ has vertices from at most three tripods of $Y_0,\ldots,Y_j$ on its boundary.  \citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the next lemma.
+
+% In words, this lemma states that if each face of each graph in $\mathcal{G}_{\mathcal{F}}$ has vertices from at most three tripods on its boundary then $G/\mathcal{Y}_\mathcal{F}$ has treewidth at most $3$.
 
 \begin{lem}\label{face_trick}
-  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$ and let $T$ be a spanning tree of $G$ rooted at $v_0$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ resulting in a sequence of graphs $\mathcal{G_F}:= G_0,\ldots,G_{2n-3}$ and a tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the set $I_f:=\{j\in\{0,\ldots,i\}: V(f)\cap Y_{j}\neq\emptyset\}$ has size  $|I_f|\le 3$.
+  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$ and let $T$ be a spanning tree of $G$ rooted at $v_0$.  Then there exists a good sequence $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ containing all the faces of $G$.
 \end{lem}
 
 \begin{rem}
   \cref{face_trick} is stated in terms of a total order on $F(G)$ only for convenience.  Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,2n-3\}$ and each $j\in I_{f_i}$, $f_j\prec f_i$.  It is straightforward to check that any linearization of this total order will result in the same tripod decomposition $\{Y_0,\ldots,Y_{2n-3}\}$.
 \end{rem}
 
-\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$ iteratively.  To find the face $f_i$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}
+\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_j$, define the set $I_f:=\{\ell\in\{0,\ldots,j\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}
 
 \begin{figure}
   \begin{center}
@@ -196,605 +229,178 @@ This immediately leads to a divide-and-conquer algorithm by recursing on each of
 
 \citet{morin:fast} later showed that, using an appropriate data structure for $T$, this approach can be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Essentially, Morin's algorithm works by finding the Sperner triangle $f_i$ in time proportional to the minimum number of faces of $G$ contained in any of the faces in $S_i$.  In the next section, we will show that, by using an appropriate data structure for the cotree $\overline{T}$, the Sperner triangle $f_i$ can be found in constant time, yielding an $O(n)$ time algorithm.
 
-Since our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:XX}, we first explain how \cref{face_trick} implies \cref{tripod_decomposition} by constructing a chordal graph $H$ that contains $G/\mathcal{D_F}$.  Specifically, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, we construct a graph $H$ that contains a clique on $\{Y_j:j\in I_f\}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
+By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}.  To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. For each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $\{Y_j:j\in I_f\}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
 \section{An $O(n)$-Time Algorithm}
 
+Refer to \cref{baby_sperner_fig} for an illustration of the the following (probably well-known) baby version of Sperner's Lemma:
 
-\begin{lem}
-  Let $N$ be a near triangulation with outer face $v_0,\ldots,v_r$. Colour the vertices of $N$ red and blue in such a way that $v_0,\ldots,v_i$ are coloured red for some $i\in\{0,\ldots,r-1\}$ and $v_{i+1},\ldots,v_r$ are coloured blue.  Then there exists a path $w_0,\ldots,w_k$ in $N^\star$ such that
+\begin{figure}
+  \begin{center}
+    \includegraphics{figs/baby_sperner}
+  \end{center}
+  \caption{\cref{baby_sperner}}
+  \label{baby_sperner_fig}
+\end{figure}
+
+\begin{lem}\label{baby_sperner}
+  Let $N$ be a near-triangulation with outer face $v_0,\ldots,v_r$ and colour each vertex of $N$ red or blue in such a way that $v_0,\ldots,v_i$ are coloured red for some $i\in\{0,\ldots,r-1\}$ and $v_{i+1},\ldots,v_r$ are coloured blue.  Then there exists a path $w_0,\ldots,w_k$ in $N^\star$ such that
   \begin{compactenum}
-    \item $w_0$ is the inner face of $N$ with $v_rv_0$ on its boundary;
+    \item $w_0$ is the inner face of $N$ with $v_0v_r$ on its boundary;
     \item $w_k$ is the inner face of $N$ with $v_iv_{i+1}$ on its boundary; and
-    \item for each $i\in\{1,\ldots,r\}$, the single edge in $E(w_{i-1})\cap E(w_i)$ has endpoints of both colours.
+    \item for each $i\in\{1,\ldots,r\}$, the single edge in $E(w_{i-1})\cap E(w_i)$ has an endpoint of each colour.
   \end{compactenum}
 \end{lem}
 
 \begin{proof}
-  \todo[inline]{Fix notation here to match what's used in this mini-theorem}
-  Consider the walk $w_0,\ldots,w_k$ in $G^\star$ defined as follows: $w_0:=f_4$, $w_1$ is the neighbour of $w_0$ contained in $f_1'$ and, for each $i>1$, $w_i\neq w_{i-2}$ is the (other) neighbour of $w_{i-1}$ that shares a bichromatic edge with $w_i$.  The walk ends when it reaches $f_1$ or it reaches a face not in $f_1'$.  Observe that this process ends and $w_1,\ldots,w_k$ is a path since, otherwise, the first repeated node must have three bichromatic edges, which implies that the face is trichromatic, but all faces in $f_1'$ are bichromatic. Therefore, $w_k=f_1$ and we are done or $w_k$ is not contained in $f_1'$.  Therefore $w_k$ a face of $G$ that is not contained in $f_1'$ but $w_{k-1}$ and $w_k$ share a bichromatic edge $uv\in E(f_1')$.  The face $w_{k-1}$ is in $f_1'$, so $w_{k-1}\neq f_4$.  Therefore the edge $w_{k-1}=f_1$, implying that this process did indeed reach $f_1$.
+  If $w_0=w_k$, the lemma is immediately true, so assume $w_0\neq w_k$.
+  Say that an edge of $n$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_iv_{i+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex of a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
 \end{proof}
 
-For a rooted tree $T$, we say that a vertex $a\in V(T)$ is an \emph{ancestor} of $v\in V(T)$ if $a\in V(P_T(v))$.  For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the vertex $a$ of $P_T(v)\cap P_T(w)$ that maximizes $\depth_T(a)$.
+The next lemma, which is the main observation in this paper, allows us to use lowest common ancestor data structures to find Sperner triangles in constant time.
 
-
-%
-% \begin{lem}
-%   Let $G$ be a triangulation, let $T$ be a spanning tree of $G$ rooted at some vertex of the outer face $f_0$ of $G$, let $\overline{T}$ be the cotree of $(G,T)$ rooted $f_0$, let $e_1,e_2,e_3\in E(G)\setminus E(T)$ be three distinct edges, let $G_3:=Y(e_1)\cup Y(e_2)\cup Y(e_3)$ and, for each $i\in\{1,2,3\}$, let $Y_i:=V(Y_T(e_i))\setminus (\bigcup_{j=1}^{i-1} V(Y_T(e_j))$, and let $f$ be an inner face of $G_3$ with $V(f)\cap Y_i\neq\emptyset$ for each $i\in\{1,2,3\}$.  Then there exists a face $f_4$ of $G$ contained in $f$ that defines a graph $G_4:= G_3\cup Y_T(f_4)$ and a set $Y_4:=V(G_4-G_3)$ such that
-%   \begin{compactenum}[(i)]
-%     \item $f_4:=\lca_{\overline{T}}(g_1,g_3)$ where for each $\ell\in\{1,2\}$, $g_\ell$ is a face of $G$ contained in $f$ that has one edge $uv\in E(f)$ with $u\in Y_i$ and $v\in Y_j$ for distinct $i,j\in\{1,2,3\}$;
-%     \item for each face $f'$ of $G_4$, $V(f')\cap Y_j\neq\emptyset$ for at most three values of $j\in\{1,2,3,4\}$;
-%   \end{compactenum}
-% \end{lem}
-
-Let us say that a sequence $\mathcal{F}:=f_0,\ldots,f_i$ of distinct faces of $G$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_i$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_i$ satisfy the conditions of \cref{face_trick}.
-
-\begin{lem}
-  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$; let $T$ be a $v_0$-rooted BFS spanning tree of $G$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$ with $|I_f:=\{j\in\{0,\ldots,i-1\}:V(I_f)\cap Y_j\neq\emptyset\}|=3$, and let $L\subseteq F(G)$ contain every face $g\in F(G)$ such that
+\begin{lem}\label{lca_sperner}
+  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$ with $|I_f:=\{j\in\{0,\ldots,i-1\}:V(I_f)\cap Y_j\neq\emptyset\}|=3$, and let $L\subseteq F(G)$ contain every face $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in\{0,\ldots,i-1\}$.
   \end{compactenum}
-  Then there exists a face $f_i$ of $G$ that is contained in $f$ and such that $f_0,\ldots,f_i$ is good and $f_i :=\lca_{\overline{T}}(x,y)$ for some $x,y\in L$.
+  Then there exists a face $f_i$ of $G$ that is contained in $f$ and such that
+  \begin{compactenum}[(a)]
+    \item $f_0,\ldots,f_i$ is good; and
+    \item $f_i :=\lca_{\overline{T}}(x,y)$ for some $x,y\in L$.
+  \end{compactenum}
 \end{lem}
 
 \begin{proof}
-  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ in the closure of the interior of $f$ and let $\{a,b,c\}:=I_f$.  Colour each vertex $v$ of $N$ with a colour in $\{a,b,c\}$ depending on whether the first vertex of $P_{T}(v)$ contained in $V(f)$ to $Y_a$, $Y_b$, or $Y_c$, respectively.  Say that an edge or face of $N$ is monochromatic, bichromatic, or trichromatic if it contains vertices of one, two, or three colours, respectively.  It is straightforward to verify that any trichromatic inner face $f_i$ of $N$ will satisfy Condition~(ii). By Sperner's Lemma, such a trichromatic face $f_i$ does indeed exist. All that is needed is to check that $f_i$ satisfies Condition~(i).  There are two cases to consider:
+  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ in the closure of the interior of $f$ and let $\{a,b,c\}:=I_f$.  Colour each vertex $v$ of $N$ with a colour in $\{a,b,c\}$ depending on whether the first vertex of $P_{T}(v)$ contained in $V(f)$ belongs to $Y_a$, $Y_b$, or $Y_c$, respectively.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.  It is straightforward to verify that any trichromatic inner face $f_i$ of $N$ will satisfy Condition~(a). By Sperner's Lemma, such a trichromatic face $f_i$ does indeed exist. All that is needed is to check that $f_i$ satisfies Condition~(b).  There are two cases to consider:
   \begin{enumerate}
-    \item $f_i$ contains an edge $uv\in E(f)$.  Since $u$ and $v$ have different colours and $uv\in E(f)$, it must be that $u\in Y_a$ and $v\in Y_b$.  Furthermore, $f_i=\lca_{\overline{T}}(f_i,f_i)$, and $f_i$ has a bichromatic edge of $f$ on its boundary, so $f_i$ satisfies Condition~(i).
+    \item $f_i$ contains an edge $uv\in E(f)$.  Since $f_i$ is trichromatic,  $u$ and $v$ have different colours, so $f_i\in L$.  Furthermore, $f_i=\lca_{\overline{T}}(f_i,f_i)$, so $f_i$ satisfies Condition~(b).
 
-    \item $f_i$ contains no edge of $f$.  The graph $G_i$ contains exactly four faces $g_1',g_2',g_3',f_i$ that are not faces of $G_3$, but that are contained in $f$. For each $i\in\{1,2,3\}$, the face $g_i'$ contains exactly one face $g_i$ such that $E(g_i)\cap E(f)$ contains a bichromatic edge.
+    \item $f_i$ contains no edge of $f$.  See \cref{lca_proof}.  The graph $G_i$ contains exactly four faces $g_1',g_2',g_3',f_i$ that are not faces of $G_{i-1}$, but that are contained in $f$. For each $j\in\{1,2,3\}$, the face $g_j'$ contains exactly one face $g_i$ of $G$ such that $E(g_j)\cap E(f)$ contains a bichromatic edge in $E(f)$.
 
-    We claim that, for each $j\in\{1,2,3\}$, $\overline{T}$ contains a path from $f_i$ to $g_j$.  To see this, first, observe that no bichromatic edge in $E(N)\setminus E(f)$ is an edge of $T$.  Next, let $N_j$ be the near-triangulation consisting of the faces and edges of $G$ in the interior and on the boundary of $g_j'$.  Then the colouring of $N$, restricted to $N_j$ satisfies the conditions of \cref{good_path} so $N^\star$ contains a path $w_{-1},\ldots,w_{k}$ with $w_{-1}=f_4$, $w_{k}=g_j$, $w_1,\ldots,w_{k-1}$ contained in $g_j'$ and such that, for each $\ell\in\{0,\ldots,k\}$, the edges shared by $w_{\ell-1}$ and $w_\ell$ is bichromatic.  Therefore $w_{-1},\ldots,w_k$ is a path in $\overline{T}$ from $f_i$ to $g_j$.
+    \begin{figure}
+      \begin{center}
+        \begin{tabular}{cc}
+          \includegraphics{figs/lca_proof-1} &
+          \includegraphics{figs/lca_proof-2} \\
+          $G_i$ & $G$
+        \end{tabular}
+      \end{center}
+      \caption{The cotree $\overline{T}$ contains disjoint paths from $f_i$ to each of $g_1$, $g_2$, and $g_3$.}
+      \label{lca_proof}
+    \end{figure}
 
-    Each of the three paths from $f_i$ to each of $g_1,g_2,g_3$ are disjoint except for their shared starting point $f_i$.  Therefore, since $f_i$ has only one $\overline{T}$-parent, at least two of $g_1,g_2,g_3$ are $\overline{T}$-descendants of $f_i$, say $g_1$ and $g_2$.  Therefore $f_i:=\lca_{\overline{T}}(g_1,g_2)$, as required.
+    We claim that, for each $j\in\{1,2,3\}$, $\overline{T}$ contains a path from $f_i$ to $g_j$ and, with the exception of $f_i$, these paths are disjoint.  In order to show this, we first argue that no bichromatic edge in the interior of $f$ is an edge of $T$.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
+
+    Now, for each $j\in\{1,2,3\}$, let $N_j$ be the near-triangulation consisting of the faces and edges of $G$ in the interior and on the boundary of $g_j'$.  Then the colouring of $N$, restricted to $N_j$ satisfies the conditions of \cref{baby_sperner} so $N^\star$ contains a path $w_{-1},w_0,\ldots,w_{k}$ with $w_{-1}=f_i$, $w_{k}=g_j$, and $w_0,\ldots,w_{k-1}$ contained in $g_j'$ and such that, for each $\ell\in\{0,\ldots,k\}$, the edge shared by $w_{\ell-1}$ and $w_\ell$ is bichromatic.  Therefore $w_{-1},w_0\ldots,w_k$ is a path in $\overline{T}$ from $f_i$ to $g_j$.
+
+    Each of the three paths from $f_i$ to each of $g_1,g_2,g_3$ are disjoint except for their shared starting point $f_i$.  Therefore, since $f_i$ has only one $\overline{T}$-parent, at least two of $g_1,g_2,g_3$ are $\overline{T}$-descendants of $f_i$, say $g_1$ and $g_2$.  Therefore $f_i:=\lca_{\overline{T}}(g_1,g_2)$, as required. \qedhere
   \end{enumerate}
 \end{proof}
+
+\cref{lca_sperner} implies that, given the triangles $q_1$, $q_2$ and $q_3$, one can use a lowest common ancestor data structure to find, in constant time a constant-size set $S:=\{\lca_{\overline{T}}(g_\alpha,g_\beta):\alpha,\beta\in\{1,2,3\}\}$ of candidate faces, one of which is the Sperner triangle $f_i$.
+This quickly leads to an $O(n)$ time algorithm that, like the algorithm of \citet{morin:fast} uses a nearest marked ancestor data structure on $T$ to recognize which of these candidate faces is the correct choice for $f_i$.
+
+We now show that the nearest marked ancestor data structure can be eliminated entirely. Instead, we can identify the face $f_i\in S$ using only lowest common ancestor queries.  Using the notation from \cref{lca_sperner}, let $C$ be the outer face of $N$ and let $g_1$, $g_2$, and $g_3$ be the inner faces of $N$ having bichromatic edges of $C$ on their boundary where $g_1$ has an edge of $C$ coloured with $a$ and $b$, $g_2$ has an edge of $C$ coloured with $b$ and $c$, and $g_3$ has an edge of $C$ coloured with $a$ and $c$.  There are three cases, illustrated in \cref{lca_cases}.
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics{figs/lca_cases-1} &
+      \includegraphics{figs/lca_cases-2} &
+      \includegraphics{figs/lca_cases-3} \\
+      (1) & (2) & (3)
+    \end{tabular}
+  \end{center}
+  \caption{Identifying a Sperner triangle $f_i$ using lowest common ancestor queries over $g_1$, $g_2$, and $g_3$.}
+  \label{lca_cases}
+\end{figure}
+
+\begin{enumerate}
+  \item If $g_\alpha=g_\beta$ for some distinct $\alpha,\beta\in\{1,2,3\}$  then $g_\alpha$ is trichromatic and we can take $f_i:=g_\alpha$.  In the proof of \cref{lca_sperner}, this corresponds to the case where $f_i$ has an edge of $C$ on its boundary.
+
+  % \item If $\lca_{\mathcal{T}}(g_\alpha,g_\beta)=g_\gamma$ for distinct $\alpha,\beta,\gamma$ then $g_\beta$ is trichromatic and we are done.
+
+  \item If $\lca_{\mathcal{T}}(g_\alpha,g_\beta)=g_\beta$ and $\lca_{\overline{T}}(g_\beta,g_\gamma)=q$ for distinct  $\alpha$, $\beta$, $\gamma$, and $q\ne g_\beta$ then $g_\beta$ is trichromatic and we are done.  Note that this includes the case where $g_\gamma=q$ or $g_\beta=q$.  In the proof of \cref{lca_sperner} this also corresponds to the case where $f_i$ has an edge of $C$ on its boundary.
+
+  \item If $\lca_{T}(g_\alpha,g_\beta)=p$, $\lca_{T}(g_\beta,g_\gamma)=q$,  $\lca_{\overline{T}}(g_\alpha,g_\gamma)=q$, and $\lca_{\overline{T}}(p,q)=q$ for distinct $\alpha$, $\beta$, $\gamma$, $p$, and $q$, then $p$ is trichromatic and we are done. This includes the possibility that  $q=g_\gamma$.  In the proof of \cref{lca_sperner} this corresponds to the case where $f_i$ has no edge of $C$ on its boundary.
+\end{enumerate}
+The preceding cases are exhaustive since, after ruling out Case~1, the minimal subtree of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$ is a binary tree whose leaves are a subset of $\{g_1,g_2,g_3\}$.  Any binary tree with $n\ge 3$ nodes and at most $3$ leaves has either $2$ leaves (Case~2) or $3$ leaves (Case 3).
+
+\begin{rem}\label{colour_remark}
+  The process described above not only makes it possible to identify $f_i$ in constant time, but also makes it possible to determine the colours of each of the three vertices of $f_i$ in constant time.
+\end{rem}
+
+
 
 \begin{thm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $\tw(G/\mathcal{T})\le 3$.
 \end{thm}
+
+\begin{proof}
+  Let $f_0$ be any face of $G$ incident to $v_0$.  First we compute the cotree $\overline{T}$ of $(G,T)$ and construct  a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
+
+  We construct the good sequence $f_0,\ldots,f_{2n-3}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
+  \begin{enumerate}
+    \item If $C$ has three tripods of on its boundary then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$. In this case, the discussion above allows us to find the Sperner triangle $f_i$ in $O(1)$ time using a constant number of queries in the lowest common ancestor data structure for $\overline{T}$.
+
+    \item If $C$ has only two tripods on its boundary, then the input consists of two inner faces $g_1$, $g_2$, of $N$ with bichromatic edges of $C$ on their boundary.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.
+
+    \item If $C$ has only one tripod on its boundary then the input consists of any inner face of $N$ with that contains an edge of $C$.
+\end{enumerate}
+Once we have found the Sperner triangle $f_i$, we can compute the tripod $Y_i$ by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near triangulations whose outer faces are each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$.
+
+Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{2n-3}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{2n-3}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{2n-3} O(1+|Y_i|) = O(n)$.
+\end{proof}
 
 
 \section{Variations}
 
 In this section we show that the following two variations on the product structure theorem also have linear-time algorithms:
 \begin{itemize}
-  \item For every planar graph $G$, there exists a planar graph $H$ of  treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:XX}.
+  \item For every planar graph $G$, there exists a planar graph $H$ of  treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
   \item For every planar graph $G$, there exists a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$.
 \end{itemize}
 
+Both of these results are obtained by recursive algorithm similar to that described for computing tripod decompositions.
 
-\section*{Acknoledgement}
+\subsection{Bipod Decompositions}
 
-This research was initiated at the BIRS workshop.....
+We begin with the second decomposition, which is simpler, but seems not to have been noted before.  We select a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=I_0,\ldots,I_k$ where $I_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $I_0,\ldots,I_i$.  Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ shows that if $\mathcal{E}$ is a good edge sequence that produces a partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics{figs/bipods-1} &
+      \includegraphics{figs/bipods-2}
+    \end{tabular}
+  \end{center}
+  \caption{Choosing the next $e_i$ in a  good edge sequence.}
+\end{figure}
+
+The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$ we consider any face $f\in F(G_{i-1})\setminus F(G)$.  This face $f$ has at most four bipods $I_a$, $I_b$, $I_c$, and $I_{c'}$ on its boundary.  As before we colour vertices in near triangulation $N$ bounded by $f$ with colours $a$, $b$, and $c$; using colour $c$ for vertices that lead to $c$ or to $c'$.  Again, Sperner's lemma implies that that $N$ contains an inner face $f_i$ that is trichromatic.  In the graph $G_i^+:=G_{i-1}\cup P_T(f_i)$, each newly introduced face in $F(G_{i}^+)\setminus F(G_{-1})\setminus\{f_i\}$ is incident on at most two of $I_a$, $I_b$ or $I_{c}\cup I_{c'}$.  Two of these faces are incident at most two of $I_a$, $I_b$, $I_c$ or $I_c'$.  These two faces are separated by one of the legs of $f_i$ whose lower endpoint is a vertex $v_i\in V(f_i)$.  We take $e_i$ to be the unique edge in $f_i-v_i$.  We can easily check that this results in a good sequence $e_0,\ldots,e_i$ of edges.  This process terminates when $G_k=G$.  That is, each edge of $G$ is contained in $P_T(e_i)$ for some $i\in\{0,\ldots,k\}$.
+
+Algorithmically, this process requires almost no changes from the process used to find good face sequences.  Each recursive subproblem is defined by the at most $4$ inner faces of a near-triangulation that contain a edge of the outer face that spans two bipods.  The triangle $f_i$ is identified by using lowest common ancestor queries on three of these faces.  Using \cref{colour_remark}, the vertex $v_i$ of $f_i$ that is not part of $e_i$ can also be identified in constant time.  Colouring the vertices of $I_i$ and finding the at most four new faces of $G$ required to define the at most two new recursive subproblems can be done in $O(1+|I_i|)$ time.  This establishes the following result:
+
+\begin{thm}
+  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-bipod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{T})\le 3$.
+\end{thm}
 
 
-%
-%
-% \section{The New Proof}
-%
-% In this section we present a new proof of \cref{face_trick}.  We first explain why a naïve attempt at an inductive proof using edge contractions does not work. Consider a proof with the following structure:
-% \begin{compactenum}
-%   \item Contract an edge $uv$ that maximized $\depth_F(v)$ to obtain a graph $G'$.
-%   \item Apply induction on $G'$ to obtain an ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ of the faces of $G'$.
-%   \item Use an obvious correspondence between the faces of $G'$ and those of $G$ to obtain an ordering $f_0,\ldots,f_{2n-5}$ on all the faces of $G$ except the two faces $f_{2n-4}:=uvx$ and $f_{2n-3}:=vuy$ that include $uv$.
-%   \item Show that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies the conditions of \cref{face_trick}.
-% \end{compactenum}
-%
-% Of course, this approach does not work.  A primary obstacle is illustrated in \cref{obstacle}.  In this example,
-% \begin{compactenum}
-%   \item Induction on $G'$ yields an ordering $f_0',\ldots,f_{2n-5}'$ in which $u$ appears in a tripod $Y_i'$.
-%   \item The first triangle of $f_0,\ldots,f_{2n-5}$ incident to $v$ is $f_j$ for some $j>i$.  Since $v$ has maximum $F$-depth, $v$ therefore appears in $Y_j$.
-%   \item A second triangle $f_k$, $k>i$ incident to $v$ appears later in the ordering.
-%   \item The corresponding second triangle $f_k'$ of $G'$ is contained in some face $g'$ of $G_{k-1}'$ that contains vertices of $Y_i'$ and two other tripods $Y_{\alpha}'$ and $Y_{\beta}'$. However, the tripod $Y_{k}'$ does not contain $u$.
-%   % $Y_k'$ is attached to $Y_i$, and two other tripods $Y_{\alpha}$ and $Y_{\beta}$.
-%   \item One of the faces $f'$ of $G_k'$ contains vertices of $Y_i'$, $Y_k'$, and $Y_\alpha'$.
-%   \item The corresponding face $f$ of $G_k$ contains $v\in Y_j$ as well as vertices of $Y_i$, $Y_k$, and $Y_\alpha$.  This violates the requirement of \cref{face_trick} that each face of $G_k$ have vertices from at most three tripods of $Y_0,\ldots,Y_{k}$ on its boundary.
-% \end{compactenum}
-% \begin{figure}[htbp]
-%   \begin{center}
-%     \begin{tabular}{c@{\hspace{1cm}}c}
-%       \includegraphics{figs/obstacle-2} & \includegraphics{figs/obstacle-1} \\
-%       $G_k'$ & $G_k$
-%     \end{tabular}
-%   \end{center}
-%   \caption{An obstacle to a straightforward inductive proof of \cref{face_trick}.}
-%   \label{obstacle}
-% \end{figure}
-%
-% To overcome the obstacle discussed above we avoid working with individual edge contractions and instead work with sequences of contractions that reduce the height of the forest of $F$.  Let $G$, $F$, and $uv$ be as defined in \cref{good_edge} and observe that, if $G'$ and $F'$ are the result of contracting $uv$ in $G$ and $F$, respectively, then $F'$ is a $V(f_0)$ rooted BFS forest of $G'$.  Therefore, repeated contracting the edge guaranteed by \cref{good_edge} will eventually result in a graph $\overline{G}_{h-1}$ and a $V(f_0)$-rooted BFS forest of $F_{h-1}$ of $\overline{G}_{h-1}$ each of which contains exactly those vertices of $F$ having $F$-depth at most $h-1$.  Repeating this yields a sequence of graphs $G=\overline{G}_h,\overline{G}_{h-1},\ldots,\overline{G}_0=f_0$.  For any $0\le i< j\le h$, $G_i$ is obtained from $\overline{G}_j$ by a sequence of edge contractions so, for any face $f$ of $\overline{G}_i$ there is a well-defined corresponding face of $\overline{G}_j$ and we say that a face $f$ of $G$ is \emph{represented} in $\overline{G}_i$ if there is a face of $\overline{G}_i$ that corresponds to $f$.
-%
-% We will incrementally construct an ordering $\mathcal{F}$ of the faces of $G$ in a sequence of $h+1$ rounds.  For each $i\in\{0,\ldots,h\}$, we let $\mathcal{F}_i:=f_0,\ldots,f_{\ell_i}$ denote the sequence constructed by the end of round $i$.  For each $i\in\{0,\ldots,h-1\}$, $\mathcal{F}_i$ is a prefix $\mathcal{F}_{i+1}$ and includes all the faces of $G$ that are represented in $G_i$.  For each $i\in\{0,\ldots,h\}$, $\mathcal{F}_i$ satisfies all the conditions of \cref{face_trick} except (when  $i<h$) that it does not necessarily include all faces of $G$.   Since $G_h=G$, it follows that the final sequence $\mathcal{F}_h=\mathcal{F}$ satisfies all the conditions of \cref{face_trick}.
-%
-% The sequence $\mathcal{F}_0:=f_0,f_1$ where $f_0$ is the outer face of $G$ and $f_1$ is the face of $G$ corresponding to the inner face of $\overline{G}_0$. $\mathcal{F}_0$ satisfies the conditions of \cref{face_trick} because each face of $G_1$ $G_0=G_1$ contains vertices of at most two tripods, $Y_0$, and $Y_1$.
-%
-% When extending $\mathcal{F}_{i-1}$ to create $\mathcal{F}_{i}$ there are a few different types of subproblems that occur.  Refer to \cref{cases}.
-%
-% \begin{compactenum}[(a)]
-%   \item A subgraph of $G$ whose outer face is bounded by four vertical paths $P_a:=a\rightsquigarrow x$, $P_b:=b\rightsquigarrow y$, $P_c:=c\rightsquigarrow x$, and $P_d:=d\rightsquigarrow y$ of $F$.  The vertices $x$ and $y$ are each of $F$-depth $i-1$.  Each of these four paths contains a distinct vertex of $F$-depth $i$.  The graph $G$ contains faces $f_{ab}$ and $f_{cd}$ appear already in the sequence constructed so far.  No vertex not on the outer face of this subgraph is contained in any tripod defined by the sequence constructed so far. The vertex $x$ is part of the tripod $Y_{ab}$ with crotch $f_{ab}$.  The vertex $y$ is either contained in $Y_{ab}$ or some other tripod $Y$ whose crotch is some face $f$ of $G$ that appears in the sequence constructed so far.  All remaining vertices of the outer face are contained in the tripod $Y_{cd}$ with crotch $f_{cd}$.  This completes the description of the subproblem.
-%
-%   % Since the sequence $\mathcal{F}_{i-1}$ satisfies the conditions of \cref{face_trick}, the edges and vertices of the outer face of this subgraph belong to at most $3$ tripods:  $Y_{ab}\subseteq Y_F(f_{ab})$, $Y_{cd}\subseteq Y_{F(f_cd)}$ and, possibly, a third tripod $Y$ that contains one of $x$ or $y$.\todo{Make sure subproblems that come from special case also behave like this.}
-%
-%   We will prove that $\overline{G}_{i}$ contains a face whose corresponding face $f^*$ of $G$ defines a tripod that works.  This is easy. If there is no third tripod $Y$, then take any face of $\overline{G}_{i}$ inside this cycle.  Otherwise, the only face of $\mathcal{G}_i$ that can work has one of the two vertices of $Y_{cd}$ of $F$-depth $i$.
-%
-%   \item Like the previous case, but $P_F(c)$ and $P_f(a)$ have a common vertex of depth $i$.  Without loss of generality, $z$ is a child of $x$ in $F$.  The vertex $x$ belongs to one of $Y_{ab}$ or $Y{cd}$.  Without loss of generality, assume $x\in Y_{cd}$.
-%
-%   This is a tricky case.  We first check the triangles of $\overline{G}_i$ incident to $z$ and check if there is triangle that contains two neighbours of $y$, one of which is in $Y_{bc}$.
-%     % If one of these works, then great.
-%    % if we can find a Steiner triangles using an edge of $Y_{bc}$ (this is a Steiner triangle in $\overline{G}_i$.) If that doesn't work, then we try using an edge of $T_{ab}$.  If neither of those work, it's because both of those tripods have two feet on $Y_{ab}$.  No triangle represented in $\overline{G}_i$ will work.
-%
-%    If none of those work,  Otherwise, we need to dig deeper and find an ``edge tripod'' $f$.    (See \cref{cases}.c.)  The tripod $Y_f$ generated by $f$ has one foot on $Y_{ab}$, one foot on $Y_{cd}$ and one foot on $y$.
-%
-%   This creates two subproblems,
-%   \begin{compactitem}
-%      \item one bounded by $Y$, $Y_{ab}$, and $Y_f$.  This is another problem of the same type.
-%      \item one bounded by $Y$, $Y_{cd}$, and $Y_f$.  This is another problem of the same type.
-%      \item the third problem we would normally have, we don't need to deal with yet, because none of its faces are represented in $\overline{G}_i$.  We can finish this round by without using any of those faces.\todo{But we have to handle it eventually, and it's not the kind of problem we're used to.}
-%  \end{compactitem}
-%
-%  \item Like the previous cases, but neither $ab$ nor $cd$ are on the outer face and $y$ is part of a tripod $Y$ with one leg on each of $Y_{ab}$ and $Y_{cd}$.
-%
-%  This is an ''all paths going upward'' problem and we can solve it in constant time using lowest common ancestor queries on the cotree of $F$.  In particular, we root our cotree on the outer face of $G$. then the boundary of the subproblem consists entirely of tree edges except for the one edge of the tripod that contains $y$, so the path to the root of the cotree must escape there.   Take the face incident to the edge spanning $Y$ and $Y_{ab}$ as well as the face incident to the edge spanning $Y$ and $Y_{cd}$ and ask for their lowest common ancestor.  This face will be the Sperner triangle we're looking for.
-%
-%
-%    If we ask for the lowest common ancestor  of the two faces incident to the edge spanning $Y$ and $Y_{ab}$ and
-%
-%  In this case, we will definitely find a Sperner triangle by looking at the edges of $\overline{G}_i$ incident on $y$.
-%
-%  In this case, all the neighbours of $y$ are lead to $Y_{ab}$ or $Y_{cd}$.  Therefore the face we want must have a vertex of $Y$ on its boundary.  We start by checking the triangls of $\overline{G}_i$ incident on $y$.  If none of these works, it's because we in a situation similar to Case~B where we must dig for an ``edge tripod''.
-%
-%
-%  In $\overline{G}_i$ this is represented as a triangle incident $y$ or, possibly
-% \end{compactenum}
-%
-% \begin{figure}yet
-%   \begin{center}
-%     \begin{tabular}{ccc}
-%       \includegraphics{figs/edge-case-1} &
-%       \includegraphics{figs/edge-case-2} &
-%       \includegraphics{figs/edge-case-8} \\
-%       (a) & (b) & (c) \\
-%       \includegraphics{figs/edge-case-4} &
-%       \includegraphics{figs/edge-case-5} &
-%       \includegraphics{figs/edge-case-9} \\
-%     \end{tabular}
-%   \end{center}
-%   \caption{Types of subproblems we must handle and the their appearance in $G_i$ (after the removal of separating triangles).}
-%   \label{cases}
-% \end{figure}
-%
-%
-%
-%
-%
-%
-%
-%
-% \noindent
-% \hrule
-% Everything after this is crap
-% \hrule
-%
-%
-%
-%
-%
-%
-%
-%
-%
-% Each graph $G_i$ in this sequence has a corresponding tripod decomposition $\mathcal{Y}_i$ that satisfies the requirements of \cref{tripod_decomposition}.  The following lemma establishes a relationship between $\mathcal{Y}_i$ and $\mathcal{Y}_{i+1}$ are closely related.
-%
-% \begin{lem}\label{next_step}
-%   For any $i\in\{0,\ldots,h-1\}$, if $\mathcal{Y}_i$ is a tripod decomposition of $G_i$ that satisfies the requirements of \cref{tripod_decomposition} then there exists a tripod decomposition $\mathcal{Y}_{i+1}$ of $G_{i+1}$ such that, for each tripod $Y\in \mathcal{Y}_i$ with crotch $f$, at least one of the following is true:
-%   \begin{compactenum}[(i)]
-%     \item at least one leg of $Y$ is empty and the corresponding vertex of $f$ has $F$-depth equal to $i$; or
-%     \item $\mathcal{Y}_{i+1}$ contains a tripod $Y'$ whose crotch $f'$ is the face of $G_{i+1}$ corresponding to $f$.
-%   \end{compactenum}
-% \end{lem}
-%
-% \cref{next_step} is important for the following reason.  The obstacle described above occurs because the tripod $f_{j}'$ has an empty leg that is hiding the contracted vertex $v$.  Up until that point, the tripod decomposition of $G$ obtained from $f_0,\ldots,f_j$ is correct.  The first problematic tripod is created by $f_k$, which mistakenly attaches to $v$ while the corresponding tripod obtained from $f_k'$ attaches to $u$.  If $f'_j$ did not have an empty leg then this mistake would not have occurred.  Furthermore, if $f_j$ and $f_j'$ both had the vertex $u$ in common then this mistake would not have occurred.
-%
-%
-%
-%
-%
-% % This obstacle ultimately comes from the fact that the tripod $f_j'$ should, in some sense, be regarded as contributing to the boundary of $f'$ because $f_k'$ is ``really'' attached to $v$ not $u$.  Making this idea precise takes some effort and is the purpose of quarter-edge labellings introduced next.
-%
-% % Note that it is not obvious from the outset that an approach like this will lead to anything other than a representation of
-%
-%
-% % one and it is not obvious from the outset that one can do so without it leading to some augmentation of the contracted graph $G'$ that contains all the information needed to reconstruct $G$.
-%
-% % \subsection{Quarter-Edge Labellings}
-% %
-% %
-% % An \emph{directed edge labelling} $\varphi$ of a graph $G$ is a function that takes pairs of endpoints of edges in $E(G)$ and maps them onto some set $X$.  For an edge $uv\in E(G)$, we write $\varphi(uv)$ as shorthand for $\varphi(u,v)$.  We say that $\varphi$ is \emph{globally unique} if $\varphi(uv)\neq \varphi(xy)$ for any $uv,xy\in E(G)$ with $x\neq u$.  We say that $\varphi(uv)$ is \emph{locally unique} if $\varphi(uv)\neq \varphi(uw)$ for any $uv,uw\in E(G)$ with $v\neq w$.
-% %
-% % A \emph{quarter-edge labelling} $(\qa,\qb)$ of $(G,F)$ is a pair of directed edge labellings of $G$ that satisfies the following properties, each stated as requirement on $\qa$ that must also be satisfied for $\qb$:
-% % \begin{compactenum}[(i)]
-% %   \item Each of $\qa$ and $\qb$ is globally unique.
-% %
-% %   \item If $uv\in E(F)$ or $\depth_F(v)<\depth_F(u)$ or $\depth_F(u)<\height(F)-1$ then $\qa(uv)$ and $\qb(uv)$ are locally unique.
-% %
-% %   \item If $uv\in E(F)$ then $\qa(uv)=\qb(uv)$.
-% %
-% %   \item If $v_0v_1v_2$ is a face of $G$ and $v_0v_1\in E(F)$ then $\qa(v_iv_i+1)$ is locally unique for each $i\in\{0,1,2\}$.
-% %
-% %   \item If $v_0,\ldots,v_d$ are the neighbours of $u$ in counterclockwise order and $\qa(uv_i)=\qa(uv_j)$ then $\qa(uv_i)=\qa(uv_{i+1})=\cdots=\qa(uv_{j})$ or $\qa(uv_j)=\qa(uv_{j+1})=\cdots\qa(uv_i)$\todo{Note about subscripts mod $d$}\ and the same statement holds for $\qb$.
-% % \end{compactenum}
-% % Observe that it is straightforward to create a quarter-edge labelling $(\qa,\qb)$ for $(G,F)$ by setting $\qa(uv):=\qb(uv_i):=(u,v)$ for each edge $uv$ of $G$.  The next lemma, illustrated in \cref{contracting} shows how to update a quarter-edge labelling when contracting certain edges of $F$.
-% %
-% % \begin{lem}\label{contraction_labelling}
-% %   Let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$; let $uv$ be an edge of $F$ with $\depth_F(v)=\height(F)$ and that is contractible in $G$; let $c:=\qa(uv)=\qb(uv)$; and let $G'$ and $F'$ be the graphs obtained by contracting $uv$ in $G$ and $F$, respectively.  Then the following defines a quarter-edge labelling $(\qap,\qbp)$ of $(G',F')$:
-% %   \begin{compactenum}[(a)]
-% %     \item Let $uvx$ and $vuy$ be the two faces of $G$ with $uv$ on their boundary.  Set $\qap(ux):=\qa(ux)$, $\qbp(ux):=c$, $\qbp(uy)=\qb(uy)$, and $\qap(uy)=c$.
-% %     \item For each edge $uv\in E(G')\setminus E(G)$, $\qap(xy):=\qbp(xy):=c$.
-% %     \item For each edge $e\in E(G)\cap E(G')\setminus \{ux,uy\}$, $\qap(e)=\qa(e)$ and $\qbp(e)=\qb(e)$
-% %   \end{compactenum}
-% % \end{lem}
-% %
-% %
-% % \begin{figure}[htbp]
-% %   \begin{center}
-% %     \begin{tabular}{c@{\hspace{1cm}}c}
-% %       \includegraphics[scale=1.2]{figs/qel-1} & \includegraphics[scale=1.2]{figs/qel-2}
-% %     \end{tabular}
-% %   \end{center}
-% %   \caption{\cref{contraction_labelling}: Adjusting a quarter-edge labelling after contracting $uv$.}
-% %   \label{contracting}
-% % \end{figure}
-% %
-% % \begin{proof}
-% %    TODO
-% % \end{proof}
-% %
-% %
-% % \subsection{Tripod Decompositions Respecting Quarter-Edge Labellings}
-% %
-% % Let $G$ be a triangulation, let $F$ be a $V(f_0)$-rooted BFS forest of $G$,  let $(\qa,\qb)$ be a quarter edge labelling of $G$, and let $f_0,\ldots,f_{r}$ be a sequence of faces and edges of $G$ that \emph{covers} $V(G)$, so that $\bigcup_{i=0}^r V(f_i)=V(G)$.  Extend the definition of $Y_F$ to the case where the argument $f$ is an edge $xy$ of $G$ by setting $Y_F(xy):=xy\cup P_F(x)\cup P_F(y)$.\footnote{Here we are treating the edge $xy$ as a graph so that $xy\cup P_F(x)\cup P_F(y)$ is a graph obtained by taking the union of an edge and two paths.}  Now define $G_0,\ldots,G_r$ and $Y_{0,\ldots,Y_r}$ as in the previous section.
-% %
-% % For each $i\in\{0,\ldots,r\}$, let $\overline{Y}_i:=V(G_i)\setminus V(G_{i-1})\cup E(G_i)\setminus E(G_{i-1})$.  We say that a face $f=v_0,\ldots,v_r$ of $G_p$ \emph{strongly touches} $Y_i$ if $(V(f)\cup E(f))\cap \overline{Y}_i\neq\emptyset$.
-% % % For any $0\le i\le p\le r$, we say that a face $f$ of $G_p$ \emph{strongly touches} $Y_i$ if $Y_i\cap V(f)\neq\emptyset$.
-% % We say that $f$ \emph{weakly touches} $Y_i$ with respect to $(\qa,\qb)$ if $f_i:=x_0x_1x_2$ and
-% % \begin{compactenum}
-% %   \item there exists $k\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_k=v_j$ and $\qa(x_kx_{k-1})=\qa(v_jv_{j+1})$; or
-% %   \item there exists $k\in\{0,1,2\}$ and $j\in\{0,\ldots,r\}$ such that  $x_k=v_j$ and $\qb(x_kx_{k+1})=\qb(v_jv_{j-1})$.
-% % \end{compactenum}
-% % When this occurs we say that $Y_i$ weakly touches $f$ at $v_j$.
-% % We say that $f$ \emph{touches} $Y_i$ with respect to $(\qa,\qb)$ if it strongly touches $Y_i$ or it weakly touches $Y_i$ with respect to $(\qa,\qb)$.  We treat touching a symmetric relation so that $Y_i$ touches $f$ if and only if $f$ touches $Y_i$.
-% %
-% % \begin{figure}
-% %   \begin{center}
-% %     \begin{tabular}{c@{\hspace{1cm}}c}
-% %       \includegraphics{figs/touches-1} & \includegraphics{figs/touches-2}
-% %     \end{tabular}
-% %   \end{center}
-% %   \caption{A face $f$ of $G_p$ that touches $Y_i$}
-% % \end{figure}
-% %
-% % Note that, if $V(f)\cap Y_i\neq\emptyset$ then $f$ strongly touches $Y_i$ and therefore touches $Y_i$.  This implies that the following lemma is a strengthening of \cref{face_trick}, and therefore also implies \cref{tripod_decomposition}.
-% %
-% % \begin{lem}\label{face_trick2}
-% %   Let $G$ be a triangulation with outer face $f_0$, let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$, and let $(\qa,\qb)$ be a quarter-edge labelling of $(G,F)$.  Then there exists a sequence $\mathcal{F}:=f_0,\ldots,f_{r}$ of edges and faces of $G$ that contains every face of $G$ and resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$ and a tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ such that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]:=G[\bigcup_{j=0}^i Y_j]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $(\qa,\qb)$.
-% % \end{lem}
-% %
-% % Note that, unlike \cref{face_trick} this lemma only places requirements on the faces of the induced graphs $G[0],\ldots,G[r]$ and not on the subgraphs $G_0,\ldots,G_r$.
-% %
-% % \begin{proof}
-% %   The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ then the result is trivial: Use the sequence $\mathcal{F}:=f_0,f_1$.  Then there are only two tripods $Y_0=V(f_0)$ and $Y_1=\emptyset$.  Any face of $G[0]$ or $G[1]$ clearly touches at most two tripods regardless of the quarter-edge labelling $(\qa,\qb)$.
-% %
-% %   If $|V(G)|>3$ then $F$ contains at least one edge and it contains at least one edge $uv$ with $\depth_F(v)=\height(F)$ that is contractible in $G$.\todo{Uncomment the proof of existence of $uv$.}  Let $G'$ and $F'$ be the result of contracting $uv$ in $G$ and $F$, respectively.  Let $(\qap,\qbp)$ be the quarter-edge labelling of $(G',F')$ defined in \cref{contraction_labelling}.  Applying induction on $(G',F')$ and $(\qap,\qbp)$ gives a sequence $\mathcal{F}':=f_0',\ldots,f_{r'}'$ of edges and vertices of $G'$ that satisfy the conditions of the lemma for $G'$, $F'$, and $(\qap,\qbp)$.
-% %
-% %   Each face or edge $f_i'$ of $\mathcal{F}$ has a corresponding face or edge $g_i$ in $G$. With two possible exceptions we will let $f_i:=g_i$ for each $i\in\{1,\ldots,r'\}$.  Let $uvx$ and $vuy$ be the two faces of $G$ incident to $uv$. If $g_i=ux$ then we use $f_i:=uvx$ and if $g_i=uy$ then we let $f_i:=uvy$.  Finally we append each of $uvx$ and $vuy$ to $f_0,\ldots,f_{r'}$ if they do not appear already and we let $\mathcal{F}:=f_0,\ldots,f_r$ denote the resulting sequence of edges and faces of $G$.  We claim that $\mathcal{F}$ satisfies the conditions of the lemma, for $G$, $F$, and $(\qa,\qb)$.
-% %
-% %   By construction $\mathcal{F}$ contains every face of $G$.  All that remains is to verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G[i]$, there are at most three tripods among $Y_0,\ldots,Y_i$ that touch $f$ with respect to $\qa$ and $\qb$.  Let $c:=\qa(uv)$. Since $uv\in E(F)$, $\qa(uv)=\qb(uv)=c$.  Let $f:=v_0,\ldots,v_r$.  We will show that if any tripod $Y_a$ touches $f$ then the corresponding tripod $Y_a'$ touches a corresponding object $f'$ in $G_i'$.   We distinguish between some cases:
-% %
-% %   \begin{enumerate}
-% %     \item $u\not\in V(f)$ and $v\not\in V(f)$.  In this case, $f$ is also a face of $G_i'$.  Since neither $u$ nor $v$ is in $V(f)$,  $\qa(e)=\qap(e)$ and $\qb(e)=\qbp(e)$ for each edge $e\in E(f)$.  Therefore $f$ touches $Y_j$ with respect to $(\qa,\qb)$ for some $j\in\{0,\ldots,i\}$ if and only if $f$ touches $Y_j'$ with respect to $(\qap,\qbp)$. By induction, $f$ touches at most three tripods among $Y_0',\ldots,Y_i'$ so $f$ touches at most three tripods among $Y_0,\ldots,Y_i$.
-% %
-% %     \item $u\in V(f)$ and $v\not\in V(f)$. Refer to \cref{case_2}. We claim that, in this case, $\qa(e)=\qap(e)$ and $\qb(e)=\qbp(e)$ for each edge $e\in E(f)$. Without loss of generality let $u=v_0$. The functions $\qa$ and $\qb$ agree with $\qap$ and $\qbp$ (respectively) except possibly when their argument is an edge incident to $u$.   Thus we need only consider the case where  $\qap(uv_{1})=c$ or $\qbp(uv_{-1})=c$.  Assume for the sake of contradiction, and without loss of generality that $\qap(uv_1)=c$.  But this implies that $uv_1\not\in E(G)$.  But this implies that $f$ contains $v$, a contradiction.
-% %     \begin{figure}[htbp]
-% %       \begin{center}
-% %         \begin{tabular}{c@{\hspace{1cm}}c}
-% %           \includegraphics{figs/case_a-1} & \includegraphics{figs/case_a-2}
-% %         \end{tabular}
-% %       \end{center}
-% %       \caption{Case 2}
-% %       \label{case_2}
-% %     \end{figure}
-% %
-% %
-% %     \item $u\in V(f)$ and $v\in V(f)$. Refer to \cref{case_3}. Without loss of generality, let $u=v_0$ and $v=v_1$.\footnote{There is a symmetric case in which $v=v_0$ and $u=v_{1}$ which is identical except that $\qb$ and $\qbp$ are used in place of $\qa$ and $\qap$, respectively.} Suppose $t>2$ so that $f$ has four or more edges.\todo{Deal with the $t=2$ case later.}  Then the face $f':=v_0,v_{2},v_3,\ldots,v_t$ is a face of $G_i'$ and $\qap(uv_{2})=c$.  Therefore, if $Y_j$ is the tripod that contains $v$ then $f'$ touches $Y_j'$.  Suppose that $f$ touches some other tripod $Y_a\neq Y_j$.  If $f$ strongly touches $Y_a$ then $f'$ strongly touches $Y_a'$ so we need only consider the case where $f$ weakly touches $Y_a$.   This happens because $f_a:=vxy$ and $\qa(vy)=\qa(vv_{2})$.  If $uv_{2}\not\in E(G)$ then this implies that $\qa(uv_{1})=c$ so $f$ weakly touches $Y_a$ and we are done.  If $uv_2\in E(G)$ then either $uvv_{2}$ is a separating triangle in $G$ or $f=uvv_{2}$ and $t=2$.  Either case is a contradiction since $uv$ is contractible and $t>2$.
-% %     \begin{figure}[htbp]
-% %       \begin{center}
-% %         \begin{tabular}{c@{\hspace{1cm}}c}
-% %           \includegraphics{figs/case_b-1} & \includegraphics{figs/case_b-2}
-% %         \end{tabular}
-% %       \end{center}
-% %       \caption{Case 3, when $|V(f)|=t+1>3$}
-% %       \label{case_3}
-% %     \end{figure}
-% %
-% %     \item $u\not\in V(f)$ and $v\in V(f)$.  Without loss of generality, let $v=v_1$.  Let $Y_j$ be the tripod that contains $v$ and let $Y_\alpha$ be the tripod that contains $u$ and observe that $\alpha \le j$.  Since $v\in V(G)\subseteq V(G[i])$, $j\le i$.  Suppose that some tripod $Y_a$ touches $f$.
-% %     \begin{compactitem}
-% %        \item If $Y_a \cap V(f)\setminus\{v\}\neq\emptyset$ then $Y_a'\cap V(f')\neq\emptyset$ so $Y_a'$ touches $f'$.
-% %        \item If $v\in Y_a\cap V(f)$ and $u\in Y_a'$ then $u\in Y_a\cap V(f)$ so $Y_a'$ touches $f'$.
-% %        \item If $v\in Y_a\cap V(f)$ and $u\not\in Y_a'$ then let $f_a:=vxy$. In this case $\qap(ux)=\qap(uv_2)=c$ or $\qbp(uy)=\qbp(ux_0)=c$.  In either case $Y_a'$ weakly touches $f'$.
-% %        \item If $\overline{Y}_a\cap E(f)\neq\emptyset$ then
-% %        $\overline{Y}_a'\cap E(f')\neq\emptyset$ so $Y_a'$ touches $f'$.
-% %        \item If $Y_a$ weakly touches $f$ at any vertex other than $v$ then $Y_a'$ weakly touches $f'$ at the same vertex.
-% %        \item If $Y_a$ weakly touches $f$ at $v$ then this is because $f_a$ contain an edge $vx$ where $\qa(vx)=\qa(vv_2)$ or $\qb(vx)=\qb(vv_0)$.  Without loss of generality, assume the former.  Then $\qa(ux)=c$ (even if $uxv$ is a face of $G$).  Furthermore, since $u$ is outside of $f$ and $uv$ is contractible $uv_1\not\in E(G)$.  Therefore $\qap(uv_1)=c$.  Therefore $Y_a'$ weakly touches $f'$ (at $u$).
-% %    \end{compactitem}
-% %   \end{enumerate}
-% % \end{proof}
-% %
-% %
-% %
-% %
-% %
-%
-%
-% % \subsection{New Proof of \cref{face_trick}}
-% %
-% % \begin{obs}\label{separating_triangle_depth}
-% %   Let $G$ be a triangulation with outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $V(f_0)$-rooted BFS layering of $G$, let $h:=\height(\mathcal{L})$, and let $uv$ be an edge of $F$ with $u\in L_{h-1}$ and $v\in L_h$.  If $G$ contains a separating triangle $uvw$ then every vertex of $G$ in the interior of $uvw$ is in $L_h$.
-% % \end{obs}
-% %
-% % \begin{proof}
-% %   Let $x$ be any vertex of $G$ in the interior of $uvw$. By definition $\dist_G(x,V(f_0))\le h$.  Since $v\in L_h$, $w\in L_{h-1}\cup L_h$.  Since $f_0$ is the outer face of $G$, no vertex of $f_0$ is in the interior of $uvw$.  Therefore, every path from $x$ to a vertex of $f_0$ contains at least one of $u$, $v$, or $w$.  Therefore, $i=\dist_G(x,V(f_0))\ge 1+\min\{\dist(z,V(f_0):z\in\{u,v,w\}\}=h$.
-% % \end{proof}
-% %
-% %
-% % \begin{lem}\label{retriangulate}
-% %   Let $G$ be a triangulation with $n\ge 4$ vertices and outer face $f_0$, let $\mathcal{L}:=\langle L_i\rangle_{i\in\N}$ be the $V(f_0)$-rooted BFS layering of $G$, let $F$ be a $V(f_0)$-rooted BFS tree of $G$, let $h:=\height(\mathcal{F})$, and let $G'$ and $F'$ be the graphs obtained from $G$ and $F$, respectively, by contracting each edge $uv\in E(F)$ with $u\in L_{h-1}$ and $v\in L_h$.  Then
-% %   \begin{compactenum}[(1)]
-% %     \item $G'$ is a triangulation.
-% %     \item $F'$ is a $V(f_0)$-rooted BFS spanning forest of $G'$.
-% %     \item For every face $f'$ of $G'$, there exists exactly one face $f$ of $G$ such that  $Y_{T'}(f')=Y_{T}(f)[\bigcup_{i=0}^{h-1} L_i]$.
-% %     % \item For every face $f$ of $G$ such that |V(Y_{T}(f))
-% %   \end{compactenum}
-% % \end{lem}
-% %
-% % \begin{proof}[Proof Sketch]
-% %     (1)~follows from \cref{separating_triangle_depth}. (2)~follows from the fact that each edge contraction can only decrease the distance from $f_0$ to a vertex whose distance from $f_0$ is greater than $h$.
-% %     % \todo[inline]{Now prove (3), which requires some arguing about planarity (and possibly using the fact that $G-L_{h}$ is $3$-connected).}
-% %     % To prove (3), observe that, for any face $v_1'v_2'v_3'$ of $G'$ there exists (at least one) face $v_1v_2v_3$ of $G$ such that $v_i=v_i'$ or $v_i'v_i$ is an edge of $F$ with $v_i'\in L_{h-1}$ and $v_i\in L_h$, for each $i\in\{1,2,3\}$.  To see that there is exactly one such face, suppose that there were two such triangles $v_1v_2v_3$ and $w_1w_2w_3$ and consider the graph $G'':=G-L_{h}\subseteq G'$.  The graph $G''$ is $3$-connected\todo{prove 3-connectivity}.
-% %     %
-% %     %
-% %     %
-% %     %  consider the graph $G'':=G-L_h\subseteq G'$.  Some of the faces of $G''$ contain vertices of $L_h$
-% %     %
-% %     %
-% %     % $G''$ let $x'y'z'$ be a face of $G'$.  If $x',y',z'\in \bigcup_{i=0}^{h-2} L_i$ then $x'y'z'$ is also a face of $G$.  Otherwise, at least one of $x
-% %     %
-% %     %
-% %     % edge contractions can only decrease the distance between any pair of vertices, but
-% %     % Contract every edge of $T$ that one endpoint in $L_{h-1}$ and one endpoint in $L_h$.  The only faces that disappear from this operation are those incident on an edge of $T$, which are of Type~(ii).  The faces of Type~(iii) appear in $G'$ as faces with all three vertices in $L_{h-1}$.
-% % \end{proof}
-% %
-% % We will actually prove a strengthening of \cref{face_trick} in which each vertex and edge of $G$ is assigned to a tripod.  For each $i\in\{0,\ldots,2n-3$, define the \emph{closed tripod} $\overline{Y}_i:=(V(G_i)\setminus V(G_{i-1}))\cup (E(G_i)\setminus E(G_{i-1}))$.  We prove the following strengthening of \cref{face_trick}:
-% %
-% % \begin{lem}\label{face_trick2}
-% %   Let $G$ be an $n$-vertex triangulation $G$ with outer face $f_0$ and let $F$ be a $V(f_0)$-rooted BFS spanning tree of $G$.  Then there exists an ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ of the faces of $G$ resulting in a sequence of graphs $\mathcal{G_F}:=\langle G_0,\ldots,G_{2n-3}\rangle$ and a sequence of closed tripods $\mathcal{\overline{Y}_F}:=\langle \overline{Y}_0,\ldots,\overline{Y}_{2n-3}\rangle$ such that, for each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$,
-% %   \begin{compactenum}[(i)]
-% %     \item $f\in\{f_0,\ldots,f_i\}$ or
-% %     \item there exists $a_i,b_i,c_i\in\{0,\ldots,i-1\}$ such that $V(f)\cup E(f)\subseteq \overline{Y}_{a_i}\cup \overline{Y}_{b_i}\cup \overline{Y}_{c_i}$.
-% %   \end{compactenum}
-% % \end{lem}
-% %
-% %
-% %
-% % \begin{proof}
-% %     The proof is by induction on $|V(G)|$.  If $|V(G)|=3$ the proof is trivial; $G_0=f_0$ and $Y_0=V(f_0)$.
-% %
-% %     If $|V(G)> 3$ then apply \cref{retriangulate} to $(G,F)$ to obtain the graph $G'$ and its BFS spanning forest $F'$.  Apply induction on $G'$ to obtain an ordering $\mathcal{F}':=f_0',\ldots,f_{r}'$ of the faces of $G'$ and this ordering defines graphs $G_0',\ldots,G_r'$ and a $(G',F')$-tripod decomposition $\{Y_0',\ldots,Y_r'\}$.  By \cref{retriangulate}, each face $f_i'$ of $G'$ has a corresponding face $f_i$ in $G$.  The order $\mathcal{F}$ that we construct will begin with $f_0,\ldots,f_{r}$.  This is already sufficient information about $\mathcal{F}$ to define the graph $G_0,\ldots,G_r$ and the tripods $Y_0,\ldots,Y_r$.
-% %
-% %     Before explaining how this order is extended to all the face of $G$, we first verify that $G_0,\ldots,G_r$ and $Y_0,\ldots,Y_r$ satisfy the conditions of the lemma.  In particular, we must verify that, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $V(f)\cup E(f)$ is contained in union of three closed tripods $\overline{Y}_{a_i}\cup \overline{Y}_{b_i}\cup \overline{Y}_{c_i}$, for some $a_i,b_i,c_i\in\{0,\ldots,i-1\}$.  We prove this by induction on $i$. The base case $i=0$ is trivial since $G_0=f_0=\overline{Y}_0$ and each of the two faces $f$ of $G_0$ has $V(f)\cup E(f)\subseteq\overline{Y}_0$.
-% %
-% %     Now consider the case where $i\in\{1,\ldots,2n-3\}$ and let $f$ be any face of $G_i$.  If $f$ is also a face of $G_{i-1}$ then the result follows from the inductive hypothesis.  Thus, it suffices to consider the case where $f$ is one of the at most four faces of $G_i$ that is not also a face of $G_{i-1}$.  By definition, each of these faces has an edge of $\overline{Y}_i$ on its boundary.\todo{Establish somewhere that each $G_i$ is $2$-connected}
-% %
-% %
-% %     One of these faces is $f_i$, which satisfies (i), so we may assume $f\neq f_i$.  Since $f_i$ has a corresponding face $f_i'$ in $G'$, none of the three edges of $f_i$ was contracted.
-% %
-% %     The face $f$ contains at least one edge $e$ of $f_i$ on its boundary.  The edge $e$ has a corresponding edge $e'$ in $G'$ (and $e'$ is an edge of $f_i'$).  Consider the face $f'\neq f_i'$ of $G_i'$ that has $e$ on its boundary.
-% %
-% %     Each of the remaining faces contains exactly one edge $e$ of $f_i$ on its boundary.  Observe that $e$ is not an edge of $F$ that was contracted, so $e$ is an edge of $G$.   other faces
-% %
-% %
-% %
-% %     By the inductive hypothesis we need only consider the case in which $f$ is one of the (at most four) faces of $G_i$ that contains a vertex of $f_i$ on its boundary.
-% %
-% %
-% %
-% %
-% %     % We claim there exists a face $f'$ of $G_i'$ such that $f_
-% %
-% %
-% %     % By the inductive hypothesis we know that the corresponding face
-% % \end{proof}
-% %
-% %
-% %
-% %
-% %
-% %
-% %
-% % \begin{lem}
-% %   Let $G$, $S$, $\mathcal{F}$, $Y_0,\ldots,Y_{2n-3}$, and $G_0,\ldots,G_{2n-3}$ be defined as in \cref{face_trick}. Then, for each $i\in\{0,2n-3\}$, each face of $G_i$ contains vertices of at most three tripods in $Y_0,\ldots,Y_{2n-3}$.
-% % \end{lem}
-% %
-% % \begin{proof}
-% %   The proof is by induction on $i$.  The base case $i=0$ is trivial since $G_0=f_0$ has three vertices.  Now assume $i\ge 1$. Let $g$ be any face $G_i$.  If $g$ is also a face of $G_{i-1}$ then the inductive hypothesis implies the result.  Otherwise, $g$ contains at least one vertex of the tripod $Y_i$.  The tripod $Y_i$ is contained in the interior of some face $f$ of $G_{i-1}$.  The inductive hypothesis implies that $f$ contains vertices of $c\le 3$ tripods among $Y_{0},\ldots,Y_{i-1}$.  If $c\le 2$ then $g$ contains vertices of $Y_i$ and at most two tripods in $Y_0,\ldots,Y_{i-1}$, as required.  If $c=3$ then \cref{tripod_blobs} establishes the result.
-% % \end{proof}
-% %
-% %
-% %
-% %
-% % % , but first we need the following lemma:
-% % %
-% % % \begin{lem}\label{good_deep_edge}
-% % %   If $n\ge 4$, then $F$ contains an edge $uv$ such that
-% % %   \begin{compactenum}[(i)]
-% % %     \item\label{max_depth} $\depth_{F}(v)=\height(F)$; and
-% % %     \item\label{no_separating_triangle} there is no $w\in V(G)$ such that $G-\{u,v,w\}$ is disconnected.
-% % %   \end{compactenum}
-% % % \end{lem}
-% % %
-% % % \begin{proof}
-% % %   Let $v$ be any leaf of $F$ having depth $k:=\height(F)$ and let $u$ be the $F$-parent of $v$.  By definition, $uv$ satisfies (\ref{max_depth}).  If $uv$ also satisfies (\ref{no_separating_triangle}) then there is nothing to prove.  Assume therefore that $uv$ is part of some $3$-cycle $uvw$ in $G$ such that $G-\{u,v,w\}$ is disconnected with one component $X$ in the interior of $uvw$ and the other component $Y$ in the exterior of $uvw$.
-% % %
-% % %   The triple $(u,v,w)$ has the following properties:
-% % %   \begin{inparaenum}[(a)]
-% % %       \item $\depth_F(v)=k$;
-% % %       \item $u$ is the $F$-parent of $v$;
-% % %       \item and there exists $w$ such that $G-\{u,v,w\}$ is disconnected with one component $X$ in the interior of the cycle $uvw$.
-% % %   \end{inparaenum}
-% % %   If $(G,F)$ has more than one triple $(u,v,w)$ satisfying the preceding conditions, then choose a \emph{minimal} triple in the sense that there does not exist $(u',v',w')$ that also satisfy these conditions and such that the component $X'$ of $G-\{u',v',w'\}$ contained in the interior of the cycle $u'v'w'$ has fewer vertices than $X$.
-% % %
-% % %   Since $\depth_F(u)=k-1$, $\depth_F(v)=k$ and $w$ is adjacent to both $u$ and $v$, $\depth_{F}(w)\in\{k-1,k\}$.
-% % %   Let $v'$ be any vertex of $X$. Then $\depth_F(v')\le\height(F)\le k$ and $\depth_F(v')\ge 1+\min\{\depth_F(y):y\in\{u,v,w\}\}=k$, so $\depth_{F}(v')=k$ and the $F$-parent $u'$ of $v'$ is one of $u$ or $w$.  We claim that, in either case, the edge $u'v'$ satisfies the conditions of the lemma.  By definition, $u'v'$ satisfies (\ref{max_depth}).  To see that it also satisfies (\ref{no_separating_triangle}), observe that, if there exists $w'$ such that $G-\{u',v',w'\}$ is disconnected with a component $X'$ in the interior of $u'v'w'$ than $V(X')\subseteq V(X)\setminus\{v'\}$, so $|V(X')|<|V(X)|$, which violates the minimality of $(u,v,w)$.
-% % % \end{proof}
-% %
-% % % We can now prove give a bottom-up proof of \cref{face_trick}.
-% %
-% % \begin{proof}[Proof of \cref{face_trick}]
-% %   The proof is by induction on $n$, the number of vertices of $G$.  If $n=3$, the proof is trivial: Set $f_1$ to be the only inner face of $G$.  Then $Y_0=V(G_0)= V(G_1)$ and $Y_1$ is empty.  Assume therefore that $n\ge 4$ and that the statement of the lemma is true for any graph with fewer than $n$ vertices.
-% %
-% %   Let $S:=\langle u_iv_i\rangle_{i=1}^{|L_h|}$ be the sequence of edges given by \cref{contraction_sequence}.  We put these edges into the BFS forest $F$ we are constructing.  We then contract these edges and repeat this process on the resulting graph to obtain our BFS forest $F$ and an ordering of the edges of $F$ that gives a contraction sequence $S$ with some properties we want.  Let $uv$ be the first edge in $S$ and let $G'$ and $F'$ be obtained by contracting $uv$ in $G$ and $F$, respectively.
-% %
-% %   Since $uv$ is a contractible edge of $G$, $G'$ is a triangulation.  Since $\depth_F(v)=\height(F)$, $F'$ is an $S$-rooted BFS tree of $G'$.  Recurse on $G'$, $F'$, and the suffix $S'$ obtained by removing $uv$ from $S$. The result is an ordering of $\mathcal{F}':=f_0,\ldots,f_{2n-5}$ of the faces of $G'$ such that the tripod sequence $\mathcal{D}_{F'}:=Y_0',\ldots,Y_{2n-5}'$ and the resulting sequence of induced subgraph $G_0',\ldots,G_{2n-5}'$ satisfy the conditions of the lemma.
-% %
-% %   Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.  Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f'$ and $f''$ of $G$ that contain the edge $uv$. We now show that it is possible to insert $f'$ and $f''$ into the ordering $f_0,\ldots,f_{2n-5}$ to obtain an ordering of the faces of $G$ that satisfies the conditions of the lemma.
-% %
-% %   \begin{enumerate}
-% %     \item $\deg_G(v)>4$.  In this case, $u$ has only one child in the tree $T$ and no children in $T'$.  Now $u$ is a vertex of $G'$ so $u$ appears in some tripod $Y_i'$ that corresponds to some face $f_i'$ of $G'$.  Since $u$ has no children in $T'$, $u$ is the bottom vertex in the leg of $Y_i'$ that contains $u$.  In this case $Y_i:=Y_{i}'\cup\{v\}$ and $Y_{\ell}=Y_\ell'$ for each $\ell\in\{0,\ldots,2n-5\}\setminus\{i\}$.
-% %
-% %     % \begin[inline]{todo}
-% %     %   Specify locations of $f'$ and $f''$.  I think moving $f'$ immediately after the first $f_i$ for which $G_i$ contains all three vertices of $f'$ works.
-% %     % \end{todo}
-% %
-% %     Now, the feet of $Y_i$ are exactly the same as the feet of $Y_i'$ and a tripod $Y_j'=Y_j$ with a foot in $Y_i'$ also has a foot in $Y_i$, so this satisfies the conditions of the lemma.
-% %
-% %     \item $\deg_G(v)=4$.  In this case we consider the tripod $Y_i'$ that contains $u$.  $Y_i'$ corresponds to a face $f_i'$ of $G'$ and $f_i'$ corresponds to a face $f_i$ of $G$.  We distinguish between two cases:
-% %     \begin{compactenum}
-% %       \item If $f_i$ is not incident to $v$, then consider the minimum $r$ such that $f_r$ is incident to $v$. Such an $r$ must exist because $v$ is incident on at least $3$ faces of $G$ and at least one of these faces has a corresponding face in $G'$.  By definition $r\neq i$ and $r\not\le i$ since, otherwise $u$ would be part of $Y_r$.
-% %
-% %       In this case $Y_r:=Y_r'\cup\{v\}$ and $Y_{\ell}=Y_\ell'$ for each $\ell\in\{0,\ldots,2n-5\}\setminus\{r\}$.  For each $j\in\{0,\ldots,r-1\}$, the feet of $Y_j$ in $G_{j-1}$ are the same as the feet of $Y_j'$ in $G_{j-1}'$, so there is nothing to worry about there.
-% %
-% %       For $Y_r$, there are two cases to consider.
-% %       \begin{compactenum}
-% %         \item  If $Y_r'$ is empty then all three vertices of $f_r$ are in $G_{r-1}$ and all of them are feet.  In $G$, $v$ is adjacent to each vertex of $f_r$, so the feet of $Y_r$ are a superset of the feet of of $Y_r'$.
-% %
-% %         For $Y_j$ with $j>r$, we have to be a bit careful.  One of the non-triangular faces of $G_{r}$ incident on $v$ has $Y_r$ on its boundary.  In $G_{r}'$, this face had at most two tripods on its boundary, the tripod $Y_i$ containing $u$ and the tripod $Y'$ containing the neighbour of $v$.  When an additional tripod appears, it may or may not put a foot on $Y_r$.  This would be bad!  So let's rely instead on the greedy property that is mentioned above.  This property say that if the triangle opposite $f_r$ did not already appear before $f_r$, then it will be the first triangle to appear inside $f$.  That tripod definitely has a foot on $f_r$, phew!.
-% %
-% %         \item If $Y_r'$ has one vertex $w$ of $f_r'$ and $uw\in E(G)$. Do some case analysis\ldots
-% %
-% %         \item If $Y_r'$ has one vertex $w$ of $f_r'$ and $uw\not\in E(G)$. [Tricky case, requires moving $f'$ or $f''$ forward to preserve the greedy property.]
-% %
-% %         \item If $Y_r$ has two vertices of $f_r'$, then this is a clean one.
-% %       \end{compactenum}
-% %     \end{compactenum}
-% %
-% %       \item If $f_i$ is incident to $v$, then $v\in Y_i$ and things are easy.
-% %   \end{enumerate}
-% %
-% %   %
-% %   % '
-% %   %
-% %   %
-% %   %
-% %   % \begin{enumerate}
-% %   %   \item $\deg_{G_i}(v_i)>4$.
-% %   %
-% %   %
-% %   %
-% %   %   \item $\deg_{G'_j}(v_j)=3$ then we create a new tripod that contains only $v$.  This creates three new faces
-% %   %
-% %   %
-% %   %     Then there is one face $f_i$ of $G'_j$ that is incident to $v$ and that corresponds to a face $f_i'$ in $G'_{j+1}$ that is incident to $u$.  We add $v$ to the tripod $Y_i$.
-% %   %
-% %   %
-% %   %
-% %   %    Now there are two cases to consider:
-% %   %   \begin{compactenum}
-% %   %     \item $u\in Y_i$ then
-% %   %
-% %   %
-% %   %   \item $\deg_{G'_j}(v_j)= 4$.  Consider the tripod $Y_i$ that contains $u_i$
-% %   %
-% %   %
-% %   %
-% %   % \end{enumerate}
-% %   %
-% %   %
-% %   % $n-1$ vertices.
-% %   %
-% %   % Let $uv\in E(G)$ be an edge of $G$ satisfying the conditions of \cref{good_edge}.  If $uv$ is part of a separating triangle $uvw$ then [handle separating triangles separately]\todo{Or avoid those edges if possible.} Let $G'$ and $F'$ be obtained by contracting the edge $uv$ in $G$ and $F$, respectively. We use the convention that $G'$ and $F'$ contain the vertex $u$ but not $v$ so that $N_{G'}(u)=N_G(u)\cup N_G(v)$ and $N_{F'}(u)=N_F(u)\cup N_F(v)$.  Observe that $G'$ is a triangulation on $n-1$ vertices and $F$ is a BFS forest of $G'$ rooted at the vertices of $f_0$.   Apply the inductive hypothesis to obtain an ordering $\mathcal{F}':=f_0,\ldots,f_{2n-5}$ of the faces of $G'$ that satisfies the conditions of the lemma.
-% %   %
-% %   % Each face of $G'$ not incident to $u$ is also a face of $G$.  Each face of $G'$ incident to $u$ corresponds to a face of $G$ that is incident to exactly one of $u$ or $v$.
-% %   % % Because of this, there is no need to distinguish between a face that is in $G'$ and the corresponding face in $G$.
-% %   % Therefore, the ordering $\mathcal{F}':=f_0',\ldots,f_{2n-5}'$ on the faces of $G$ defines an ordering $f_0,\ldots,f_{2n-5}$ on all but two faces of $G$.  In particular, it does not include the two faces $f_{2n-4}$ and $f_{2n-3}$ of $G$ that contain the edge $uv$.
-% %   %
-% %   % We claim that the ordering $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}). To prove this claim, consider the unique tripod $Y_i'$ in the tripod decomposition $\mathcal{D}_{\mathcal{F'}}:=Y_0',\ldots,Y_{2n-3}'$ that contains $u$. For each $j\in\{0,\ldots,i-1\}$, $G_j=G_j'$ and $Y_j=Y_j'$ so it suffices to check conditions (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-3\}$. Furthermore, $G_{2n-3}=G_{2n-4}=G_{2n-5}$, so it suffices to verify (\ref{biconnected}) and (\ref{three_faces}) for $j\in\{i,\ldots,2n-5\}$.
-% %   %
-% %   %
-% %   % Now there are two cases to consider:
-% %   %
-% %   % \begin{enumerate}
-% %   %   \item The face $f_i$ is incident to $v$ (and not $u$) in $G$. See \cref{replacement}.
-% %   %   \begin{figure}
-% %   %     \begin{center}
-% %   %       \begin{tabular}{cc}
-% %   %         \includegraphics{figs/case1-1} & \includegraphics{figs/case1-2}
-% %   %       \end{tabular}
-% %   %     \end{center}
-% %   %     \caption{Case 1 in the proof of \cref{face_trick}}
-% %   %     \label{replacement}
-% %   %   \end{figure}
-% %   %
-% %   %   In this case we claim that $G_j'=G_j/uv$ for each $j\in\{0,\ldots,2n-5\}$. That is, $G_j'$ is obtained from $G_j$ by contracting the edge $uv$ into $u$.  To prove this, it suffices to show that $\overline{Y}_j'=\overline{Y}_j$ for each $j\in\{0,\ldots,2n-5\}$ since this implies that
-% %   %   \[
-% %   %     G_j/uv = (G_{j-1}\cup\overline{Y}_j)/uv=(G_{j-1}/uv) \cup (\overline{Y}_j/uv) = G_{j-1}'\cup \overline{Y}_j' = G_j' \enspace .
-% %   %   \]
-% %   %
-% %   %   Above, we have already argued that $G_j=G_j'$, $Y_j=Y_j'$, and $\overline{Y}_j=\overline{Y}_j'$ for each $j\in\{0,\ldots,i-1\}$, so the first interesting case occurs when $j=i$.  We will finish the proof of the claim by induction on $j\ge i$. The case $j=i$ is special.  Since $f_i$ is incident on $v$, $v$ is contained in the tripod $Y_i$.  Indeed, $Y_i$ is identical to $Y_i'$ except that the leg with bottom vertex $u$ is extended so that its bottom vertex is $v$. Therefore $Y_i'=Y_i/uv$.
-% %   %
-% %   %   Suppose $j\ge i$ and consider the face $f'$ of $G_{j-1}'$ that contains $f_j'$.  By the inductive hypothesis, there is a face $f$ of $G_{j-1}$ that corresponds to $f'$. The tripods $Y_j$ and $Y_j'$ are identical; each contains three maximal vertical paths from the vertices of $f'_j=f_j$ up to, but not including the first vertex in $f'$, respectively $f$.  The closures $\overline{tau}_j$ and $\overline{Y}_j'$ of these tripods are also identical except that, possibly the vertex $u$ appears as a foot in one leg of $\overline{Y}_j'$ but is replaced by $v$ in $\overline{Y}_j$.  Nevertheless $\overline{Y}_j'=Y_j/uv$, as required.  This completes the proof that $G_j'=G_j/uv$.
-% %   %
-% %   %   Since $G$ contains no separating triangle with the edge $uv$, neither does $G_j$.  It now follows that $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-% %   %
-% %   %   Since $G_j'=G_j/uv$, there is an injective function from the faces of $G_j'$ onto the faces of $G_j$.  Therefore, for any face $f\not\in\{f_{2n-3},f_{2n-4}\}$ of $G_j$ there is a corresponding face $f'$ of $G_j'$.  It is straightforward to verify that $J_\mathcal{F}(f)=J_\mathcal{F'}(f')$ and therefore $f$ satisfies (\ref{three_faces}) since $f'$ satisfies (\ref{three_faces}).
-% %   %
-% %   %   \item The face $f_i$ is not incident to $v$ in $G$.  Since $v$ is a leaf of $F$, this implies that $v\not\in Y_j$ for any $j\in\{0,\ldots,i\}$.  In fact, $v$ is the bottom vertex of the leg of the tripod $Y_r$ that contains $v$.  In particular, $v\in Y_r$ for the minimum $r$ such that $f_r$ is incident to $v$ in $G$.  Note that this implies $r\ge i$ since otherwise $u$ would already be included in $Y_r'$ and not in $Y_i'$. Case~1 above considers the case $i=r$.  Furthermore, $r\le 2n-5$, since  $f_{2n-4}$ and $f_{2n-3}$ account for only two of the at least three faces of $G$ incident to $v$.  Therefore $r\in\{i+1,\ldots,2n-5\}$ and $Y_r'$ is a tripod with one empty leg whose foot is $u$.
-% %   %
-% %   %   Again, we claim that $G_j'=G_j/uv$ for each $j\in\{0,2n-5\}$.  The proof of this claim is similar to the previous case except that we already know that $G_j=G_j'$ for each $j\in\{0,\ldots,r-1\}$, so the first interesting case occurs when $j=r$. This case is handled easily because, from the discussion in the preceding paragraph $\overline{Y}_r'=\overline{Y}_r/uv$.  The cases in which $j\in\{r+1,\ldots,2n-5\}$ are handled as in the previous case.
-% %   %
-% %   %   As in the previous case, the fact that $G$ has no separating triangle with the edge $uv$ implies $G_j$ is biconnected since $G_j'=G_j/uv$ is biconnected, so $G_j$ satisifies (\ref{biconnected}).
-% %   %
-% %   %
-% %   %   \todo[inline]{This is now broken.  The problem occurs at the first $s>r$ such that $f_s$ is incident on $v$.  Essentially, the face $f_s'$ was chosen because it gives a tripd $Y_s'$ that has feet on $Y_i'$, $Y_r'$ and $Y_q'$ for some $q$.  But now $Y_s$ has two feet on $Y_r$ and no feet on $Y_i$.  This seems to fuck everything up.  The only obvious observation here is that $f_s$ should be one of the triangles incident on $v$, which could help if we can guarantee that $v$ has low degree.  The problem seems to go away if $v$ has degree at most $5$, and looks}
-% %   %
-% %   %
-% %   %   Now consider any face $f$ of $G_j$ for some $j\in\{r,\ldots,2n-5\}$.  If $f$ contains no edge of $\overline{Y}_r$ and no vertex of $\overline{Y}_r$.
-% %   %
-% %   %   Now consider the face $f$ of $G_{r-1}$ that contains $f_r$.  Assume, for now that $|J_{\mathcal{F'}}(f)|=3$.  Since $u\in V(f)$, $J_{\mathcal{F'}}(f)$ contains $i$ as well as two other values $i_1,i_2$.  The graph $f\cup\overline{Y}_r\subseteq G_r$ has the face $f_r$ and up to three additional internal faces $g$, $g_2$, and $g_3$.  Assume, for now that $f\cup\overline{Y}_r'\subseteq G_r'$ contains three corresponding faces $g'$, $g_1'$ and $g_2'$.  Now, $|J_{\mathcal{F'}}(g')|\le 3$, and
-% %   %
-% %   %
-% %   %
-% %   %
-% %   %
-% %   %
-% %   %   \todo{define foot of a tripod}.  In $Y_r$ this leg contains the length-$0$ path that contains only $v$.  We now verify that $\mathcal{F}$ satisfies conditions (\ref{biconnected}) and (\ref{three_faces}).  This verification is similar to the verification in the first case, except for the proof that $\mathcal{F}$ satisfies (\ref{three_faces}) for a face $f$ that contains $v$.
-% %   %
-% %   %   Let $f$ be a face of $G$ that contains $v$.  If $|J_{\mathcal{F}'}(f)|\in\{1,2\}$ then $|J_{\mathcal{F}}(f)|\le 3$ and its easy since $J_{\mathcal{F}}(f)\subseteq J_{\mathcal{F'}}(f)\cup\{r\}$.  If $f$ also contains $u$ then it contains the edge uv and [argue that we can swap an element of $J_{\mathcal{F}'}(f)$ for $r$].  If $f$ does not contain $u$ then [argue that we can swap $i$ out of $J_{\mathcal{F}'}(f)$ and use $r$ instead.]  \qedhere
-% %   % \end{enumerate}
-% % \end{proof}
-% %
-%
-% \section{A Linear Time Algorithm}
-%
+\subsection{Monopod Decompositions}
+
+Finally the decomposition given by \citet{ueckerdt.wood.ea:improved} works similarly, but each part of the partition is a single upward path in $T$.  Each recursive subproblem is a near triangulation $N$ whose outer face intersects at most $5$ parts of the partition. This gives up to five bichromatic edges on the outer face of $N$, and up to five inner faces of $N$ that each contain at least one of these edges.
+
+
+\todo[inline]{Continue on Monday}
+
+
+
+\section*{Acknowledgement}
+
+This research was initiated at the BIRS 21w5235 Workshop BIRS on Graph Product Structure Theory, held November 21--26, 2021 at the Banff International Research Station.  The authors are grateful to the workshop organizers and participants for providing a stimulating research environment.
+
 
 \bibliographystyle{plainurlnat}
 \bibliography{ps2}
