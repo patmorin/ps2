@@ -234,6 +234,7 @@ This immediately leads to a divide-and-conquer algorithm by recursing on each of
 By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}.  To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. For each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $\{Y_j:j\in I_f\}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
 \section{An $O(n)$-Time Algorithm}
+\label{linear_time_algorithm}
 
 Refer to \cref{baby_sperner_fig} for an illustration of the following (probably well-known) baby version of Sperner's Lemma:
 
@@ -359,33 +360,58 @@ Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\
 
 \section{Variations}
 
-In this section we show that the following two variations on the product structure theorem also have linear-time algorithms:
-\begin{itemize}
-  \item For every planar graph $G$, there exists a planar graph $H$ of  treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
-  \item For every planar graph $G$, there exists a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$.
-\end{itemize}
+In this section we show that there are $O(n)$ time algorithms for computing the decompositions in \cref{meta}.b and \cref{meta}.c.  Both algorithms are based on the fact that lowest common ancestor information is sufficient to reconstruct the shapes of certain subtrees of the cotree $\overline{T}$.
 
-Both of these results are obtained by recursive algorithm similar to that described for computing tripod decompositions.
+\begin{lem}\label{reconstruction}
+  Let $\overline{T}$ be a rooted tree of maximum degree $3$, let $S:=g_1,\ldots,g_d$ be a sequence of distinct nodes in $\overline{T}$ and let $S^+:=\{\lca_{\overline{T}}(x,y):x,y\in S\}$.  Then there exist a unique rooted tree $\overline{T}'$ of maximum degree $3$ with $V(\overline{T}'):= S^+$ and $\lca_{\overline{T'}}(x,y)=\lca_{\overline{T}}(x,y)$ for each $x,y\in S$.
+\end{lem}
+
+\begin{proof}
+  TODO
+   % The proof is by induction on $|S|$.  The base case $|S|=1$ and $T'$ consists of a single vertex.  The case $|S|=2$ is also straightforward. If $S:=\{u,v\}$ then either $\lca_{\overline{T}(u,v)\in\{u,v\}$ or  $\lca_{\overline{T}(u,v)\in\{u,v\}$. In the former case $\overline{T}'$ consists of a single edge $uv$ and in the latter case, $\overline{T}'$ is a $3$-vertex tree with leaves $u$ and $v$ and root $\lca_{\overline{T}}(u,v)$.
+   %
+   % Now, suppose that $|S|\ge 3$.  Then there exist a pair of distinct element $x,y\in S$ such that $\lca_\overline{T}(x,y)
+\end{proof}
+
+% the following two variations on the product structure theorem also have linear-time algorithms:
+% \begin{itemize}
+%   \item For every planar graph $G$, there exists a planar graph $H$ of  treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
+%   \item For every planar graph $G$, there exists a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$.
+% \end{itemize}
+%
+% Both of these results are obtained by recursive algorithm similar to that described for computing tripod decompositions.
 
 \subsection{Bipod Decompositions}
 
-We begin with the second decomposition, which is simpler, but seems not to have been noted before.  This decomposition is obtained by selecting a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
+We begin with the decomposition in \cref{meta}.\ref{bipods}, which is simpler, but seems not to have been noted before.  This decomposition is obtained by selecting a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
 
 Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ shows that if $\mathcal{E}$ is a good edge sequence that produces a partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
 \begin{figure}
   \begin{center}
-    \begin{tabular}{cc}
-      \includegraphics{figs/bipods-1} &
-      \includegraphics{figs/bipods-2}
-    \end{tabular}
+    % \begin{tabular}{cc}
+      \includegraphics{figs/fourby}
+      % \includegraphics{figs/bipods-2}
+    % \end{tabular}
   \end{center}
   \caption{Choosing the next $e_i$ in a  good edge sequence.}
+  \label{e_i}
 \end{figure}
 
-We now describe how to construct the edge sequence $e_0,\ldots,e_r$.  The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$.  The face $f$ has vertices of at most four bipods $\Lambda_a$, $\Lambda_b$, $\Lambda_c$, and $\Lambda_{c'}$ on its boundary.  As before we colour vertices in near triangulation $N$ bounded by $f$ with colours $a$, $b$, and $c$; using colour $c$ for vertices that lead to $c$ or to $c'$.  Again, Sperner's Lemma implies that that $N$ contains an inner face $f_i$ that is trichromatic.  In the graph $G_i^+:=G_{i-1}\cup P_T(f_i)$, each newly introduced face in $F(G_{i}^+)\setminus F(G_{i-1})\setminus\{f_i\}$ is incident on at most two of $\Lambda_a$, $\Lambda_b$ or $\Lambda_{c}\cup \Lambda_{c'}$.  Two of these faces are incident at most two of $\Lambda_a$, $\Lambda_b$, $\Lambda_c$ or $\Lambda_c'$.  These two faces are separated by one of the legs of $f_i$ whose lower endpoint is a vertex $v_i\in V(f_i)$.  We take $e_i$ to be the unique edge in $f_i-v_i$.  We can easily check that this results in a good sequence $e_0,\ldots,e_i$ of edges.  This process terminates when $G_k=G$.  That is, each edge of $G$ is contained in $P_T(e_i)$ for some $i\in\{0,\ldots,k\}$.
+We now explain why such an edge sequence $e_0,\ldots,e_r$ exists.  The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$.  The face $f$ has vertices of at most four bipods $\Lambda_a$, $\Lambda_b$, $\Lambda_c$, and $\Lambda_{d}$ on its boundary.  As before we colour vertices in the near triangulation $N$ bounded by $f$ with colours $a$, $b$, $c$, and $d$. Now we consider the subgraph $X$ of $N^\star$ induced by the bichromatic and trichromatic inner faces of $N$.  As in \cref{linear_time_algorithm}, $X$ is also a connected subgraph of $\overline{T}$.
 
-Algorithmically, this process requires almost no changes from the process used to find good face sequences.  Each recursive subproblem is defined by the at most $4$ inner faces of a near-triangulation that contain a edge of the outer face that spans two bipods.  The triangle $f_i$ is identified by using lowest common ancestor queries on three of these faces.  Using \cref{colour_remark}, the vertex $v_i$ of $f_i$ that is not part of $e_i$ can also be identified in constant time.  Colouring the vertices of $\Lambda_i$ and finding the at most four new faces of $G$ required to define the at most two new recursive subproblems can be done in $O(1+|\Lambda_i|)$ time.  This establishes the following result:
+There are a number of cases to consider, which are all easily handled.  In the extreme case, illustrated in \cref{e_i}, the graph $X$ has four leaves $g_1,\ldots,g_4$ and two internal nodes $x$ and $y$.  Any edge of $N$ that is dual to an edge on the path in $X$ from $x$ to $y$ will work to determine a bipod $e_i$ that satisfies our requirements.  In the general case, it is sufficient to find an edge of the tree $X$ whose removal leaves no component with more than two of $g_1,\ldots,g_4$.
+
+Algorithmically, using \cref{reconstruction}, we can determine the ``shape'' of the tree $X$ by performing lowest common ancestor queries on the at most four inner faces of $N$ that contain bichromatic edges of the outer face of $N$.  The details and analysis of the rest of the algorithm are the same as in \cref{linear_time_algorithm}.
+
+
+
+%
+%
+%
+% ; using colour $c$ for vertices that lead to $c$ or to $c'$.  Again, Sperner's Lemma implies that that $N$ contains an inner face $f_i$ that is trichromatic.  In the graph $G_i^+:=G_{i-1}\cup P_T(f_i)$, each newly introduced face in $F(G_{i}^+)\setminus F(G_{i-1})\setminus\{f_i\}$ is incident on at most two of $\Lambda_a$, $\Lambda_b$ or $\Lambda_{c}\cup \Lambda_{c'}$.  Two of these faces are incident at most two of $\Lambda_a$, $\Lambda_b$, $\Lambda_c$ or $\Lambda_c'$.  These two faces are separated by one of the legs of $f_i$ whose lower endpoint is a vertex $v_i\in V(f_i)$.  We take $e_i$ to be the unique edge in $f_i-v_i$.  We can easily check that this results in a good sequence $e_0,\ldots,e_i$ of edges.  This process terminates when $G_k=G$.  That is, each edge of $G$ is contained in $P_T(e_i)$ for some $i\in\{0,\ldots,k\}$.
+%
+% Algorithmically, this process requires almost no changes from the process used to find good face sequences.  Each recursive subproblem is defined by the at most $4$ inner faces of a near-triangulation that contain a edge of the outer face that spans two bipods.  The triangle $f_i$ is identified by using lowest common ancestor queries on three of these faces.  Using \cref{colour_remark}, the vertex $v_i$ of $f_i$ that is not part of $e_i$ can also be identified in constant time.  Colouring the vertices of $\Lambda_i$ and finding the at most four new faces of $G$ required to define the at most two new recursive subproblems can be done in $O(1+|\Lambda_i|)$ time.  This establishes the following result:
 
 \begin{thm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-bipod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 4$.
@@ -396,18 +422,17 @@ Algorithmically, this process requires almost no changes from the process used t
 
 Finally the decomposition given by \citet{ueckerdt.wood.ea:improved} works similarly, but each part in the decomposition is a \emph{monopod}: a single vertical path in $T$. Each recursive subproblem is a near triangulation $N$ whose outer face contains vertices of at most $5$ monopods of the partition. This gives up to five inner faces $g_1,\ldots,g_5$ of $N$ that each contain an edge of the outer face of $N$ whose endpoints are in different monopods.
 
-Refer to \cref{uwy}.
-The key observation used in \cref{ueckerdt.wood.ea:improved} is that there exists a tripod $Y_i$ with crotch $f_i$ such that each inner face of $N\cup Y_i$ has vertices of at most three of the original five monopods on its boundary.  The three legs of $Y_i$ are placed into individual monopods of the decomposition.  This then gives three new subproblems, each of which has vertices of at most three of the original monopods and two of the new monopods on its boundary.
+Refer to \cref{uwy}.  The key observation used in \cite{ueckerdt.wood.ea:improved} is that there exists a tripod $Y_i$ with crotch $f_i$ such that each inner face of $N\cup Y_i$ has vertices of at most three of the original five monopods on its boundary.  The three legs of $Y_i$ are placed into individual monopods of the decomposition.  This then gives three new subproblems, each of which has vertices of at most three of the original monopods and two of the new monopods on its boundary.
 
 \begin{figure}
   \begin{center}
-    \includegraphics{figs/uwy-2}
+    \includegraphics{figs/fiveby}
   \end{center}
   \caption{The selection of a tripod by \citet{ueckerdt.wood.ea:improved}}
   \label{uwy}
 \end{figure}
 
-In terms of the cotree $\overline{T}$, the minimal subtree $\overline{T}'\subseteq\overline{T}$ that contains $g_1,\ldots,g_5$ has up to three nodes of degree $3$.  These three nodes (and the shape of the tree $\overline{T}'$) can be determined using $O(1)$ lowest common ancestor queries in $\overline{T}$.  The correct choice for the node $f_i$ corresponds to a node of $\overline{T}'$ whose removal disconnects $\overline{T}'$ into components, none of which contains more than $2$ of $g_1,\ldots,g_5$.  We leave the details to the interested reader.
+In terms of the cotree $\overline{T}$, the minimal subtree $X \subseteq\overline{T}$ that contains $g_1,\ldots,g_5$ has up to three nodes of degree $3$.  These three nodes (and the shape of the tree $X$) can be determined using $O(1)$ lowest common ancestor queries in $\overline{T}$.  The correct choice for the node $f_i$ corresponds to a node of $\overline{T}'$ whose removal disconnects $X$ into components, none of which contains more than $2$ of $g_1,\ldots,g_5$.  We leave the details to the interested reader.
 
 \begin{thm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-monopod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 6$.
