@@ -97,7 +97,7 @@
 \maketitle
 
 \begin{abstract}
-  The Product Structure Theorem for planar graphs (Dujmović et al, 2019) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves upon the previous $O(n\log n)$ time algorithm (Morin, \emph{Algorithmica}. \textbf{85}(5):1544--1558).
+  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al, \emph{JACM}, \textbf{67}(4):22:1--22:38) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin, \emph{Algorithmica}, \textbf{85}(5):1544--1558).
 \end{abstract}
 % \end{titlepage}
 
@@ -111,29 +111,31 @@
 
 For two graph $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$.
 % Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
-The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs \cite{dujmovic.esperet.ea:adjacency,dujmovic.joret.ea:planar,dujmovic.esperet.ea:planar,debski.felsner.ea:improved}.
+The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs \cite{dujmovic.esperet.ea:adjacency,dujmovic.joret.ea:planar,dujmovic.esperet.ea:planar,debski.felsner.ea:improved}.\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
+
 
 \begin{thm}[\citet{dujmovic.joret.ea:planar, ueckerdt.wood.ea:improved}]\label{meta}
   For any planar graph $G$, there exists:
   \begin{compactenum}[(a)]
     \item \label{three_tree} a planar graph $H$ of treewidth at most $3$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_3$ \cite{dujmovic.joret.ea:planar};
-    \item a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$; and
-    \item a planar graph $H$ of treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
+    \item \label{four_tree} a planar graph $H$ of treewidth at most $4$ and a path $P$ such that $G\subseteq H\boxtimes P\boxtimes K_2$; and
+    \item \label{six_tree} a planar graph $H$ of treewidth at most $6$ and a path $P$ such that $G\subseteq H\boxtimes P$ \cite{ueckerdt.wood.ea:improved}.
   \end{compactenum}
 \end{thm}
 
-(In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.\todo{Put the defn's in a footnote?})
+The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.  
 
-The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.
-
+The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews of the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
 \section{Preliminaries}
+\label{prelims}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  A subgraph of a $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
+
 
 \paragraph{Quotient Graphs.}
 
-Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $H:=G/\mathcal{P}$ is the graph whose vertex set $V(H):=\mathcal{P}$ contains one one for each part in $\mathcal{P}$ and in which two nodes $X,Y\in V(H)$ are adjacent if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
+Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph whose vertex set $V(G/\mathcal{P}):=\mathcal{P}$ contains one node for each part in $\mathcal{P}$ and in which two nodes $X,Y\in V(G/\mathcal{P})$ are adjacent if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
 
 \paragraph{Embeddings, Planar Graphs, and (Near-)Triangulations.}
 
@@ -142,7 +144,7 @@ We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \p
 
 If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,\psi)$ an \emph{embedded graph} and we will not distinguish between a vertex $v$ of $G$ and the point $\psi(v)$ or between an edge $vw$ of $G$ and the curve $\psi(vw)$.  Similarly, we will not distinguish between $G$ and the  point set $\psi(G)$.  Any cycle in an embedded graph defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and the other unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  If $G$ is an embedded triangulation, then the subgraph of $G$ consisting of all edges and vertices of $G$ contained in the closure of the interior of $C$ is called a \emph{near-triangulation}.
 
-Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ form a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face, the \emph{outer face} that is unbounded.
+Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ forms a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face, the \emph{outer face} that is unbounded.
 
 \paragraph{Duals and Cotrees.}
 
@@ -150,42 +152,46 @@ The \emph{dual} $G^\star$ of an embedded planar graph $G$ is the graph with vert
 
 The \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.  It is well known that, if $G$ is connected, then $\overline{T}$ is a spanning tree of $G^\star$.
 
-A \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$. (See \cref{X}).
+A \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\todo{Add a figure?}.
 
 \paragraph{Paths and Distances.}
 
 A \emph{path} in $G$ is a (possibly empty) sequence of vertices $v_0,\ldots,v_r$ with the property that $v_{i-1}v_i\in E(G)$, for each $i\in\{1,\ldots,r\}$.  The \emph{endpoints} of a path $v_0,\ldots,v_r$ are the vertices $v_0$ and $v_r$.
 % We will treat a path $v_0,\ldots,v_r$ interchangeably with the subgraph of $G$ having vertex set $\{v_0,\ldots,v_r\}$ and edge set $\{v_{i-1}v_i:i\in\{1,\ldots,r\}\}$.
-The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of edges in the path.  For two vertices $v$ and $w$ in a connected graph $G$, $\dist_G(v,w)$ denotes the minimum length of a path in $G$ that contains both $v$ and $w$.
+The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of edges in the path.  
+% For two vertices $v$ and $w$ in a connected graph $G$, $\dist_G(v,w)$ denotes the minimum length of a path in $G$ that contains both $v$ and $w$.
 % For a non-empty subset $S\subseteq V(G)$, $\dist_G(v,S):=\min\{\dist_G(v,w):w\in S\}$.
 %
 
 \paragraph{Trees, Depth, Ancestors, and Descendants.}
 
-Let $T$ be a tree rooted at a vertex $v\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $v$ to $w$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $v_0$ is the \emph{lower endpoint} of this path and $v_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is $\depth_T(w):=\dist_T(v,w)$, i.e,. the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $v\in V(T)$ if $a\in V(P_T(v))$. If $a$ is a $T$-ancestor of $v$ then $v$ is a \emph{$T$-descendant} of $a$.
+Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $v$ to $w$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
+
 
 
 \paragraph{Lowest Common Ancestors}
 
-For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the vertex $a$ of $P_T(v)\cap P_T(w)$ that maximizes $\depth_T(a)$.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
+For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the maximum depth node $a$ in $P_T(v)\cap P_T(w)$.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
 
 \paragraph{Reconstructing Binary Tree Models}
 
-An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by repeatedly replacing a maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$.
+An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by repeatedly replacing a maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
-  Given a lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$, it is possible to compute the model $T'$ of $T$ in $O(d^2)$ time.
+  Given a lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$, there exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of the minimal subtree of $T$ that spans $S$.
 \end{lem}
 
 \begin{proof}
-  Let $T_0$ be the minimal subtree of $T$ that contains every node in $S$.  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $S^+=S$ and $T'=T_0$ is the tree with one node.
+  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $S^+=S$ and $T'=T_0$ is the tree with one node.
 
-  If $|S|\ge 2$, then the first step is to determine the root of $T_0$, which must also be the root of $T'$.  Let $S:=\{x_1,\ldots,x_d\}$.  Then the root $r$ of $T_0$ can be computed by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.  Now let $r_1$ be the left child of $r$ in $T$.\footnote{If $r$ has no left child in $T$ then use the right child instead, reversing the roles of left and right in the remainder of this paragraph.}  For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
+  If $|S|\ge 2$, then the first step is to determine the root of $T_0$, which must also be the root of $T'$.  The root $r$ of $T_0$ can be computed by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.  
+  
+  The next step is to partition $S\setminus\{r\}$ a set $S_1$ of descendants of the left child $r_1$ of $r$ and set $S_2$ of descendants of the right child $r_2$ of $r$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
-    \item If $\lca_{T}(r_1,x)=r_1$ then $x$ is contained in the subtree of $T_0$ rooted at the left child, $r_1$, of $r$.
-    \item If $\lca{T}(r_1,x)=r$ then $x$ is contained in the subtree of $T_0$ rooted at the right child, $r_2$ of $r$.
+    \item If $\lca_{T}(r_1,x)=r_1$ then $x\in S_1$.
+    \item If $\lca{T}(r_1,x)=r$ then $x\in S_2$.
   \end{compactenum}
-  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ an $S_2$.   This yields an algorithm whose running time is bounded by the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 = d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
+  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ to obtain a tree with root $r_1'$ and recurse on $S_2$ to obtain a tree with root $r_2'$.  We make $r_1'$ the left child of $r$ and $r_2'$ the right child of $r$ to obtain the model $T_0'$ of $T_0$.  The running-time of this  algorithm is obeys the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 = d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
 \end{proof}
 
 
@@ -203,14 +209,15 @@ An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if 
 % There exists data structures for this problem that use $O(n)$ space and preprocessing and can perform each of these operations in $O(1)$ time  \cite{X}.  Especially simple and efficient solutions exist when the operations are restricted so that the set of marked nodes always induce a connected subtree of $T$.  In this paper we only require this simple version of the data structure.
 
 \section{Tripod Decompositions}
+\label{tripod_decompositions}
 
-Let $G$ be a $n$-vertex triangulation and $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) vertical paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+Let $G$ be a $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) vertical paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
 
 \begin{thm}\label{tripod_decomposition}
   Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
 \end{thm}
 
-It is straightforward to verify that \cref{tripod_decomposition} implies \cref{meta}.\ref{three_tree} by first triangulating the given graph and then taking $T$ to be a breadth-first search tree of the resulting triangulated graph \cite[Observation~35]{dujmovic.joret.ea:planar}.
+It is straightforward to verify that \cref{tripod_decomposition} implies \cref{meta}.\ref{three_tree} by first triangulating the given graph and then taking $T$ to be a breadth-first spanning tree of the resulting triangulated graph \cite[Observation~35]{dujmovic.joret.ea:planar}.
 
 % \begin{remark}
 %   The result of \citett{dujmovic.joret.ea:planar} provides tripods with somewhat more structure.  Every tripod has three legs whose lower endpoints are on a common face of $G$.  It is possible to fix, in advance, an $S$-rooted BFS tree $T$ and produce tripods whose legs are paths in $T$.
@@ -219,12 +226,13 @@ It is straightforward to verify that \cref{tripod_decomposition} implies \cref{m
 \subsection{Tripod Decompositions from Face Orderings}
 \label{orderings}
 
-We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of faces in $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,2n-1\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_F(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$.  Observe that, if $G_r=G$ then $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ is a tripod decomposition of $G$.
+We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distict faces of $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_F(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$.  Observe that, if $G_r=G$ then $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ is a tripod decomposition of $G$.
 
-From the preceding definition it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.  (The path $f[Y_j]$ is a path that first appears in $G_j$.)  We are interested in keeping the number of these paths as small as possible, which motivates our next definition.
+From the preceding definition it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.  
+% (The path $f[Y_j]$ is a path that first appears in $G_j$.)  
+We are interested in keeping the number of these paths as small as possible, which motivates our next definition.
 
-
-A sequence $\mathcal{F}:=f_0,\ldots,f_r$ of distinct faces of $G$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_r$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_r$ satisfy the following condition:  For each $i\in\{0,\ldots, r\}$ and each face $f$ of $G_i$,
+The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.  The sequence $\mathcal{F}$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_r$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_r$ satisfy the following condition:  For each $i\in\{0,\ldots, r\}$ and each face $f$ of $G_i$,
 \[
    |\{\ell\in\{0,\ldots,i\}: V(f)\cap Y_{\ell}\neq\emptyset\}|\le 3 \enspace .
 \]
@@ -233,14 +241,14 @@ In words, each face of each graph $G_i$ has vertices from at most three tripods 
 % In words, this lemma states that if each face of each graph in $\mathcal{G}_{\mathcal{F}}$ has vertices from at most three tripods on its boundary then $G/\mathcal{Y}_\mathcal{F}$ has treewidth at most $3$.
 
 \begin{lem}\label{face_trick}
-  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$ and let $T$ be a spanning tree of $G$ rooted at $v_0$.  Then there exists a good sequence $\mathcal{F}:=f_0,\ldots,f_{2n-3}$ containing all the faces of $G$.
+  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$ and let $T$ be a spanning tree of $G$ rooted at $v_0$.  Then there exists a good sequence $\mathcal{F}:=f_0,\ldots,f_{r}$ that is complete for $G$.
 \end{lem}
 
 \begin{rem}
-  \cref{face_trick} is stated in terms of a total order on $F(G)$ only for convenience.  Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,2n-3\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this total order will result in the same tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$.
+  \cref{face_trick} is stated in terms of sequences only for convenience.  Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,r\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this partial order will result in the same tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$.
 \end{rem}
 
-\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_j$, define the set $I_f:=\{\ell\in\{0,\ldots,j\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}
+\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
 
 \begin{figure}
   \begin{center}
@@ -251,18 +259,18 @@ In words, each face of each graph $G_i$ has vertices from at most three tripods 
       (a) & (b) & (c)
     \end{tabular}
   \end{center}
-  \caption{Each face $f$ in $G_{i-1}$ is bounded by three tripods $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$ and the tripod $Y_i$ is chosen so that it connects each of these.}
+  \caption{Each face $f$ in $G_{i-1}$ is bounded by at most three tripods $Y_{a_f}$, $Y_{b_f}$, and $Y_{c_f}$ and the tripod $Y_i$ is chosen so that it connects each of these.}
   \label{sperner}
 \end{figure}
 
-This immediately leads to a divide-and-conquer algorithm by recursing on each of the at most three new faces in $S_i:=F(G_i)\setminus F(G_{i-1})\setminus \{f_i\}$.  The Sperner triangle $f_i$ can easily be found in time proportional to the number of faces of $G$ in the interior of $f$.  However, because the resulting recursion is not necessarily balanced, a straightforward implementation of this yields an algorithm with $\Theta(n^2)$ worst-case running time.
+This approach leads to a divide-and-conquer algorithm: After finding $f_i$, the algorithm recursively decomposes each of the near-triangulations that are bounded by the at most three new faces in $S_i:=F(G_i)\setminus F(G_{i-1})\setminus \{f_i\}$.  The Sperner triangle $f_i$ can easily be found in time proportional to the number of faces of $G$ in the interior of $f$.  However, because the resulting recursion is not necessarily balanced, a straightforward implementation of this yields an algorithm with $\Theta(n^2)$ worst-case running time.
 
 \citet{morin:fast} later showed that, using an appropriate data structure for $T$, this approach can be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Essentially, Morin's algorithm works by finding the Sperner triangle $f_i$ in time proportional to the minimum number of faces of $G$ contained in any of the faces in $S_i$.  In the next section, we will show that, by using an appropriate data structure for the cotree $\overline{T}$, the Sperner triangle $f_i$ can be found in constant time, yielding an $O(n)$ time algorithm.
 
 By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}.  To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. For each $i\in\{0,\ldots,2n-3\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $\{Y_j:j\in I_f\}$.  To do this, for each $i\in\{1,\ldots,2n-3\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
 \section{An $O(n)$-Time Algorithm}
-\label{linear_time_algorithm}
+\label{linear_time_algorithm}\label{algorithm}
 
 Refer to \cref{baby_sperner_fig} for an illustration of the following (probably well-known) baby version of Sperner's Lemma:
 
@@ -285,16 +293,16 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 
 \begin{proof}
   If $w_0=w_k$, the lemma is immediately true, so assume $w_0\neq w_k$.
-  Say that an edge of $n$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_iv_{i+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex of a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
+  Say that an edge of $N$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_iv_{i+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex or a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
 \end{proof}
 
-The next lemma, which is the main observation in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
+The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
 
 \begin{lem}\label{lca_sperner}
-  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain every face $g\in F(G)$ such that
+  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contains each of the at most three face $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
-      \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in\{0,\ldots,i-1\}$.
+      \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f\{0,\ldots,i-1\}$.
   \end{compactenum}
   Let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  Then, if $S$ is non-empty and $f_i\in V(\overline{T}_0)$ is such that each component of $\overline{T}_0-f_i$ contains at most one element of $S$,
   Then $f_0,\ldots,f_i$ is good.
@@ -397,8 +405,9 @@ Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\
 
 
 \section{Variations}
+\label{variants}
 
-In this section we show that there are $O(n)$ time algorithms for computing the decompositions in \cref{meta}.b and \cref{meta}.c.
+In this section we show that there are $O(n)$ time algorithms for computing the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.  In the same way that \cref{meta}.\ref{three_tree} follows from the tripod decomposition of \cref{tripod_decomposition}, \cref{meta}.\ref{four_tree} follows from a bipod decomposition given by \cref{bipod_decomposition_algorithm} and \cref{meta}.\ref{six_tree} follows a monopod decomposition given by \cref{monopod_decomposition_algorithm}.
 
 % Both algorithms are based on the fact that lowest common ancestor information is sufficient to reconstruct the shapes of certain subtrees of the cotree $\overline{T}$.
 
@@ -414,59 +423,69 @@ In this section we show that there are $O(n)$ time algorithms for computing the 
 
 \subsection{Bipod Decompositions}
 
-We begin with the decomposition in \cref{meta}.\ref{bipods}, which is simpler, but seems not to have been noted before.  This decomposition is obtained by selecting a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
+We begin with the decomposition in \cref{meta}.\ref{four_tree}, which is simpler, but seems not to have been noted before.  This decomposition is obtained by selecting a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
 
-Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ shows that if $\mathcal{E}$ is a good edge sequence that produces a partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
+Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ shows that if $\mathcal{E}$ is a good edge sequence that produces a bipod partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
-\begin{figure}
+We now explain why such an edge sequence $e_0,\ldots,e_r$ exists.  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$.  As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner face in $G_{i-1}$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.  
+
+\cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two news faces containing vertices from $\Lambda_i$ at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
+
+\begin{figure}[htbp]
   \begin{center}
-    % \begin{tabular}{cc}
-      \includegraphics{figs/fourby}
-      % \includegraphics{figs/bipods-2}
-    % \end{tabular}
+    \begin{tabular}{cc}
+      % \includegraphics{figs/fourby}
+       \includegraphics{figs/two_up-1} &
+       \includegraphics{figs/two_up-3}
+     \end{tabular}
   \end{center}
   \caption{Choosing the next $e_i$ in a  good edge sequence.}
   \label{e_i}
 \end{figure}
 
-We now explain why such an edge sequence $e_0,\ldots,e_r$ exists.  The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$.  The face $f$ has vertices of at most four bipods $\Lambda_a$, $\Lambda_b$, $\Lambda_c$, and $\Lambda_{d}$ on its boundary.  As before we colour vertices in the near triangulation $N$ bounded by $f$ with colours $a$, $b$, $c$, and $d$. Now we consider the subgraph $X$ of $N^\star$ induced by the bichromatic and trichromatic inner faces of $N$.  As in \cref{linear_time_algorithm}, $X$ is a connected subgraph of $\overline{T}$.
+\begin{clm}\label{director}
+  $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two nodes of $S$.
+\end{clm}
+
+\begin{proof}  
+  Direct each edge $xy$ of $\overline{T}_0$ in the direction $\overrightarrow{xy}$ if the component of $\overline{T}_0-xy$ that contains $y$ contains three or more nodes of $S$.  It is sufficient to show that this process leaves some edge $xy$ of $\overline{T}_0$ undirected.  Assume for the sake of contradiction that every edge of $\overline{T}_0$ is directed.
+
+  Then some node $x$ of $T$ has only incoming edges. Certainly $x$ does not have degree $1$ in $\overline{T}$. 
+  
+  If $x$ has degree $2$ in $\overline{T}$ then $\overline{T}_0$ contains two subtrees $T_1$ and $T_2$ have only the node $x$ in common and such that $V(T_1)\cap S\ge 3$ and $V(T_2)\cap S\ge 3$, which implies that $|S|\ge 3+3-1 > 4$, a contradiction.  
+  
+  Suppose therefore that $x$ has degree $3$ in $\overline{T}_0$.  Each face in $S$ contains an edge in $E(f)$, so each face in $S$ has degree at most $2$ in $\overline{T}_0$.  Therefore $x\not\in S$.  Therefore $\overline{T}_0-x$ contains three components $T_1, T_2, T_3$ such that any pair of components contains at least $3$ elements of $S$.  But this implies that $|S|\ge 3\times 3/2>4$, a contradiction.
+\end{proof}
 
 
-There are a number of cases to consider, which are all easily handled.  In the extreme case, illustrated in \cref{e_i}, the graph $X$ has four leaves $g_1,\ldots,g_4$ and two internal nodes $x$ and $y$.  Any edge of $N$ that is dual to an edge on the path in $X$ from $x$ to $y$ will work to determine a bipod $e_i$ that satisfies our requirements.  In the general case, it is sufficient to find an edge of the tree $X$ whose removal leaves no component with more than two of $g_1,\ldots,g_4$.  As before, this edge can be identified in the model $$
 
-Algorithmically, using \cref{reconstruction}, we can determine the ``shape'' of the tree $X$ by performing lowest common ancestor queries on the at most four inner faces of $N$ that contain bichromatic edges of the outer face of $N$.  The details and analysis of the rest of the algorithm are the same as in \cref{linear_time_algorithm}.
+Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that the face $\alpha$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $x_i$.
 
-
-
-%
-%
-%
-% ; using colour $c$ for vertices that lead to $c$ or to $c'$.  Again, Sperner's Lemma implies that that $N$ contains an inner face $f_i$ that is trichromatic.  In the graph $G_i^+:=G_{i-1}\cup P_T(f_i)$, each newly introduced face in $F(G_{i}^+)\setminus F(G_{i-1})\setminus\{f_i\}$ is incident on at most two of $\Lambda_a$, $\Lambda_b$ or $\Lambda_{c}\cup \Lambda_{c'}$.  Two of these faces are incident at most two of $\Lambda_a$, $\Lambda_b$, $\Lambda_c$ or $\Lambda_c'$.  These two faces are separated by one of the legs of $f_i$ whose lower endpoint is a vertex $v_i\in V(f_i)$.  We take $e_i$ to be the unique edge in $f_i-v_i$.  We can easily check that this results in a good sequence $e_0,\ldots,e_i$ of edges.  This process terminates when $G_k=G$.  That is, each edge of $G$ is contained in $P_T(e_i)$ for some $i\in\{0,\ldots,k\}$.
-%
-% Algorithmically, this process requires almost no changes from the process used to find good face sequences.  Each recursive subproblem is defined by the at most $4$ inner faces of a near-triangulation that contain a edge of the outer face that spans two bipods.  The triangle $f_i$ is identified by using lowest common ancestor queries on three of these faces.  Using \cref{colour_remark}, the vertex $v_i$ of $f_i$ that is not part of $e_i$ can also be identified in constant time.  Colouring the vertices of $\Lambda_i$ and finding the at most four new faces of $G$ required to define the at most two new recursive subproblems can be done in $O(1+|\Lambda_i|)$ time.  This establishes the following result:
-
-\begin{thm}
+\begin{thm}\label{bipod_decomposition_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-bipod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 4$.
 \end{thm}
 
 
 \subsection{Monopod Decompositions}
 
-Finally the decomposition given by \citet{ueckerdt.wood.ea:improved} works similarly, but each part in the decomposition is a \emph{monopod}: a single vertical path in $T$. Each recursive subproblem is a near triangulation $N$ whose outer face contains vertices of at most $5$ monopods of the partition. This gives up to five inner faces $g_1,\ldots,g_5$ of $N$ that each contain an edge of the outer face of $N$ whose endpoints are in different monopods.
+Finally we consider the decomposition described in \cref{meta}.\ref{six_tree}.   This decomposition is obtained from a tripod decomposition $\mathcal{Y}:=Y_0,\ldots,Y_r$, obtained by a sequence $\mathcal{F}:=f_0,\ldots,f_r$ of faces of $G$ in the same manner described in \cref{orderings}.  However in this setting, the sequence $f_0,\ldots,f_r$ is \emph{good} if, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i:=\bigcup_{j=0}^i Y_T(f_j)$, $V(f)$ contains vertices from at most $5$ \emph{legs} of tripods in $Y_{0},\ldots,Y_i$.  Under these conditions, \citet{ueckerdt.wood.ea:improved} are able to show that that the \emph{monopod decomposition} $\mathcal{I}$ obtained by splitting each tripod $Y_i$ into three upward paths yields a quotient graph $G/\mathcal{I}$ of treewidth at most $6$.
 
-Refer to \cref{uwy}.  The key observation used in \cite{ueckerdt.wood.ea:improved} is that there exists a tripod $Y_i$ with crotch $f_i$ such that each inner face of $N\cup Y_i$ has vertices of at most three of the original five monopods on its boundary.  The three legs of $Y_i$ are placed into individual monopods of the decomposition.  This then gives three new subproblems, each of which has vertices of at most three of the original monopods and two of the new monopods on its boundary.
+Refer to \cref{uwy}. Following the same strategy used for the previous two decompositions, the set $S$ in this case has size at most $5$ and the face $f_i$ corresponds to a node of $\overline{T}_0$ such that each component of $\overline{T}_0-f_i$ contains at most $2$ nodes in $S$.  (This is always possible because $\lfloor 5/2\rfloor=2$.)  Again, a suitable choice for $f_i$ can be found in the model $\overline{T}_0'$ of $\mathcal{T}_0$ in constant time.
 
-\begin{figure}
+\begin{figure}[htbp]
   \begin{center}
-    \includegraphics{figs/fiveby}
+    \begin{tabular}{cc}
+      % \includegraphics{figs/fourby}
+       \includegraphics{figs/uwy2-1} &
+       \includegraphics{figs/uwy2-3}
+     \end{tabular}
   \end{center}
   \caption{The selection of a tripod by \citet{ueckerdt.wood.ea:improved}}
   \label{uwy}
 \end{figure}
 
-In terms of the cotree $\overline{T}$, the minimal subtree $X \subseteq\overline{T}$ that contains $g_1,\ldots,g_5$ has up to three nodes of degree $3$.  These three nodes (and the shape of the tree $X$) can be determined using $O(1)$ lowest common ancestor queries in $\overline{T}$.  The correct choice for the node $f_i$ corresponds to a node of $\overline{T}'$ whose removal disconnects $X$ into components, none of which contains more than $2$ of $g_1,\ldots,g_5$.  We leave the details to the interested reader.
 
-\begin{thm}
+\begin{thm}\label{monopod_decomposition_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any spanning tree $T$ of $G$, produces a $(G,T)$-monopod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 6$.
 \end{thm}
 
