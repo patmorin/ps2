@@ -97,7 +97,7 @@
 \maketitle
 
 \begin{abstract}
-  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al, \emph{JACM}, \textbf{67}(4):22:1--22:38) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin, \emph{Algorithmica}, \textbf{85}(5):1544--1558).
+  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al, \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin, \emph{Algorithmica}, \textbf{85}(5):1544--1558).
 \end{abstract}
 % \end{titlepage}
 
@@ -130,12 +130,12 @@ The remainder of this paper is organized as follows: \cref{prelims} presents som
 \section{Preliminaries}
 \label{prelims}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  A subgraph of a $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  We use the terms \emph{vertex} and \emph{node} interchangeably, though we typically refer to the vertices of some primary graph $G$ of interest and refer to the nodes of auxilliary graphs related to $G$.  We say that a subgraph $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
 
 
 \paragraph{Quotient Graphs.}
 
-Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph whose vertex set $V(G/\mathcal{P}):=\mathcal{P}$ contains one node for each part in $\mathcal{P}$ and in which two nodes $X,Y\in V(G/\mathcal{P})$ are adjacent if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
+Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph with vertex set $V(G/\mathcal{P}):=\mathcal{P}$ and in which two nodes $X,Y\in V(G/\mathcal{P})$ are adjacent if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
 
 \paragraph{Embeddings, Planar Graphs, and (Near-)Triangulations.}
 
@@ -144,7 +144,7 @@ We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \p
 
 If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,\psi)$ an \emph{embedded graph} and we will not distinguish between a vertex $v$ of $G$ and the point $\psi(v)$ or between an edge $vw$ of $G$ and the curve $\psi(vw)$.  Similarly, we will not distinguish between $G$ and the  point set $\psi(G)$.  Any cycle in an embedded graph defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and the other unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  If $G$ is an embedded triangulation, then the subgraph of $G$ consisting of all edges and vertices of $G$ contained in the closure of the interior of $C$ is called a \emph{near-triangulation}.
 
-Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ forms a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face, the \emph{outer face} that is unbounded.
+Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ forms a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face---the \emph{outer face}---that is unbounded.
 
 \paragraph{Duals and Cotrees.}
 
@@ -175,18 +175,18 @@ For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,
 
 \paragraph{Reconstructing Binary Tree Models}
 
-An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by repeatedly replacing a maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
+An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
-  Given a lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$, there exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of the minimal subtree of $T$ that spans $S$.
+  Given a lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$, there exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of the minimal subtree $T_0$ of $T$ that spans $S$.
 \end{lem}
 
 \begin{proof}
-  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $S^+=S$ and $T'=T_0$ is the tree with one node.
+  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T'=T_0$ is the tree with one node, which is the unique element in $S$.
 
   If $|S|\ge 2$, then the first step is to determine the root of $T_0$, which must also be the root of $T'$.  The root $r$ of $T_0$ can be computed by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.  
   
-  The next step is to partition $S\setminus\{r\}$ a set $S_1$ of descendants of the left child $r_1$ of $r$ and set $S_2$ of descendants of the right child $r_2$ of $r$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
+  If $r$ has no left child, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
     \item If $\lca_{T}(r_1,x)=r_1$ then $x\in S_1$.
     \item If $\lca{T}(r_1,x)=r$ then $x\in S_2$.
@@ -211,7 +211,7 @@ An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if 
 \section{Tripod Decompositions}
 \label{tripod_decompositions}
 
-Let $G$ be a $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) vertical paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+Let $G$ be a $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
 
 \begin{thm}\label{tripod_decomposition}
   Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
@@ -226,17 +226,17 @@ It is straightforward to verify that \cref{tripod_decomposition} implies \cref{m
 \subsection{Tripod Decompositions from Face Orderings}
 \label{orderings}
 
-We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distict faces of $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(F)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_F(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$.  Observe that, if $G_r=G$ then $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$ is a tripod decomposition of $G$.
+We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distict faces of $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(f)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_T(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.  
 
-From the preceding definition it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.  
+From the preceding definitions it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.  
 % (The path $f[Y_j]$ is a path that first appears in $G_j$.)  
 We are interested in keeping the number of these paths as small as possible, which motivates our next definition.
 
-The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.  The sequence $\mathcal{F}$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_r$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_r$ satisfy the following condition:  For each $i\in\{0,\ldots, r\}$ and each face $f$ of $G_i$,
+The sequence $\mathcal{F}$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_r$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_r$ satisfy the following condition:  For each $i\in\{0,\ldots, r\}$ and each face $f$ of $G_i$,
 \[
    |\{\ell\in\{0,\ldots,i\}: V(f)\cap Y_{\ell}\neq\emptyset\}|\le 3 \enspace .
 \]
-In words, each face of each graph $G_i$ has vertices from at most three tripods of $Y_0,\ldots,Y_i$ on its boundary.  The vertices of the cycle that bounds this face can be partitioned into at most three paths, each belonging to one of these at most three tripods. \citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the next lemma.
+In words, each face of each graph $G_i$ has vertices from at most three tripods of $Y_0,\ldots,Y_i$ on its boundary.  Even more, the vertices of $f$ can be partitioned into at most three paths where the vertices of each path belong to a single tripod. \citet{dujmovic.joret.ea:planar} prove \cref{tripod_decomposition} by proving the next lemma.
 
 % In words, this lemma states that if each face of each graph in $\mathcal{G}_{\mathcal{F}}$ has vertices from at most three tripods on its boundary then $G/\mathcal{Y}_\mathcal{F}$ has treewidth at most $3$.
 
@@ -248,7 +248,7 @@ In words, each face of each graph $G_i$ has vertices from at most three tripods 
   \cref{face_trick} is stated in terms of sequences only for convenience.  Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,r\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this partial order will result in the same tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{2n-3}\}$.
 \end{rem}
 
-\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three vertical paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
+\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three upward paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
 
 \begin{figure}
   \begin{center}
