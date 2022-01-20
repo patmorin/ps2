@@ -226,9 +226,16 @@ It is straightforward to verify that \cref{tripod_decomposition} implies \cref{m
 \subsection{Tripod Decompositions from Face Orderings}
 \label{orderings}
 
-We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distict faces of $G$.  For any subgraph $f$ of $G$, we define $Y_T(f):=\bigcup_{v\in V(f)} P_T(v)$.  Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i (f_j\cup Y_T(f_j))$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:=\langle G_0,\ldots,G_{r}\rangle$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
+We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distinct faces of $G$.  Throughout this section (and for the remainder of the paper):
+\begin{compactitem}
+   \item $G$ is an embedded triangulation with outer face $f_0$ and
+   \item $T$ is a spanning-tree of $G$ rooted at a vertex $v_0\in V(f_0)$.
+\end{compactitem}
+For any subgraph $f$ of $G$, we define $Y_T(f):=f\cup \bigcup_{v\in V(f)} P_T(v)$.  In words, $Y_T(f)$ is the subgraph of $G$ that includes all the vertices and edges of $f$ and all the vertices and edges of each path from each vertex of $f$ to the root of $T$.
 
-From the preceding definitions it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.
+Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose first element is the outer face $f_0$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i Y_T(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:= G_0,\ldots,G_{r}$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
+
+From the preceding definitions it follows that $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.\footnote{Note that it is critical here that the root $v_0$ of $T$ be a vertex of the first face $f_0$ in $\mathcal{F}$.}  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.
 % (The path $f[Y_j]$ is a path that first appears in $G_j$.)
 We are interested in keeping the number of these paths as small as possible, which motivates our next definition.
 
@@ -248,7 +255,7 @@ In words, each face of each graph $G_i$ has vertices from at most three tripods 
   \cref{face_trick} is stated in terms of sequences only for convenience and could be rephrased in terms of partial orders. Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,r\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this partial order will result in the same tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$.
 \end{rem}
 
-\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ (called a \emph{Sperner triangle}) of $G$ that is contained in $f$. In particular, $f_i$ is chosen so that the three upward paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
+\citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ (called a \emph{Sperner triangle}) that is contained in $f$. In particular, $f_i$ is chosen so that the three upward paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
 
 \begin{figure}
   \begin{center}
@@ -299,7 +306,7 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
 
 \begin{lem}\label{lca_sperner}
-  Let $G$ be a triangulation $G$ with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain each of the at most three face $g\in F(G)$ such that
+  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain each of the at most three face $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f\{0,\ldots,i-1\}$.
