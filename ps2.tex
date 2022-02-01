@@ -78,6 +78,7 @@
 \title{\MakeUppercase{An Optimal Algorithm for Product Structure in Planar Graphs}\thanks{This research was partly funded by NSERC.}}
 \author{%
   Prosenjit Bose\thanks{School of Computer Science, Carleton University}\qquad
+  % Vida Dujmović\thanks{Department of Computer Science and Electrical Engineering, University of Ottawa}\qquad
   Pat Morin\footnotemark[1]\qquad
   Saeed Odak\thanks{Department of Computer Science and Electrical Engineering, University of Ottawa}}
     % }
@@ -96,7 +97,7 @@
 \maketitle
 
 \begin{abstract}
-  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al, \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin, \emph{Algorithmica}, \textbf{85}(5):1544--1558).
+  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al.\ \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin.\ \emph{Algorithmica}, \textbf{85}(5):1544--1558).
 \end{abstract}
 % \end{titlepage}
 
@@ -431,11 +432,11 @@ In this section we show that there are $O(n)$ time algorithms for computing the 
 
 \subsection{Bipod Decompositions}
 
-We begin with the decomposition in \cref{meta}.\ref{four_tree}, which is simpler, but seems not to have been noted before.  This decomposition is obtained by selecting a sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
+We begin with the decomposition in \cref{meta}.\ref{four_tree}, which was communicated to us by Vida~Dujmović, and has not appeared before.  This decomposition is obtained by selecting a proper sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
 
 Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ also shows that if $\mathcal{E}$ is a good edge sequence that produces a bipod partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
-We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$.  As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner face in $G_{i-1}$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
+We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$.  As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner face in $G_{i-1}$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
 
 \cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two news faces containing vertices from $\Lambda_i$ contains vertices from at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
 
@@ -498,7 +499,7 @@ Refer to \cref{uwy}. Following the same strategy used for the previous two decom
 
 \section*{Acknowledgement}
 
-This research was initiated at the BIRS 21w5235 Workshop BIRS on Graph Product Structure Theory, held November 21--26, 2021 at the Banff International Research Station.  The authors are grateful to the workshop organizers and participants for providing a stimulating research environment.
+This research was initiated at the BIRS 21w5235 Workshop BIRS on Graph Product Structure Theory, held November 21--26, 2021 at the Banff International Research Station.  The authors are grateful to the workshop organizers and participants for providing a stimulating research environment.  We are especially grateful to Vida~Dujmović for sharing \cref{meta}.\ref{four_tree} with us.
 
 
 \bibliographystyle{plainurlnat}
