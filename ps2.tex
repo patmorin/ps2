@@ -148,11 +148,12 @@ Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ de
 
 \paragraph{Duals and Cotrees.}
 
-The \emph{dual} $G^\star$ of an embedded planar graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.\footnote{For a set $S$, $\binom{S}{2}$ denotes the $\binom{|S|}{2}$-element set $\binom{S}{2}:=\{\{x,y\}:x,y\in S, x\neq y\}$.}
+The \emph{dual} $G^\star$ of an embedded planar graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.\footnote{For a set $S$, $\binom{S}{2}$ denotes the $\binom{|S|}{2}$-element set $\binom{S}{2}:=\{\{x,y\}:x,y\in S, x\neq y\}$.} If $T$ is a spanning tree of $G$ then the \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph with vertex set $V(\overline{T}) := V(G^\star)$ and edge set $E(\overline{T}) := \{ab \in E(G^\star) : E(a) \cap \E(b) \backslash E(T) \neq \emptyset \}$. It is well known that, if $G$ is connected, then $\overline{T}$ is a spanning tree of $G^\star$.
+% $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.
 
-The \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.  It is well known that, if $G$ is connected, then $\overline{T}$ is a spanning tree of $G^\star$.
+A \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\todo{Add a figure?}. 
 
-A \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\todo{Add a figure?}.
+%\todo[inline]{do we have to force the spanning tree to contain an edge of $f_0$ or we set $f_0$ after $T$ (any face can be the outer face) -- we might need to take specific face $f_0$ for the proof of theorem 8.}
 
 \paragraph{Paths and Distances.}
 
@@ -165,7 +166,7 @@ The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of ed
 
 \paragraph{Trees, Depth, Ancestors, and Descendants.}
 
-Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $v$ to $w$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
+Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $w$ to $v_0$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
 
 
 
@@ -175,24 +176,28 @@ For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,
 
 \paragraph{Reconstructing Binary Tree Models}
 
-An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
+Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{S-non-branching} if $v_{i}$ has degree 2 and $v_i \notin S$ for each $i\in\{1,\ldots,r-1\}$. For any binary tree $T$ and set $S \subseteq V(T)$, the \emph{model} $T'$ of $T$ with respect to $S$ is the binary tree obtained by replacing each maximal $S$-non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
+
+% An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
-  Given a lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$, there exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of the minimal subtree $T_0$ of $T$ that spans $S$.
+  Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. Let $T_0$ be the minimal subtree of $T$ that spans $S$. There exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of $T_0$ with respect to $S$.
 \end{lem}
 
 \begin{proof}
-  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T'=T_0$ is the tree with one node, which is the unique element in $S$.
+  The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T_0'=T_0$ is the tree with one node, which is the unique element in $S$.
 
   If $|S|\ge 2$, then the first step is to determine the root of $T_0$, which must also be the root of $T'$.  The root $r$ of $T_0$ can be computed by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.
 
   If $r$ has no left child, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
     \item If $\lca_{T}(r_1,x)=r_1$ then $x\in S_1$.
-    \item If $\lca{T}(r_1,x)=r$ then $x\in S_2$.
+    \item If $\lca_{T}(r_1,x)=r$ then $x\in S_2$.
   \end{compactenum}
-  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ to obtain a tree with root $r_1'$ and recurse on $S_2$ to obtain a tree with root $r_2'$.  We make $r_1'$ the left child of $r$ and $r_2'$ the right child of $r$ to obtain the model $T_0'$ of $T_0$.  The running-time of this  algorithm is obeys the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 = d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
+  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ to obtain a tree with root $r_1'$ and recurse on $S_2$ to obtain a tree with root $r_2'$.  We make $r_1'$ the left child of $r$ and $r_2'$ the right child of $r$ to obtain the model $T_0'$ of $T_0$.  The running-time of this  algorithm is obeys the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 \leq d$ and $d_1, d_2 \leq d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
 \end{proof}
+
+% ($d_1 + d_2 = d$ where $d_1, d_2 > 0$) or ($d_1 + d_2 = d-1$ where $d_1, d_2 \geq 0$)
 
 
 
@@ -211,7 +216,7 @@ An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if 
 \section{Tripod Decompositions}
 \label{tripod_decompositions}
 
-Let $G$ be a $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+Let $G$ be an $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
 
 \begin{thm}\label{tripod_decomposition}
   Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
@@ -237,9 +242,9 @@ Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose
 
 Informally, we require that each of the \emph{legs} of each tripod $Y_i$ have each a \emph{foot} on a different vertex of $G_{i-1}$ and that the tripods $Y_1,\ldots,Y_r$ cover all the vertices and edges of $G$. Formally, we say that the sequence $\mathcal{F}$ is \emph{proper} if, for each $i\in\{1,\ldots,r\}$, and each distinct $v,w\in V(f_i)$, $V(Y_T(v)\cap G_{i-1})\neq V(Y_T(w)\cap G_{i-1})$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
 
-From the preceding definitions it follows that, if $\mathcal{F}$ is proper, then  $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is a path.
+From the preceding definitions it follows that, if $\mathcal{F}$ is proper, then  $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. \todo{I dont know what should we put instead of \textit{path} here. connected is not nice!} An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is connected. %[a path]
 % (The path $f[Y_j]$ is a path that first appears in $G_j$.)
-We are interested in keeping the number of these paths as small as possible, which motivates our next definition.
+We are interested in keeping the number of these connected portions as small as possible, which motivates our next definition.
 
 The sequence $\mathcal{F}$ is \emph{good} if the resulting sequence of graphs $\mathcal{G}_\mathcal{F}:=G_0,\ldots,G_r$ and tripods $\mathcal{Y}_\mathcal{F}:=Y_0,\ldots,Y_r$ satisfy the following condition:  For each $i\in\{0,\ldots, r\}$ and each face $f$ of $G_i$,
 \[
@@ -276,7 +281,7 @@ This approach leads to a divide-and-conquer algorithm: After finding $f_i$, the 
 
 \citet{morin:fast} later showed that, using an appropriate data structure for $T$, this approach can be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Essentially, Morin's algorithm works by finding the Sperner triangle $f_i$ in time proportional to the minimum number of faces of $G$ contained in any of the faces in $S_i$.  In the next section, we will show that, by using a lowest common ancestor data structure for the cotree $\overline{T}$ along with \cref{reconstruction}, the Sperner triangle $f_i$ can be found in constant time, yielding an $O(n)$ time algorithm.
 
-By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}.  To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. For each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, the graph $H$ contains a clique on $\{Y_j:j\in I_f\}$.  To do this, for each $i\in\{1,\ldots,r\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
+By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}.  To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. We construct the graph $H$ so that for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $H$ contains a clique on $\{Y_j:j\in I_f\}$. To accomplish this, for each $i\in\{1,\ldots,r\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
 \section{An $O(n)$-Time Algorithm}
 \label{linear_time_algorithm}\label{algorithm}
@@ -308,7 +313,7 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
 
 \begin{lem}\label{lca_sperner}
-  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain each of the at most three face $g\in F(G)$ such that
+  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contains exactly the (at most three) faces $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f$.
@@ -318,7 +323,7 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 \end{lem}
 
 \begin{proof}
-  Let $f^+$ denote the closure of $f$ and let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in $f^+$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $S$ is non-empty $|I_f|\ge 2$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained $Y_j$.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
+  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in the closure of the interior of $f$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $S$ is non-empty $|I_f|\ge 2$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained in $Y_j$.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
 
   $E(f)$ contains exactly $|I_f|$ bichromatic edges.  Since each element of $S$ is an inner face of $N$ that contains a bichromatic edge of $f$, $|S|\le |I_f|\le 3$.  Let $X$ be the subgraph of $N^\star$ that contains an edge $fg\in E(N^\star)$ if and only if $f$ and $g$ are inner faces of $N^\star$ and the edge in $E(f)\cap E(g)$ is bichromatic.  We claim that $X$ is a subgraph of $\overline{T}$.  In order to show this, we need only argue that each edge $uv$ of $T$ in the interior of $f$ is monochromatic.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$, so $uv$ is monochromatic. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
 
@@ -341,17 +346,19 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
   \end{figure}
 
   Refer to \cref{lca_sperner_fig}(b).
-  Now, consider the embedded graph $X_0$ obtained as follows: For each $g\in V(T_0)$, place a vertex on the center of each bichromatic edge of $g$ and, if $g$ is trichromatic, then place a vertex in the center of $f$.  Next,
+  Now, consider the embedded graph $X_0$ obtained as follows: For each $g\in V(\overline{T}_0)$, place a vertex on the center of each bichromatic edge of $g$ and, if $g$ is trichromatic, then place a vertex in the center of $g$.  Next,
    \begin{compactenum}
     \item Add an edge joining the center of each trichromatic triangle to each of the centers of its bichromatic edges.
-    \item Adding an edge joining the centers of each pair of bichromatic edges that are on a common bichromatic face $f\in V(T_0)$.
+    \item Adding an edge joining the centers of each pair of bichromatic edges that are on a common bichromatic face $g\in V(\overline{T}_0)$.
   \end{compactenum}
   The graph $X_0$ is a tree of maximum-degree $3$ that has $I_f$ leaves.  (Each leaf in $X_0$ is the center of a bichromatic edge in $E(f)$).  With the exception of these three leaves, every point in the embedding of $X_0$ is contained in the interior of $f$.
 
   Refer to \cref{lca_sperner_fig}(c).
   Now treat $X_0$ as a point set and consider the point set $f'$ obtained by removing $X_0$ from the closure of $f$. Now $f'$ has $|I_f|$ connected components and each vertex of $f_i$ is in a different component.  Each of the components of $f'$ contains vertices of $Y_j$ for exactly one $j\in I_f$; call this the \emph{colour} of the component.  Since no edge of $T$ crosses $X_0$, the colour of each vertex in $f_i$ is equal to the colour the component of $f'$ that contains it.
 
-  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ and each of these shares an edge with $f_i$.  If $uv$ is a edge of $f_i$ that is coloured with colours $a$ and $b$ and $g$ is a face of $G_i$ that contains $uv$ on its boundary, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
+  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ and each of these shares an edge with $f_i$.  If $g$ is a face in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ with $E(g) \cap E(f_i) = \{uv\}$ and $uv$ is coloured with $a$ and $b$, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
+
+  % If $uv$ is a edge of $f_i$ that is coloured with colours $a$ and $b$ and $g$ is a face of $G_i$ that contains $uv$ on its boundary, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
 \end{proof}
 
 %
@@ -397,11 +404,11 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 \end{thm}
 
 \begin{proof}
-  Let $v_0$ be the root of $T$ and let $f_0$ be any face of $G$ incident to $v_0$.  First we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
+  Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$ \todo{is this really required?} that contains an edge of $T$ incident to $v_0$.  First we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
 
   We construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
   \begin{enumerate}
-    \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.  \Cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree of $\overline{T}_0$ of $T$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $T_0$ in constant time and find the node $f_i$.
+    \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.  \cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.
 
     \item If $C$ intersects two tripods, then the input consists of two inner faces $g_1$, $g_2$, of $N$ with bichromatic edges of $C$ on their boundary.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.
 
@@ -432,13 +439,13 @@ In this section we show that there are $O(n)$ time algorithms for computing the 
 
 \subsection{Bipod Decompositions}
 
-We begin with the decomposition in \cref{meta}.\ref{four_tree}, which was communicated to us by Vida~Dujmović, and has not appeared before.  This decomposition is obtained by selecting a proper sequence $\mathcal{E}:=e_1,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i-G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
+We begin with the decomposition in \cref{meta}.\ref{four_tree}, which was communicated to us by Vida~Dujmović, and has not appeared before.  This decomposition is obtained by selecting a proper sequence $\mathcal{E}:=e_0,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i)\setminus V(G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
 
 Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ also shows that if $\mathcal{E}$ is a good edge sequence that produces a bipod partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
-We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$.  As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner face in $G_{i-1}$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
+We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$. \todo[inline]{As discussed, we might need to add $e_1$ also from $f_0$ to guarantee that the $G_i$ is 2-connected after few steps. Should consider this.}  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$. If $|I_f| < 4$ then we can select any edge in $f$. So now we focus on the case $|I_f| = 4$. As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner faces in $N$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
 
-\cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two news faces containing vertices from $\Lambda_i$ contains vertices from at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
+\cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two new faces containing vertices from $\Lambda_i$ contains vertices from at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
 
 \begin{figure}[htbp]
   \begin{center}
@@ -457,7 +464,7 @@ We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The ex
 \end{clm}
 
 \begin{proof}
-  Direct each edge $xy$ of $\overline{T}_0$ in the direction $\overrightarrow{xy}$ if the component of $\overline{T}_0-xy$ that contains $y$ contains three or more nodes of $S$.  It is sufficient to show that this process leaves some edge $xy$ of $\overline{T}_0$ undirected.  Assume for the sake of contradiction that every edge of $\overline{T}_0$ is directed.  Then some node $x$ of $T$ has only incoming edges. Certainly $x$ does not have degree $1$ in $\overline{T}$.
+  Direct each edge $xy$ of $\overline{T}_0$ in the direction $\overrightarrow{xy}$ if the component of $\overline{T}_0-xy$ that contains $y$ contains three or more nodes of $S$.  It is sufficient to show that this process leaves some edge $xy$ of $\overline{T}_0$ undirected.  Assume for the sake of contradiction that every edge of $\overline{T}_0$ is directed.  Then some node $x$ of $\overline{T}_0$ has only incoming edges. Certainly $x$ does not have degree $1$ in $\overline{T}_0$.
 
   If $x$ has degree $2$ in $\overline{T}$ then $\overline{T}_0$ contains two subtrees $T_1$ and $T_2$ have only the node $x$ in common and such that $V(T_1)\cap S\ge 3$ and $V(T_2)\cap S\ge 3$, which implies that $|S|\ge 3+3-1 > 4$, a contradiction.
 
@@ -477,7 +484,7 @@ Algorithmically, using \cref{reconstruction}, we can construct the model $\overl
 
 Finally we consider the decomposition described in \cref{meta}.\ref{six_tree}.   This decomposition is obtained from a tripod decomposition $\mathcal{Y}:=Y_0,\ldots,Y_r$, obtained by a sequence $\mathcal{F}:=f_0,\ldots,f_r$ of faces of $G$ in the same manner described in \cref{orderings}.  However in this setting, the sequence $f_0,\ldots,f_r$ is \emph{good} if, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i:=\bigcup_{j=0}^i Y_T(f_j)$, $V(f)$ contains vertices from at most $5$ \emph{legs} of tripods in $Y_{0},\ldots,Y_i$.  Under these conditions, \citet{ueckerdt.wood.ea:improved} are able to show that that the \emph{monopod decomposition} $\mathcal{I}$ obtained by splitting each tripod $Y_i$ into three upward paths yields a quotient graph $G/\mathcal{I}$ of treewidth at most $6$.
 
-Refer to \cref{uwy}. Following the same strategy used for the previous two decompositions, the set $S$ in this case has size at most $5$ and the face $f_i$ corresponds to a node of $\overline{T}_0$ such that each component of $\overline{T}_0-f_i$ contains at most $2$ nodes in $S$.  (This is always possible because $\lfloor 5/2\rfloor=2$.)  Again, a suitable choice for $f_i$ can be found in the model $\overline{T}_0'$ of $\mathcal{T}_0$ in constant time.
+As before we focus on the extreme case when $V(f)$ contains vertices from exactly 5 legs of tripods. Refer to \cref{uwy}. Following the same strategy used for the previous two decompositions, the set $S$ in this case has size at most $5$ and the face $f_i$ corresponds to a node of $\overline{T}_0$ such that each component of $\overline{T}_0-f_i$ contains at most $2$ nodes in $S$.  (This is always possible because $\lfloor 5/2\rfloor=2$.)  Again, a suitable choice for $f_i$ can be found in the model $\overline{T}_0'$ of $\mathcal{T}_0$ in constant time.
 
 \begin{figure}[htbp]
   \begin{center}
