@@ -172,7 +172,7 @@ Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$,
 
 \paragraph{Lowest Common Ancestors}
 
-For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the maximum depth node $a$ in $P_T(v)\cap P_T(w)$.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
+For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the node $a$ in $P_T(v)\cap P_T(w)$ having maximum $T$-depth.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
 
 \paragraph{Reconstructing Binary Tree Models}
 
@@ -181,7 +181,8 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 % An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
-  Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. Let $T_0$ be the minimal subtree of $T$ that spans $S$. There exists an $O(d^2)$ time algorithm to compute the model $T_0'$ of $T_0$ with respect to $S$.
+  % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. 
+  Let $T$ be a binary tree, let $S\subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ that.
 \end{lem}
 
 \begin{proof}
