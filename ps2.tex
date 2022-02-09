@@ -97,7 +97,7 @@
 \maketitle
 
 \begin{abstract}
-  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al.\ \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin.\ \emph{Algorithmica}, \textbf{85}(5):1544--1558).
+  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al.\ \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in the strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin.\ \emph{Algorithmica}, \textbf{85}(5):1544--1558).
 \end{abstract}
 % \end{titlepage}
 
@@ -130,7 +130,7 @@ The remainder of this paper is organized as follows: \cref{prelims} presents som
 \section{Preliminaries}
 \label{prelims}
 
-Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  We use the terms \emph{vertex} and \emph{node} interchangeably, though we typically refer to the vertices of some primary graph $G$ of interest and refer to the nodes of auxilliary graphs related to $G$.  We say that a subgraph $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
+Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  We use the terms \emph{vertex} and \emph{node} interchangeably, though we typically refer to the vertices of some primary graph $G$ of interest and refer to the nodes of some auxilliary graph (such as a spanning tree) related to $G$.  We say that a subgraph $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
 
 
 \paragraph{Quotient Graphs.}
@@ -139,8 +139,8 @@ Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient gr
 
 \paragraph{Embeddings, Planar Graphs, and (Near-)Triangulations.}
 
-An \emph{embedding} $\psi$ of a graph $G$ associates each vertex $v$ of $G$ with a point $\psi(v)\in \R^2$ and each edge $vw$ of $G$ with a simple open curve $\psi(vw):(0,1)\to\R^2$ whose endpoints\footnote{The \emph{endpoints} of an open curve $\psi:(0,1)\to\R^2$ are the two points $\lim_{\epsilon\downarrow 0} \psi(\epsilon)$ and $\lim_{\epsilon\downarrow 0}\psi(1-\epsilon)$.} are $\psi(v)$ and $\psi(w)$.  (We do not distinguish between such a curve $\psi(vw)$ and the point set $\{\psi(vw)(t):0<t<1\}$.)
-We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \psi(vw)$, and $\psi(G):=\psi(V(G))\cup\psi(E(G))$.  An embedding $\psi$ of $G$ is \emph{plane} if $\psi(vw)\cap\psi(V(G))=\emptyset$ and $\psi(vw)\cap\psi(xy)=\emptyset$ for each distinct pair of edges $vw,xy\in E(G)$.  A graph $G$ is \emph{planar} if it has an plane embedding. A \emph{triangulation} is an edge-maximal planar graph.
+An \emph{embedding} $\psi$ of a graph $G$ associates each vertex $v$ of $G$ with a point $\psi(v)\in \R^2$ and each edge $vw$ of $G$ with a simple open curve $\psi(vw):(0,1)\to\R^2$ whose endpoints\footnote{The \emph{endpoints} of an open curve $\psi:(0,1)\to\R^2$ are the two points $\lim_{\epsilon\downarrow 0} \psi(\epsilon)$ and $\lim_{\epsilon\downarrow 0}\psi(1-\epsilon)$.} are $\psi(v)$ and $\psi(w)$.  We do not distinguish between such a curve $\psi(vw)$ and the point set $\{\psi(vw)(t):0<t<1\}$.
+We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \psi(vw)$, and $\psi(G):=\psi(V(G))\cup\psi(E(G))$.  An embedding $\psi$ of $G$ is \emph{plane} if $\psi(vw)\cap\psi(V(G))=\emptyset$ and $\psi(vw)\cap\psi(xy)=\emptyset$ for each distinct pair of edges $vw,xy\in E(G)$.  A graph $G$ is \emph{planar} if it has a plane embedding. A \emph{triangulation} is an edge-maximal planar graph.
 
 If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,\psi)$ an \emph{embedded graph} and we will not distinguish between a vertex $v$ of $G$ and the point $\psi(v)$ or between an edge $vw$ of $G$ and the curve $\psi(vw)$.  Similarly, we will not distinguish between $G$ and the  point set $\psi(G)$.  Any cycle in an embedded graph defines a Jordan curve. For such a cycle $C$, $\R^2\setminus C$ has two components, one bounded and the other unbounded. We will refer to the bounded component as the \emph{interior} of $C$ and the unbounded component as the \emph{exterior} of $C$.  If $G$ is an embedded triangulation, then the subgraph of $G$ consisting of all edges and vertices of $G$ contained in the closure of the interior of $C$ is called a \emph{near-triangulation}.
 
