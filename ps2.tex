@@ -129,8 +129,7 @@
 
 For two graph $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$.
 % Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
-The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs \cite{dujmovic.esperet.ea:adjacency,dujmovic.joret.ea:planar,dujmovic.esperet.ea:planar,debski.felsner.ea:improved}.\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
-
+The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
 
 \begin{thm}[\citet{dujmovic.joret.ea:planar, ueckerdt.wood.ea:improved}]\label{meta}
   For any planar graph $G$, there exists:
@@ -141,7 +140,7 @@ The following \emph{planar product structure theorems} have recently been used a
   \end{compactenum}
 \end{thm}
 
-The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.
+In each of the applications of \cref{meta}, the proofs are constructive and lead to algorithms whose running-time is dominated by the time required to compute the relevant decomposition.  The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.
 
 The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews of the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
