@@ -188,7 +188,7 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 \begin{proof}
   The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T_0'=T_0$ is the tree with one node, which is the unique element in $S$.
 
-  If $|S|\ge 2$, then the first step is to determine the root of $T_0$, which must also be the root of $T'$.  The root $r$ of $T_0$ can be computed by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.
+  If $|S|\ge 2$, then the first step is to determine the root $r$ of $T_0$, which must also be the root of $T_0'$.  This is easily done by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.
 
   If $r$ has no left child, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
