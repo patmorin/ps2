@@ -298,17 +298,17 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 \end{figure}
 
 \begin{lem}\label{baby_sperner}
-  Let $N$ be a near-triangulation with outer face $v_0,\ldots,v_r$ and colour each vertex of $N$ red or blue in such a way that $v_0,\ldots,v_i$ are coloured red for some $i\in\{0,\ldots,r-1\}$ and $v_{i+1},\ldots,v_r$ are coloured blue.  Then there exists a path $w_0,\ldots,w_k$ in $N^\star$ such that
+  Let $N$ be a near-triangulation with outer face $v_0,\ldots,v_r$ and colour each vertex of $N$ red or blue in such a way that $v_0,\ldots,v_\ell$ are coloured red for some $\ell\in\{0,\ldots,r-1\}$ and $v_{\ell+1},\ldots,v_r$ are coloured blue.  Then there exists a path $w_0,\ldots,w_k$ in $N^\star$ such that
   \begin{compactenum}
     \item $w_0$ is the inner face of $N$ with $v_0v_r$ on its boundary;
-    \item $w_k$ is the inner face of $N$ with $v_iv_{i+1}$ on its boundary; and
-    \item for each $i\in\{1,\ldots,r\}$, the single edge in $E(w_{i-1})\cap E(w_i)$ has an endpoint of each colour.
+    \item $w_k$ is the inner face of $N$ with $v_{\ell}v_{\ell+1}$ on its boundary; and
+    \item for each $i\in\{1,\ldots,k\}$, the single edge in $E(w_{i-1})\cap E(w_i)$ has an endpoint of each colour.
   \end{compactenum}
 \end{lem}
 
 \begin{proof}
   If $w_0=w_k$, the lemma is immediately true, so assume $w_0\neq w_k$.
-  Say that an edge of $N$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_iv_{i+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex or a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
+  Say that an edge of $N$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_{\ell}v_{\ell+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex or a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
 \end{proof}
 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
