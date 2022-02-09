@@ -331,7 +331,8 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
   Next we claim that all the elements of $S$ are in a single connected component of $X$.  If $|I_f|=2$, then this follows immediately from \cref{baby_sperner}.  If $|I_f|=3$, then let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$ and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we may again apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
 
   Refer to \cref{lca_sperner_fig}(a).
-  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting location $f_i$. Since each of these paths is also a path in $X$ and $V(X)$ consists entirely of inner faces of $N$.
+  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting location $f_i$. 
+  % Since each of these paths is also a path in $X$ and $V(X)$ consists entirely of inner faces of $N$.
 
   \begin{figure}
     \begin{center}
@@ -349,15 +350,15 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
   Refer to \cref{lca_sperner_fig}(b).
   Now, consider the embedded graph $X_0$ obtained as follows: For each $g\in V(\overline{T}_0)$, place a vertex on the center of each bichromatic edge of $g$ and, if $g$ is trichromatic, then place a vertex in the center of $g$.  Next,
    \begin{compactenum}
-    \item Add an edge joining the center of each trichromatic triangle to each of the centers of its bichromatic edges.
-    \item Adding an edge joining the centers of each pair of bichromatic edges that are on a common bichromatic face $g\in V(\overline{T}_0)$.
+    \item add an edge joining the center of each trichromatic triangle to each of the centers of its bichromatic edges; and
+    \item add an edge (embedded as a straight line segment) joining the centers of each pair of bichromatic edges that are on a common bichromatic face $g\in V(\overline{T}_0)$.
   \end{compactenum}
   The graph $X_0$ is a tree of maximum-degree $3$ that has $I_f$ leaves.  (Each leaf in $X_0$ is the center of a bichromatic edge in $E(f)$).  With the exception of these three leaves, every point in the embedding of $X_0$ is contained in the interior of $f$.
 
   Refer to \cref{lca_sperner_fig}(c).
   Now treat $X_0$ as a point set and consider the point set $f'$ obtained by removing $X_0$ from the closure of $f$. Now $f'$ has $|I_f|$ connected components and each vertex of $f_i$ is in a different component.  Each of the components of $f'$ contains vertices of $Y_j$ for exactly one $j\in I_f$; call this the \emph{colour} of the component.  Since no edge of $T$ crosses $X_0$, the colour of each vertex in $f_i$ is equal to the colour the component of $f'$ that contains it.
 
-  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ and each of these shares an edge with $f_i$.  If $g$ is a face in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ with $E(g) \cap E(f_i) = \{uv\}$ and $uv$ is coloured with $a$ and $b$, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
+  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ and each of these shares a bichromatic edge with $f_i$.  If $g$ is a face in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ with $E(g) \cap E(f_i) = \{uv\}$ and $uv$ is coloured with $a$ and $b$, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
 
   % If $uv$ is a edge of $f_i$ that is coloured with colours $a$ and $b$ and $g$ is a face of $G_i$ that contains $uv$ on its boundary, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
 \end{proof}
