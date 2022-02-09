@@ -122,7 +122,15 @@ The following \emph{planar product structure theorems} have recently been used a
   \end{compactenum}
 \end{thm}
 
-In each of the applications of \cref{meta}, the proofs are constructive and lead to algorithms whose running-time is dominated by the time required to compute the relevant decomposition.  The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.
+In each of the applications of \cref{meta}, the proofs are constructive and lead to algorithms whose running-time is dominated by the time required to compute the relevant decomposition.  The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.  This immediately gives linear time algorithms for the following problems on any $n$-vertex planar graph $G$:
+\begin{compactitem}
+  \item computing an $O(1)$-queue layout of $G$ \cite{dujmovic.joret.ea:planar};
+  \item nonrepetitively vertex-colouring $G$ with $O(1)$ colours \cite{dujmovic.esperet.ea:planar};
+  \item assigning $(1+o(1))\log n$-bit labels to the vertices of $G$ so that one can determine from the labels of vertices $v$ and $w$ whether or not $v$ and $w$ are adjacent in $G$ \cite{dujmovic.esperet.ea:adjacency};
+  \item mapping the vertices of $G$ into a universal graph $U_n$ that has $n^{1+o(1)}$ vertices and edges so that any pair of vertices that are adjacent in $G$ maps to a pair of vertices that are adjacent in $U_n$ \cite{esperet.joret.ea:sparse};
+  \item colouring the vertices of $G$ with $O(p^3\log p)$ colours so that each connected subgraph $H$ of $G$ contains a vertex whose colour is unique in $H$ or contains vertices of at least $p+1$ different colours \cite{debski.felsner.ea:improved}; and
+  \item colouring the vertices of $G$ with $O(\log n/\log\log\log n)$ integers so that the maximum colour that appears on any path $P$ of length at most $\ell$ appears at exactly one vertex of $P$ (for any fixed $\ell\ge 2$) \cite{bose.dujmovic.ea:asymptotically}.
+\end{compactitem}
 
 The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews of the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
