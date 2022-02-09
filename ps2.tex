@@ -182,7 +182,7 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 
 \begin{lem}\label{reconstruction}
   % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. 
-  Let $T$ be a binary tree, let $S\subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ that.
+  Let $T$ be a binary tree, let $S\subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ in $O(d^2)$ time.
 \end{lem}
 
 \begin{proof}
