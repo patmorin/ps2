@@ -401,14 +401,16 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 
 
 
-\begin{thm}
+\begin{thm}\label{three_tree_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $\tw(G/\mathcal{Y})\le 3$.
 \end{thm}
 
 \begin{proof}
-  Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$ \todo{is this really required?} that contains an edge of $T$ incident to $v_0$.  First we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
+  Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$
+  % \todo{is this really required?} sure, why not?
+  that contains an edge of $T$ incident to $v_0$.  In a preprocessing step, we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
 
-  We construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
+  After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
   \begin{enumerate}
     \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.  \cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.
 
@@ -418,7 +420,7 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 \end{enumerate}
 Once we have found the Sperner triangle $f_i$, we can compute the tripod $Y_i$ and mark its vertices by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near triangulations whose outer faces coincide with each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$.
 
-Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{r}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{r}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{r} O(1+|Y_i|) = O(n)$.
+After setting $f_0$, the initial recursive call falls into the third case above, so its input is any of the three inner faces that shares an edge with the outer face, $f_0$.  Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{r}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{r}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{r} O(1+|Y_i|) = O(n)$.
 \end{proof}
 
 
@@ -445,7 +447,9 @@ We begin with the decomposition in \cref{meta}.\ref{four_tree}, which was commun
 
 Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ also shows that if $\mathcal{E}$ is a good edge sequence that produces a bipod partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
-We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  Refer to \cref{e_i}. The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$. \todo[inline]{As discussed, we might need to add $e_1$ also from $f_0$ to guarantee that the $G_i$ is 2-connected after few steps. Should consider this.}  To choose the edge $e_i$, $i>0$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$. If $|I_f| < 4$ then we can select any edge in $f$. So now we focus on the case $|I_f| = 4$. As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner faces in $N$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
+We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  As before, we set $f_0$ to be any face of $G$ such that $E(f_0)$ contains an edge of $T$ incident to the root $v_0$ of $T$.  The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  Next we take special care to ensure that $G_i$ is biconnected for $i\ge 1$.  In particular, if $G_0$ contains only two edges of $f_0$, then we take $e_1$ to be the edge of $f_0$ that does not appear in $G_0$.  Otherwise, we choose $e_1$ using the general strategy for choosing $e_i$, described next.
+
+Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose the edge $e_i$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$. If $|I_f| < 4$ then we can select $e_i$ to be any edge in the interior $f$. Therefore, we focus on the case $|I_f| = 4$. As before we colour vertices in the near triangulation $N$ using colours in the set $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$; we let $S$ be the set of inner faces in $N$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
 
 \cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two new faces containing vertices from $\Lambda_i$ contains vertices from at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
 
@@ -468,14 +472,16 @@ We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The ex
 \begin{proof}
   Direct each edge $xy$ of $\overline{T}_0$ in the direction $\overrightarrow{xy}$ if the component of $\overline{T}_0-xy$ that contains $y$ contains three or more nodes of $S$.  It is sufficient to show that this process leaves some edge $xy$ of $\overline{T}_0$ undirected.  Assume for the sake of contradiction that every edge of $\overline{T}_0$ is directed.  Then some node $x$ of $\overline{T}_0$ has only incoming edges. Certainly $x$ does not have degree $1$ in $\overline{T}_0$.
 
-  If $x$ has degree $2$ in $\overline{T}$ then $\overline{T}_0$ contains two subtrees $T_1$ and $T_2$ have only the node $x$ in common and such that $V(T_1)\cap S\ge 3$ and $V(T_2)\cap S\ge 3$, which implies that $|S|\ge 3+3-1 > 4$, a contradiction.
+  If $x$ has degree $2$ in $\overline{T}$ then $\overline{T}_0$ contains two subtrees $T_1$ and $T_2$ that have only the node $x$ in common and such that $V(T_1)\cap S\ge 3$ and $V(T_2)\cap S\ge 3$, which implies that $|S|\ge 3+3-1 > 4$, a contradiction.
 
-  Suppose therefore that $x$ has degree $3$ in $\overline{T}_0$.  Each face in $S$ contains an edge in $E(f)$, so each face in $S$ has degree at most $2$ in $\overline{T}_0$.  Therefore $x\not\in S$.  Therefore $\overline{T}_0-x$ contains three components $T_1, T_2, T_3$ such that any pair of components contains at least $3$ elements of $S$.  But this implies that $|S|\ge (3\times 3)/2>4$, a contradiction.
+  Suppose therefore that $x$ has degree $3$ in $\overline{T}_0$.  Each face in $S$ contains an edge in $E(f)$, so each face in $S$ has degree at most $2$ in $\overline{T}_0$.  Therefore $x\not\in S$.  Therefore $\overline{T}_0-x$ contains three components $T_1, T_2, T_3$ such that each pair of components contains at least $3$ elements of $S$.  But this implies that $|S|\ge (3\times 3)/2>4$, a contradiction.
 \end{proof}
 
 
 
-Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that $E(\alpha)$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $e_i$.
+Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that $E(\alpha)$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $e_i$.  
+
+The rest of the details of the algorithm are similar to those given in the proof of \cref{three_tree_algorithm}:  Each subproblem is a near-triangulation $N$ bounded by a cycle $C$ and the input that defines the subproblem consists of the (at most four) faces $S\subseteq F(N)$ incident to bichromatic edges of $C$.\footnote{In the degenerate case where $C$ has no bichromatic edges, the input is any face of $N$ incident to an edge of $C$.}
 
 \begin{thm}\label{bipod_decomposition_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-bipod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 4$.

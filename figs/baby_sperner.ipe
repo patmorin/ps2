@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220114055720" modified="D:20220118140740"/>
+<info created="D:20220114055720" modified="D:20220209151237"/>
 <preamble>\usepackage{kpfonts}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
@@ -777,8 +777,8 @@ h
 </path>
 <text matrix="1 0 0 0.8 7 119.702" transformations="translations" pos="161.494 610.606" stroke="black" type="label" width="9.616" height="4.57" depth="2.1" halign="right" valign="baseline" style="math">v_0</text>
 <text matrix="1 0 0 0.8 10.1738 98.7783" transformations="translations" pos="161.494 610.606" stroke="black" type="label" width="8.828" height="4.564" depth="2.1" halign="right" valign="top" style="math">v_r</text>
-<text matrix="1 0 0 0.8 -5 119.702" transformations="translations" pos="348.416 637.938" stroke="black" type="label" width="8.245" height="4.564" depth="2.1" valign="baseline" style="math">v_i</text>
-<text matrix="1 0 0 0.8 -4 121.302" transformations="translations" pos="351.414 609.724" stroke="black" type="label" width="17.112" height="4.57" depth="2.1" valign="top" style="math">v_{i+1}</text>
+<text matrix="1 0 0 0.8 -5 119.702" transformations="translations" pos="348.416 637.938" stroke="black" type="label" width="9.086" height="4.566" depth="2.16" valign="baseline" style="math">v_\ell</text>
+<text matrix="1 0 0 0.8 -4 121.302" transformations="translations" pos="351.414 609.724" stroke="black" type="label" width="17.952" height="4.566" depth="2.16" valign="top" style="math">v_{\ell+1}</text>
 <text matrix="1 0 0 0.8 -67 251.702" transformations="translations" pos="240 512" stroke="black" type="label" width="8.54" height="7.143" depth="2.59" halign="center" valign="baseline" style="math">f_0</text>
 <path matrix="1 0 0 0.8 0 119.702" stroke="red" pen="heavier" cap="1">
 184.113 604.059 m

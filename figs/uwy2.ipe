@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220118121110" modified="D:20220118121714"/>
+<info created="D:20220118121110" modified="D:20220209153908"/>
 <preamble>\usepackage{kpfonts}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
@@ -328,7 +328,13 @@ h
 <view layers="alpha" active="alpha"/>
 <view layers="alpha beta" active="beta"/>
 <view layers="alpha beta gamma" active="gamma"/>
-<path layer="gamma" fill="brew5">
+<path layer="gamma" stroke="black" pen="ultrafat">
+318.269 600.51 m
+307.686 574.743 l
+332.764 575.663 l
+h
+</path>
+<path fill="brew5">
 216 560 m
 224 528
 312 528 c
