@@ -188,14 +188,14 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 \begin{proof}
   The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T_0'=T_0$ is the tree with one node, which is the unique element in $S$.
 
-  If $|S|\ge 2$, then the first step is to determine the root $r$ of $T_0$, which must also be the root of $T_0'$.  This is easily done by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$.
+  If $|S|\ge 2$, then the first step is to determine the root $r$ of $T_0$, which must also be the root of $T_0'$.  This is easily done by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$. This step takes $O(d)$ time.
 
-  If $r$ has no left child, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
+  If $r$ has no left child in $T$, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
     \item If $\lca_{T}(r_1,x)=r_1$ then $x\in S_1$.
     \item If $\lca_{T}(r_1,x)=r$ then $x\in S_2$.
   \end{compactenum}
-  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ to obtain a tree with root $r_1'$ and recurse on $S_2$ to obtain a tree with root $r_2'$.  We make $r_1'$ the left child of $r$ and $r_2'$ the right child of $r$ to obtain the model $T_0'$ of $T_0$.  The running-time of this  algorithm is obeys the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 \leq d$ and $d_1, d_2 \leq d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
+  Therefore, using $O(d)$ lowest common ancestor queries, we can determine the root $r$ of $T'$ and partition $S\setminus\{r\}$ into sets $S_1$ and $S_2$ that define the left and right subtrees of $r$.  We can now recurse on $S_1$ to obtain a tree with root $r_1'$ and recurse on $S_2$ to obtain a tree with root $r_2'$.  We make $r_1'$ the left child of $r$ and $r_2'$ the right child of $r$ to obtain the model $T_0'$ of $T_0$.  The running-time of this  algorithm obeys the recurrence $T(d)\le O(d)+T(d_1) + T(d_2)$, where $d_1 + d_2 \leq d$ and $d_1, d_2 \leq d-1$.  This recurrence resolves to $T(d)\in O(d^2)$.
 \end{proof}
 
 % ($d_1 + d_2 = d$ where $d_1, d_2 > 0$) or ($d_1 + d_2 = d-1$ where $d_1, d_2 \geq 0$)
