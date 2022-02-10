@@ -160,8 +160,6 @@ The \emph{dual} $G^\star$ of an embedded graph $G$ is the graph with vertex set 
 
 For our purposes, a \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\footnote{There is a small ambiguity here when $T$ contains two edges of $f_0$, in which case the unique child of $f_0$ in $\overline{T}$ can be treated as the left or right child of $f_0$.}
 
-%\todo[inline]{do we have to force the spanning tree to contain an edge of $f_0$ or we set $f_0$ after $T$ (any face can be the outer face) -- we might need to take specific face $f_0$ for the proof of theorem 8.}
-
 \paragraph{Paths and Distances.}
 
 A \emph{path} in $G$ is a (possibly empty) sequence of vertices $v_0,\ldots,v_r$ with the property that $v_{i-1}v_i\in E(G)$, for each $i\in\{1,\ldots,r\}$.  The \emph{endpoints} of a path $v_0,\ldots,v_r$ are the vertices $v_0$ and $v_r$.
@@ -250,7 +248,7 @@ Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose
 
 Informally, we require that each of the \emph{legs} of each tripod $Y_i$ have  a \emph{foot} on a different vertex of $G_{i-1}$ and that the tripods $Y_1,\ldots,Y_r$ cover all the vertices and edges of $G$. Formally, we say that the sequence $\mathcal{F}$ is \emph{proper} if, for each $i\in\{1,\ldots,r\}$, and each distinct $v,w\in V(f_i)$, $V(Y_T(v)\cap G_{i-1})\neq V(Y_T(w)\cap G_{i-1})$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
 
-From the preceding definitions it follows that, if $\mathcal{F}$ is proper, then  $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. \todo{I dont know what should we put instead of \textit{path} here. connected is not nice!} An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is connected. %[a path]
+From the preceding definitions it follows that, if $\mathcal{F}$ is proper, then  $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is connected. %[a path]
 % (The path $f[Y_j]$ is a path that first appears in $G_j$.)
 We are interested in keeping the number of tripods in $Y_0,\ldots,Y_i$ that contribute to $V(f)$ as small as possible, which motivates our next definition.
 
@@ -412,9 +410,7 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 \end{thm}
 
 \begin{proof}
-  Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$
-  % \todo{is this really required?} sure, why not?
-  that contains an edge of $T$ incident to $v_0$.  In a preprocessing step, we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
+  Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$ that contains an edge of $T$ incident to $v_0$.  In a preprocessing step, we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
 
   After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
   \begin{enumerate}
