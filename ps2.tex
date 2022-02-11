@@ -86,9 +86,13 @@
 \author{Saeed Odak}{University of Ottawa Department of Computer Science and Electrical Engineering}{saeed.odak@gmail.com}{}{}
 
 \authorrunning{P. Bose, P. Morin, and S. Odak}
+\Copyright{Prosenjit Bose, Pat Morin, and Saeed Odak}
 
+\keywords{Planar graphs, product structure}
+\ccsdesc{Mathematics of computing~Graph theory}
+\ccsdesc{Mathematics of computing~Graph algorithms}
 
-%TODO 
+%TODO
 %TODO mandatory, please use full name; only 1 author per \author macro; first two parameters are mandatory, other parameters can be empty. Please provide at least the name of the affiliation and the country. The full address is optional. Use additional curly braces to indicate the correct name splitting when the last name consists of multiple name parts.
 
 % \author{Prosenjit Bose}{Carleton University, School of Computer Science} %{jit@scs.carleton.ca}{dorcidid}
@@ -204,7 +208,7 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 % An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
-  % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. 
+  % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$.
   Let $T$ be a binary tree, let $S\subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ in $O(d^2)$ time.
 \end{lem}
 
@@ -262,7 +266,7 @@ We now describe how a $(G,T)$-tripod decompositions can be obtained from a seque
 \end{compactitem}
 For any subgraph $f$ of $G$, we define $Y_T(f):=f\cup \bigcup_{v\in V(f)} P_T(v)$.\footnote{In all of our examples, the subgraph $f$ will always be a single edge or single face of $G$.}  In words, $Y_T(f)$ is the subgraph of $G$ that includes all the vertices and edges of $f$ and all the vertices and edges of each path from each vertex of $f$ to the root of $T$.
 
-Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose first element is the outer face $f_0$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i Y_T(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:= G_0,\ldots,G_{r}$ and let $\mathcal{Y_F}:=Y_0,\ldots,Y_r$.  
+Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose first element is the outer face $f_0$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i Y_T(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:= G_0,\ldots,G_{r}$ and let $\mathcal{Y_F}:=Y_0,\ldots,Y_r$.
 
 Informally, we require that each of the \emph{legs} of each tripod $Y_i$ have  a \emph{foot} on a different vertex of $G_{i-1}$ and that the tripods $Y_1,\ldots,Y_r$ cover all the vertices and edges of $G$. Formally, we say that the sequence $\mathcal{F}$ is \emph{proper} if, for each $i\in\{1,\ldots,r\}$, and each distinct $v,w\in V(f_i)$, $V(Y_T(v)\cap G_{i-1})\neq V(Y_T(w)\cap G_{i-1})$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
 
@@ -354,7 +358,7 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
   Next we claim that all the elements of $S$ are in a single connected component of $X$.  If $|I_f|=2$, then this follows immediately from \cref{baby_sperner}.  If $|I_f|=3$, then let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$ and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we may again apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
 
   Refer to \cref{lca_sperner_fig}(a).
-  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting location $f_i$. 
+  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting location $f_i$.
   % Since each of these paths is also a path in $X$ and $V(X)$ consists entirely of inner faces of $N$.
 
   \begin{figure}
@@ -499,7 +503,7 @@ Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose
 
 
 
-Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that $E(\alpha)$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $e_i$.  
+Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that $E(\alpha)$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $e_i$.
 
 The rest of the details of the algorithm are similar to those given in the proof of \cref{three_tree_algorithm}:  Each subproblem is a near-triangulation $N$ bounded by a cycle $C$ and the input that defines the subproblem consists of the (at most four) faces $S\subseteq F(N)$ incident to bichromatic edges of $C$.\footnote{In the degenerate case where $C$ has no bichromatic edges, the input is any face of $N$ incident to an edge of $C$.}
 
