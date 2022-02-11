@@ -175,11 +175,11 @@ Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$,
 
 
 
-\paragraph*{Lowest Common Ancestors}
+\paragraph*{Lowest Common Ancestors.}
 
 For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the node $a$ in $P_T(v)\cap P_T(w)$ having maximum $T$-depth.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
 
-\paragraph*{Reconstructing Binary Tree Models}
+\paragraph*{Reconstructing Binary Tree Models.}
 
 Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{S-non-branching} if $v_{i}$ has degree 2 and $v_i \notin S$ for each $i\in\{1,\ldots,r-1\}$. For any binary tree $T$ and set $S \subseteq V(T)$, the \emph{model} $T'$ of $T$ with respect to $S$ is the binary tree obtained by replacing each maximal $S$-non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
