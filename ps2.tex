@@ -162,11 +162,11 @@ The remainder of this paper is organized as follows: \cref{prelims} presents som
 Throughout this paper we use standard graph theory terminology as used in the textbook by Diestel \cite{diestel:graph}.  All graphs discussed here are simple and finite.  For a graph $G$, $V(G)$ and $E(G)$ denote the vertex and edge sets of $G$, respectively.  We use the terms \emph{vertex} and \emph{node} interchangeably, though we typically refer to the vertices of some primary graph $G$ of interest and refer to the nodes of some auxilliary graph (such as a spanning tree) related to $G$.  We say that a subgraph $G'$ of a graph $G$ \emph{spans} a set $S\subseteq V(G)$ if $S\subseteq V(G')$.
 
 
-\paragraph*{Quotient Graphs.}
+\paragraph*{Quotient Graphs}
 
 Given a graph $G$ and a partition $\mathcal{P}$ of $V(G)$, the \emph{quotient graph} $G/\mathcal{P}$ is the graph with vertex set $V(G/\mathcal{P}):=\mathcal{P}$ and in which two nodes $X,Y\in V(G/\mathcal{P})$ are adjacent if $G$ contains at least one edge $xy$ with $x\in X$ and $y\in Y$.
 
-\paragraph*{Embeddings, Planar Graphs, and (Near-)Triangulations.}
+\paragraph*{Embeddings, Planar Graphs, and (Near-)Triangulations}
 
 An \emph{embedding} $\psi$ of a graph $G$ associates each vertex $v$ of $G$ with a point $\psi(v)\in \R^2$ and each edge $vw$ of $G$ with a simple open curve $\psi(vw):(0,1)\to\R^2$ whose endpoints\footnote{The \emph{endpoints} of an open curve $\psi:(0,1)\to\R^2$ are the two points $\lim_{\epsilon\downarrow 0} \psi(\epsilon)$ and $\lim_{\epsilon\downarrow 0}\psi(1-\epsilon)$.} are $\psi(v)$ and $\psi(w)$.  We do not distinguish between such a curve $\psi(vw)$ and the point set $\{\psi(vw)(t):0<t<1\}$.
 We let $\psi(V(G)):=\{\psi(v):v\in V(G)\}$, $\psi(E(G)):=\bigcup_{vw\in E(G)} \psi(vw)$, and $\psi(G):=\psi(V(G))\cup\psi(E(G))$.  An embedding $\psi$ of $G$ is \emph{plane} if $\psi(vw)\cap\psi(V(G))=\emptyset$ and $\psi(vw)\cap\psi(xy)=\emptyset$ for each distinct pair of edges $vw,xy\in E(G)$.  A graph $G$ is \emph{planar} if it has a plane embedding. A \emph{triangulation} is an edge-maximal planar graph.
@@ -175,14 +175,14 @@ If $\psi$ is a plane embedding of a planar graph $G$, then we call the pair $(G,
 
 Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ denote the set of faces of $G$.  If $G$ is $2$-connected then, for any face $f\in F(G)$, the set of vertices and edges of $G$ contained in the boundary of $f$ forms a cycle.  We may therefore treat a face $f$ of a $2$-connected graph $G$ as a component of $\R^2\setminus G$ or as the cycle of $G$ on the boundary of $f$, relying on context to distinguish between the two usages.  Note that every embedded graph contains exactly one face---the \emph{outer face}---that is unbounded.
 
-\paragraph*{Duals and Cotrees.}
+\paragraph*{Duals and Cotrees}
 
 The \emph{dual} $G^\star$ of an embedded graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.\footnote{For a set $S$, $\binom{S}{2}$ denotes the $\binom{|S|}{2}$-element set $\binom{S}{2}:=\{\{x,y\}:x,y\in S, x\neq y\}$.} If $T$ is a spanning tree of $G$ then the \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph with vertex set $V(\overline{T}) := V(G^\star)$ and edge set $E(\overline{T}) := \{ab \in E(G^\star) : E(a) \cap \E(b) \backslash E(T) \neq \emptyset \}$. It is well known that, if $G$ is connected, then $\overline{T}$ is a spanning tree of $G^\star$.
 % $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.
 
 For our purposes, a \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\footnote{There is a small ambiguity here when $T$ contains two edges of $f_0$, in which case the unique child of $f_0$ in $\overline{T}$ can be treated as the left or right child of $f_0$.}
 
-\paragraph*{Paths and Distances.}
+\paragraph*{Paths and Distances}
 
 A \emph{path} in $G$ is a (possibly empty) sequence of vertices $v_0,\ldots,v_r$ with the property that $v_{i-1}v_i\in E(G)$, for each $i\in\{1,\ldots,r\}$.  The \emph{endpoints} of a path $v_0,\ldots,v_r$ are the vertices $v_0$ and $v_r$.
 % We will treat a path $v_0,\ldots,v_r$ interchangeably with the subgraph of $G$ having vertex set $\{v_0,\ldots,v_r\}$ and edge set $\{v_{i-1}v_i:i\in\{1,\ldots,r\}\}$.
@@ -191,17 +191,17 @@ The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of ed
 % For a non-empty subset $S\subseteq V(G)$, $\dist_G(v,S):=\min\{\dist_G(v,w):w\in S\}$.
 %
 
-\paragraph*{Trees, Depth, Ancestors, and Descendants.}
+\paragraph*{Trees, Depth, Ancestors, and Descendants}
 
 Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $w$ to $v_0$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
 
 
 
-\paragraph*{Lowest Common Ancestors.}
+\paragraph*{Lowest Common Ancestors}
 
 For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the node $a$ in $P_T(v)\cap P_T(w)$ having maximum $T$-depth.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
 
-\paragraph*{Reconstructing Binary Tree Models.}
+\paragraph*{Reconstructing Binary Tree Models}
 
 Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{S-non-branching} if $v_{i}$ has degree 2 and $v_i \notin S$ for each $i\in\{1,\ldots,r-1\}$. For any binary tree $T$ and set $S \subseteq V(T)$, the \emph{model} $T'$ of $T$ with respect to $S$ is the binary tree obtained by replacing each maximal $S$-non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
