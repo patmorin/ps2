@@ -131,7 +131,7 @@
 
 \section{Introduction}
 
-For two graph $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$.
+For two graphs $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$.
 % Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
 The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
 
@@ -154,7 +154,7 @@ In each of the applications of \cref{meta}, the proofs are constructive and lead
   \item colouring the vertices of $G$ with $O(\log n/\log\log\log n)$ integers so that the maximum colour that appears on any path $P$ of length at most $\ell$ appears at exactly one vertex of $P$ (for any fixed $\ell\ge 2$) \cite{bose.dujmovic.ea:asymptotically}.
 \end{compactitem}
 
-The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews of the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
+The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
 \section{Preliminaries}
 \label{prelims}
@@ -208,8 +208,13 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 % An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
 \begin{lem}\label{reconstruction}
+<<<<<<< HEAD
   % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$.
   Let $T$ be a binary tree, let $S\subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ in $O(d^2)$ time.
+=======
+  % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. 
+  Let $T$ be a binary tree, let $S=\{x_1,\ldots,x_d\} \subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ in $O(d^2)$ time.
+>>>>>>> main
 \end{lem}
 
 \begin{proof}
@@ -341,7 +346,7 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
 
 \begin{lem}\label{lca_sperner}
-  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contains exactly the (at most three) faces $g\in F(G)$ such that
+  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain exactly the (at most three) faces $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f$.
