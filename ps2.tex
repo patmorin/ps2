@@ -198,6 +198,19 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 
 % An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{ccc}
+      \includegraphics[scale=0.85]{figs/tree1} &
+      &
+      \includegraphics[scale=0.85]{figs/tree2} \\
+      (a) & & (b)
+    \end{tabular}
+  \end{center}
+  \caption{Illustration of model of a binary tree by contracting non-branching upward paths. (a) A binary tree $T$ with set $S \subseteq V(T)$ depicted in red. (b) Model of $T$ with respect to $S$.}
+  \label{trees}
+\end{figure}
+
 \begin{lem}\label{reconstruction}
   % Given a constant query time lowest common ancestor data structure for a binary tree $T$ and a subset $S:=\{x_1,\ldots,x_d\}$ of nodes in $T$. 
   Let $T$ be a binary tree, let $S=\{x_1,\ldots,x_d\} \subseteq V(T)$, and let $T_0$ be the minimal subtree of $T$ that spans $S$. Then there exists an algorithm that, given an $O(1)$-query time lowest common ancestor data structure for $T$,  computes the model $T_0'$ of $T_0$ with respect to $S$ in $O(d^2)$ time.
