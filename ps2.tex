@@ -109,22 +109,25 @@
 
 \section{Introduction}
 
-For two graphs $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$. For graphs $G$ and $X$, an \emph{$X$-decomposition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
+For two graphs $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$. 
+% Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
+The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{For graphs $G$ and $X$, an \emph{$X$-decomposition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
  \begin{inparaenum}[(i)]
      \item for each $v\in V(G)$, $X[\{x\in V(X):v\in B_x\}]$ is connected; and
      \item for each $vw\in E(G)$, there exists some $x\in V(X)$ such that $\{v,w\}\subseteq B_x$.
 \end{inparaenum}
-The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree decomposition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree decomposition of $G$.
-
+The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree decomposition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree decomposition of $G$.}\footnote{
 For two graphs $G_1$ and $G_2$, the \emph{strong graph product} of $G_1$ and $G_2$, denoted $G_1\boxtimes G_2$, is a graph whose vertex set is $V(G_1\boxtimes G_2):= V(G_1)\times V(G_2)$ and that contains an edge between distinct vertices $v=(v_1,v_2)$ and $w=(w_1,w_2)$ if and only if
 \begin{inparaenum}[(i)]
     \item $v_1=w_1$ and $v_2w_2\in E(G_2)$;
     \item $v_2=w_2$ and $v_1w_1\in E(G_1)$; or
     \item $v_1w_1\in E(G_1)$ and $v_2w_2\in E(G_2)$.
 \end{inparaenum}
+}
 
-% Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
-The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.%\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
+
+
+%\footnote{In this paper, we will not be working directly with treewidth or the strong graph product ($\boxtimes$), so we omit their definitions.}
 
 \begin{thm}[\citet{dujmovic.joret.ea:planar, ueckerdt.wood.ea:improved}]\label{meta}
   For any planar graph $G$, there exists:
@@ -144,6 +147,8 @@ In each of the applications of \cref{meta}, the proofs are constructive and lead
   \item colouring the vertices of $G$ with $O(p^3\log p)$ colours so that each connected subgraph $H$ of $G$ contains a vertex whose colour is unique in $H$ or contains vertices of at least $p+1$ different colours \cite{debski.felsner.ea:improved}; and
   \item colouring the vertices of $G$ with $O(\log n/\log\log\log n)$ integers so that the maximum colour that appears on any path $P$ of length at most $\ell$ appears at exactly one vertex of $P$ (for any fixed $\ell\ge 2$) \cite{bose.dujmovic.ea:asymptotically}.
 \end{compactitem}
+
+In addition to planar graphs, product structure theorems similar to \cref{meta} exist for $k$-planar graphs, bounded-genus graphs, and graphs from apex-minor-free families \cite{X,Y}.  The existence of each of these decompositions relies at some point on \cref{meta}.  Thus, the algorithm presented here can also serve as an optimal subroutine in the computation of product structure decompositions of bounded-genus graphs, graph from apex-minor-free families, and $k$-planar graphs.  However, these larger graph classes also require additional machinery that (at the time of writing) makes finding these decompositions largely impractical.
 
 The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
@@ -168,7 +173,7 @@ Each component of $\R^2\setminus G$ is a \emph{face} of $G$ and we let $F(G)$ de
 
 \paragraph*{Duals and Cotrees.}
 
-The \emph{dual} $G^\star$ of an embedded graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.\footnote{For a set $S$, $\binom{S}{2}$ denotes the $\binom{|S|}{2}$-element set $\binom{S}{2}:=\{\{x,y\}:x,y\in S, x\neq y\}$.} If $T$ is a spanning tree of $G$ then the \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph with vertex set $V(\overline{T}) := V(G^\star)$ and edge set $E(\overline{T}) := \{ab \in E(G^\star) : E(a) \cap \E(b) \backslash E(T) \neq \emptyset \}$. It is well known that, if $G$ is connected, then $\overline{T}$ is a spanning tree of $G^\star$.
+The \emph{dual} $G^\star$ of an embedded graph $G$ is the graph with vertex set $V(G^\star):=F(G)$ and edge set $E(G^{\star}):=\{fg\in \binom{F(G)}{2}:E(f)\cap E(g)\neq\emptyset\}$.\footnote{For a set $S$, $\binom{S}{2}$ denotes the $\binom{|S|}{2}$-element set $\binom{S}{2}:=\{\{x,y\}:x,y\in S, x\neq y\}$.} If $T$ is a spanning tree of $G$ then the \emph{cotree} $\overline{T}$ of $(G,T)$ is the graph with vertex set $V(\overline{T}) := V(G^\star)$ and edge set $E(\overline{T}) := \{ab \in E(G^\star) : E(a) \cap \E(b) \backslash E(T) \neq \emptyset \}$. It is well known that, if $G$ is connected and $T$ is a spanning tree of $G$ then $\overline{T}$ is a spanning tree of $G^\star$ \cite[Chapter~4, Exercise~42]{diestel:graph}.
 % $\overline{T}:=G^\star-\{ab\in E(G^*):E(a)\cap E(b)\setminus E(T)\neq\emptyset\}$.
 
 For our purposes, a \emph{binary tree} is a rooted tree of maximum degree $3$ whose root has degree at most $2$ and in which each child $v$ of a node $u$ is either the unique \emph{left child} or the unique \emph{right child} of $u$.  If $G$ is a triangulation  and we root $\overline{T}$ at any face $f_0\in F(G)$ that contains an edge of $T$, then $\overline{T}$ is a binary tree, with the classification of left and right children determined by the embedding of $G$.\footnote{There is a small ambiguity here when $T$ contains two edges of $f_0$, in which case the unique child of $f_0$ in $\overline{T}$ can be treated as the left or right child of $f_0$.}
@@ -201,13 +206,12 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 \begin{figure}
   \begin{center}
     \begin{tabular}{ccc}
-      \includegraphics[scale=0.75]{figs/tree-1} &
+      \includegraphics[scale=0.75]{figs/model-1} &
       &
-      \includegraphics[scale=0.75]{figs/tree-2} \\
-      (a) & & (b)
+      \includegraphics[scale=0.75]{figs/model-2} \\
     \end{tabular}
   \end{center}
-  \caption{Illustration of model of a binary tree by contracting non-branching upward paths. (a) A binary tree $T$ with set $S \subseteq V(T)$ depicted in red. (b) Model of $T$ with respect to $S$.}
+  \caption{A binary tree $T$ with set $S \subseteq V(T)$ depicted in red and the model of $T$ with respect to $S$.}
   \label{trees}
 \end{figure}
 
@@ -219,7 +223,7 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 \begin{proof}
   The proof is by induction on $|S|$.  The base case $|S|=1$ is trivial, since then $T_0'=T_0$ is the tree with one node, which is the unique element in $S$.
 
-  If $|S|\ge 2$, then the first step is to determine the root $r$ of $T_0$, which must also be the root of $T_0'$.  This is easily done by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{1,\ldots,d\}$. This step takes $O(d)$ time.
+  If $|S|\ge 2$, then the first step is to determine the root $r$ of $T_0$, which must also be the root of $T_0'$.  This is easily done by first setting $r:=x_1$ and then repeatedly setting $r:=\lca_{T}(r,x_i)$ for each $i\in\{2,\ldots,d\}$. This step takes $O(d)$ time.
 
   If $r$ has no left child in $T$, then we can immediately apply induction on $S\setminus\{r\}$ and make the right child of $r$ in $T_0'$ the root of the model obtained by induction.  The case in which $r$ has no right child can be handled similarly. If $r$ has both a left child $r_1$ and a right child $r_2$, then the next step is to partition $S\setminus\{r\}$ into a set $S_1$ of descendants of $r_1$ and a set $S_2$ of descendants of $r_2$.   For each $x\in S\setminus\{r\}$ there are only two possibilities for $\lca_{T}(r_1,x)$
   \begin{compactenum}
@@ -248,7 +252,18 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 \section{Tripod Decompositions}
 \label{tripod_decompositions}
 
-Let $G$ be an $n$-vertex triangulation and let $T$ be a spanning tree of $G$. For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths in $T$ (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+Refer to \cref{tripod_decomposition_figure}. Let $G$ be an $n$-vertex triangulation and let $T$ be a spanning tree of $G$.   For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths in $T$ (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+
+\begin{figure}
+  \begin{center}
+    \begin{tabular}{cc}
+      \includegraphics{figs/tripod-decomp-1} &
+      \includegraphics{figs/tripod-decomp-2}
+    \end{tabular}
+  \end{center}
+  \caption{A $(G,T)$-tripod decomposition of a triangulation $G$ (and the underlying spanning tree $T$.)}
+  \label{tripod_decomposition_figure}
+\end{figure}
 
 \begin{thm}\label{tripod_decomposition}
   Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
@@ -313,13 +328,14 @@ This proof leads to a divide-and-conquer algorithm: After finding $f_i$, the alg
 
 \citet{morin:fast} later showed that, using an appropriate data structure for $T$, this approach can be implemented in such a way that the resulting algorithm runs in $O(n\log n)$ time.  Essentially, Morin's algorithm works by finding the Sperner triangle $f_i$ in time proportional to the minimum number of faces of $G$ contained in any of the faces in $S_i$.  In the next section, we will show that, by using a lowest common ancestor data structure for the cotree $\overline{T}$ along with \cref{reconstruction}, the Sperner triangle $f_i$ can be found in constant time, yielding an $O(n)$ time algorithm.
 
-By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}. %\ref{three_tree}. 
-To do this, we show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. We construct the graph $H$ so that for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $H$ contains a clique on $\{Y_j:j\in I_f\}$. To accomplish this, for each $i\in\{1,\ldots,r\}$ we let $f$ be the face of $G_{i-1}$ that contains $f_i$ and we form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
+By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}. %\ref{three_tree}.
+Let $G$ be a triangulation, let $T$ be spanning tree of $G$, let
+$\mathcal{F}:=f_0,\ldots,f_r$ be the proper good face sequence guaranteed by \cref{face_trick}, and let $\mathcal{Y_F}:=\{Y_0,\ldots,Y_r\}$ be the resulting tripod decomposition. We now show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. We construct the graph $H$ so that for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $H$ contains a clique on $\{Y_j:j\in I_f\}$. To accomplish this, for each $i\in\{1,\ldots,r\}$ let $f$ be the face of $G_{i-1}$ that contains $f_i$ and form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
 \section{An $O(n)$-Time Algorithm}
 \label{linear_time_algorithm}\label{algorithm}
 
-Refer to \cref{baby_sperner_fig} for an illustration of the following (probably well-known) baby version of Sperner's Lemma:
+Refer to \cref{baby_sperner_fig} for an illustration of the following (probably well-known) simple lemma, which is closely related to Sperner's Lemma:
 
 \begin{figure}
   \begin{center}
