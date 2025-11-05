@@ -78,6 +78,7 @@
 \title{\MakeUppercase{An Optimal Algorithm for Product Structure in Planar Graphs}\thanks{This research was partly funded by NSERC.}}
 \author{%
   Prosenjit Bose\thanks{School of Computer Science, Carleton University}\qquad
+  Kaya Gouin\footnotemark[1]\qquad
   % Vida Dujmović\thanks{Department of Computer Science and Electrical Engineering, University of Ottawa}\qquad
   Pat Morin\footnotemark[1]\qquad
   Saeed Odak\thanks{Department of Computer Science and Electrical Engineering, University of Ottawa}}
@@ -361,26 +362,30 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
 
+
+% \todo{The statement of this lemma needs to be fixed. It's not correct when $f$ is has three tripods on its boundary and one of them is a single vertex.}
+
+% \todo[inline]{Pat's note to self: The issue below is that we are counting elements of $S$ rather than portal edges.  Rather, we would like that, for each component $A$ of $\overline{T}_0-f_i$, there is at at most one bichromatic edge of $f$ contained in $\bigcup_{g\in V(A)} E(g)$.  That's a mouthful, so we can just exclude the case where $|S|\le 3$.   }
+
 \begin{lem}\label{lca_sperner}
-  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain exactly the (at most three) faces $g\in F(G)$ such that
+  Let $G$ be a triangulation with a vertex $v_0$ on its outer face $f_0$; let $T$ be a spanning tree of $G$ rooted at $v_0$; let $\overline{T}$ be the cotree of $(G,T)$ rooted at $f_0$; let $f_0,\ldots,f_{i-1}$ be a good proper sequence of faces of $G$ that yields a sequence $\mathcal{G_F}:=G_0,\ldots,G_{i-1}$ of graphs and a sequence $\mathcal{Y_F}:=Y_0,\ldots,Y_{i-1}$ of tripods; let $f\not\in \{f_0,\ldots,f_{i-1}\}$ be a face of $G_{i-1}$, and let $S\subseteq F(G)$ contain three distinct faces $g\in F(G)$ such that
   \begin{compactenum}[(i)]
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f$.
   \end{compactenum}
-  Let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  Then, if $S$ is non-empty and $f_i\in V(\overline{T}_0)$ is such that each component of $\overline{T}_0-f_i$ contains at most one element of $S$,
+  Let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  If $f_i\in V(\overline{T}_0)$ is such that each component of $\overline{T}_0-f_i$ contains at most one element of $S$,
   Then $f_0,\ldots,f_i$ is good.
 \end{lem}
 
 \begin{proof}
-  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in the closure of the interior of $f$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $S$ is non-empty $|I_f|\ge 2$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained in $Y_j$.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
+  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in the closure of the interior of $f$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $|S|=3$, $|I_f|=3$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained in $Y_j$.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
 
-  $E(f)$ contains exactly $|I_f|$ bichromatic edges.  Since each element of $S$ is an inner face of $N$ that contains a bichromatic edge of $f$, $|S|\le |I_f|\le 3$.  Let $X$ be the subgraph of $N^\star$ that contains an edge $fg\in E(N^\star)$ if and only if $f$ and $g$ are inner faces of $N$ and the edge in $E(f)\cap E(g)$ is bichromatic.  We claim that $X$ is a subgraph of $\overline{T}$.  In order to show this, we need only argue that each edge $uv$ of $T$ in the interior of $f$ is monochromatic.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$, so $uv$ is monochromatic. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
+  $E(f)$ contains exactly three bichromatic edges each of which is on the boundary of exactly one face in $S$.  Let $X$ be the subgraph of $N^\star$ that contains an edge $fg\in E(N^\star)$ if and only if $f$ and $g$ are inner faces of $N$ and the edge in $E(f)\cap E(g)$ is bichromatic.  We claim that $X$ is a subgraph of $\overline{T}$.  In order to show this, we need only argue that each edge $uv$ of $T$ in the interior of $f$ is monochromatic.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$, so $uv$ is monochromatic. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
 
-  Next we claim that all the elements of $S$ are in a single connected component of $X$.  If $|I_f|=2$, then this follows immediately from \cref{baby_sperner}.  If $|I_f|=3$, then let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$ and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we may again apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
+  Next we claim that all the elements of $S$ are in a single connected component of $X$.  To see this, let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$ and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
 
   Refer to \cref{lca_sperner_fig}(a).
-  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting location $f_i$. 
-  % Since each of these paths is also a path in $X$ and $V(X)$ consists entirely of inner faces of $N$.
+  Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting point $f_i$.   
 
   \begin{figure}
     \begin{center}
@@ -401,12 +406,12 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
     \item add an edge joining the center of each trichromatic triangle to each of the centers of its bichromatic edges; and
     \item add an edge (embedded as a straight line segment) joining the centers of each pair of bichromatic edges that are on a common bichromatic face $g\in V(\overline{T}_0)$.
   \end{compactenum}
-  The graph $X_0$ is a tree of maximum-degree $3$ that has $|I_f|$ leaves.  (Each leaf in $X_0$ is the center of a bichromatic edge in $E(f)$).  With the exception of these three leaves, every point in the embedding of $X_0$ is contained in the interior of $f$.
-
+  The graph $X_0$ is a tree of maximum-degree $3$ that has three leaves.  (Each leaf in $X_0$ is the center of a bichromatic edge of $E(f)$). Therefore $X_0$ has exactly one degree-$3$ vertex.  We claim that this degree-$3$ vertex is in the interior of $f_i$.  Indeed, if this were not the case,  then $\overline{T}_0-f_i$ would necessarily have a component $Z$ such that $\bigcup_{g\in V(Z)} E(g)$ contains at least two bichromatic edges of $E(f)$.  But this would imply that $Z$ contains two elements of $S$, contradicting the definition of $f_i$.
+  
   Refer to \cref{lca_sperner_fig}(c).
-  Now treat $X_0$ as a point set and consider the point set $f'$ obtained by removing $X_0$ from the closure of $f$. Now $f'$ has $|I_f|$ connected components and each vertex of $f_i$ is in a different component.  Each of the components of $f'$ contains vertices of $Y_j$ for exactly one $j\in I_f$; call this the \emph{colour} of the component.  Since no edge of $T$ crosses $X_0$, the colour of each vertex in $f_i$ is equal to the colour the component of $f'$ that contains it.
+  Now treat $X_0$ as a point set and consider the point set $f'$ obtained by removing $X_0$ from the closure of $f$. Now $f'$ has $|I_f|=3$ connected components and each vertex of $f_i$ is in a different component.  Each of the components of $f'$ contains vertices of $Y_j$ for exactly one $j\in I_f$; call this component $f'_j$.\todo{Add labels $f'_a,f'_b,f'_c$ to \cref{lca_sperner_fig}(c)}  Since no edge of $T$ crosses $X_0$, the colour of each vertex $v$ in $f'_j$ is equal to $j$, for each $j\in I_f$.  Thus, each vertex of $f_i$ has a distinct colour.
 
-  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ and each of these shares a bichromatic edge with $f_i$.  If $g$ is a face in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$ with $E(g) \cap E(f_i) = \{uv\}$ and $uv$ is coloured with $a$ and $b$, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
+  Finally, to see that $f_0,\ldots,f_i$ is good first observe that we need only be concerned with the at most three faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$.  Let $g\in F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$.  Then $g$ has exactly two vertices $v$ and $w$ of $f_i$ on its boundary.  Without loss of generality $v$ and $w$ have colours $a$ and $b$ with $a\neq b$.  Then all vertices of $g$ are contained in $f'_a\cup f'_b$. Therefore, all vertices of $G$ in $g$ have colour $a$ or $b$. Therefore each vertex on the boundary $V(g)$ of $g$ is contained in $Y_a\cup Y_b\cup Y_i$.  Therefore $|I_g|=|\{\ell\in\{0,\ldots,i\}:V(g)\cap Y_{\ell}\neq\emptyset\}| \le |\{a,b,i\}| = 3$. Since this is true for each $g\in F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$, $f_0,\ldots,f_i$ is good.
   % If $uv$ is a edge of $f_i$ that is coloured with colours $a$ and $b$ and $g$ is a face of $G_i$ that contains $uv$ on its boundary, then $V(g)\cap Y_j=\emptyset$ for any $j\in\{0,\ldots,i\}\setminus\{a, b, i\}$.  This completes the proof.
 \end{proof}
 
@@ -447,6 +452,7 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 % \end{rem}
 
 
+\todo[inline]{Say something here or earlier about the representation of our triangulation. We should use a representation in which, for every directed edge $vw$ we can find its reversal $wv$ and the next directed edge $vw'$ that appears in counterclockwise order around $v$.  We should also have a notion faces. For each face $f$, we should be able to find its three neighbouring faces, its three vertices, and the three half-edges that have $f$ on their left side.  For each half-edge $vw$ we should be able to find the face on the left of $vw$.  Cite some standard survey on representations of embedded planar graphs and say that most of the standard representations support these operations in constant time.  Check references here: \url{https://cs418.cs.illinois.edu/website/text/halfedge.html} }
 
 \begin{thm}\label{three_tree_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $\tw(G/\mathcal{Y})\le 3$.
@@ -455,15 +461,31 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 \begin{proof}
   Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$ that contains an edge of $T$ incident to $v_0$.  In a preprocessing step, we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
 
-  After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod.  The precise input to a recursive invocation is defined as follows:
+  After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod. \todo{We also want to mark faces as being used (as $f_j$ for some $j<i$ or unused.} The precise input to a recursive invocation is defined as follows:\todo{Start here.  Say the input is half edges $e_1,e_2,e_3$. Then $g_1,g_2,g_3$ are the faces to the left of these half edges.}
   \begin{enumerate}
-    \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.  \cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.
+    \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.\todo{Deal with case when, for example, $g_1=g_2$.}  \cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.
 
-    \item If $C$ intersects two tripods, then the input consists of two inner faces $g_1$, $g_2$, of $N$ with bichromatic edges of $C$ on their boundary.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.
+    \item If $C$ intersects two tripods, then the input consists of two inner faces $g_1$, $g_2$, of $N$ with bichromatic edges of $C$ on their boundary.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.\todo{Add a note that these are the only easy faces to get to?}
 
     \item If $C$ intersects only one tripod, then the input consists of any inner face $g_1$ of $N$ that contains an edge in $E(f)$.  In this case $f_i:=g_1$ satisfies our requirements.
 \end{enumerate}
-Once we have found the Sperner triangle $f_i$, we can compute the tripod $Y_i$ and mark its vertices by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near triangulations whose outer faces coincide with each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$.
+Once we have found the Sperner triangle $f_i$, we can compute the tripod $Y_i$ and mark its vertices by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near triangulations whose outer faces coincide with each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$. We now discuss how to identify, in constant time, the up to three subproblems on which we need to recurse. \todo{This is where we add a bunch of stuff.}
+
+General things:  In all three cases we need an efficient way to test if an edge of the Sperner triangle $f_i$ is an edge of $f$. 
+
+Two main tasks: Making sure a subproblem is non-empty and determining the number of colours (and therefore special faces) on the boundary of the subproblem.
+
+\paragraph{Subproblems coming from monochromatic instances}
+
+Here we need to discuss what happens when the non-empty leg of the Sperner triangle has a parent in $T$ that is also on the Sperner triangle. (We can describe this as a (empty) subproblem that is bounded by two half edges $vw$ and $wv$..)
+
+\paragraph{Subproblems coming from bichromatic instances}
+
+Here the new issue is counting the number of colours on the boundary of the new subproblems.
+
+\paragraph{Subproblems coming from trichromatic instances}
+
+
 
 After setting $f_0$, the initial recursive call falls into the third case above, so its input is any of the three inner faces that shares an edge with the outer face, $f_0$.  Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{r}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{r}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{r} O(1+|Y_i|) = O(n)$.
 \end{proof}
@@ -555,6 +577,18 @@ As before we focus on the extreme case when $V(f)$ contains vertices from exactl
 \begin{thm}\label{monopod_decomposition_algorithm}
   There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-monopod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 6$.
 \end{thm}
+
+\section{Implementation and Experiments?}
+
+
+A breakdown of runtime by various phases.  Constructing BFS of $G$, Constructing the cotree, preprocessing the cotree for LCA, then the partition proper.
+
+For the partition proper we could drill down a bit on the functions it calls.
+
+Are there any big examples of planar triangulations we could download?  
+
+
+
 
 
 \section*{Acknowledgement}
