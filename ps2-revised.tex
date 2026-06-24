@@ -112,12 +112,12 @@
 
 For two graphs $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$. 
 % Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
-The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{For graphs $G$ and $X$, an \emph{$X$-partition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
+The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{For graphs $G$ and $X$, an \emph{$X$-decomposition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
  \begin{inparaenum}[(i)]
      \item for each $v\in V(G)$, $X[\{x\in V(X):v\in B_x\}]$ is connected; and
      \item for each $vw\in E(G)$, there exists some $x\in V(X)$ such that $\{v,w\}\subseteq B_x$.
 \end{inparaenum}
-The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree partition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree partition of $G$.}\footnote{
+The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree decomposition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree decomposition of $G$.}\footnote{
 For two graphs $G_1$ and $G_2$, the \emph{strong graph product} of $G_1$ and $G_2$, denoted $G_1\boxtimes G_2$, is a graph whose vertex set is $V(G_1\boxtimes G_2):= V(G_1)\times V(G_2)$ and that contains an edge between distinct vertices $v=(v_1,v_2)$ and $w=(w_1,w_2)$ if and only if
 \begin{inparaenum}[(i)]
     \item $v_1=w_1$ and $v_2w_2\in E(G_2)$;
