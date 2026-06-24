@@ -75,7 +75,7 @@
 \DeclareMathOperator{\sgn}{sgn}
 \DeclareMathOperator{\dc}{dc}
 
-\title{\MakeUppercase{An Optimal Algorithm for Product Structure in Planar Graphs}\thanks{This research was partly funded by NSERC.}}
+\title{\MakeUppercase{A Linear-Time Algorithm for Product Structure in Planar Graphs}\thanks{This research was partly funded by NSERC.}}
 \author{%
   Prosenjit Bose\thanks{School of Computer Science, Carleton University}\qquad
   Kaya Gouin\footnotemark[1]\qquad
@@ -98,7 +98,7 @@
 \maketitle
 
 \begin{abstract}
-  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al.\ \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in the strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this decomposition as well as several related decompositions.  This improves on the previous $O(n\log n)$ time algorithm (Morin.\ \emph{Algorithmica}, \textbf{85}(5):1544--1558).
+  The \emph{Product Structure Theorem} for planar graphs (Dujmović et al.\ \emph{JACM}, \textbf{67}(4):22) states that any planar graph is contained in the strong product of a planar $3$-tree, a path, and a $3$-cycle.  We give a simple linear-time algorithm for finding this partition as well as several related partitions.  This improves on the previous $O(n\log n)$ time algorithm for finding this partition (Morin.\ \emph{Algorithmica}, \textbf{85}(5):1544--1558).
 \end{abstract}
 % \end{titlepage}
 
@@ -112,12 +112,12 @@
 
 For two graphs $G$ and $X$, the notation $G\subseteq X$ denotes that $G$ is isomorphic to some subgraph of $X$. 
 % Throughout this paper, $P$ denotes the \emph{one way infinite path}, i.e., the path with vertex set $V(P):=\N$ and edge set $E(P):=\{\{i,i+1\}:i\in\N\}$.
-The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{For graphs $G$ and $X$, an \emph{$X$-decomposition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
+The following \emph{planar product structure theorems} have recently been used as a key tool in resolving a number of longstanding open problems on planar graphs, including queue number \cite{dujmovic.joret.ea:planar}, nonrepetitive chromatic number \cite{dujmovic.esperet.ea:planar}, adjacency labelling \cite{dujmovic.esperet.ea:adjacency}, universal graphs \cite{esperet.joret.ea:sparse}, $p$-centered colouring \cite{debski.felsner.ea:improved}, and vertex ranking \cite{bose.dujmovic.ea:asymptotically}.\footnote{For graphs $G$ and $X$, an \emph{$X$-partition} of $G$ is a collection $\mathcal{X}:=(B_x:x\in V(X))$ of subsets of $V(G)$ called \emph{bags} indexed by the vertices of $X$ and such that
  \begin{inparaenum}[(i)]
      \item for each $v\in V(G)$, $X[\{x\in V(X):v\in B_x\}]$ is connected; and
      \item for each $vw\in E(G)$, there exists some $x\in V(X)$ such that $\{v,w\}\subseteq B_x$.
 \end{inparaenum}
-The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree decomposition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree decomposition of $G$.}\footnote{
+The \emph{width} of $\mathcal{X}$ is $\max\{|B_x|:x\in V(X)\}-1$. In the special case where $X$ is a tree, $\mathcal{X}$ is called a \emph{tree partition} of $G$. The \emph{treewidth} $tw(G)$ of $G$ is the minimum width of any tree partition of $G$.}\footnote{
 For two graphs $G_1$ and $G_2$, the \emph{strong graph product} of $G_1$ and $G_2$, denoted $G_1\boxtimes G_2$, is a graph whose vertex set is $V(G_1\boxtimes G_2):= V(G_1)\times V(G_2)$ and that contains an edge between distinct vertices $v=(v_1,v_2)$ and $w=(w_1,w_2)$ if and only if
 \begin{inparaenum}[(i)]
     \item $v_1=w_1$ and $v_2w_2\in E(G_2)$;
@@ -139,7 +139,7 @@ For two graphs $G_1$ and $G_2$, the \emph{strong graph product} of $G_1$ and $G_
   \end{compactenum}
 \end{thm}
 
-In each of the applications of \cref{meta}, the proofs are constructive and lead to algorithms whose running-time is dominated by the time required to compute the relevant decomposition.  The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the decomposition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three decompositions guaranteed by \cref{meta}.  This immediately gives an $O(n)$-time algorithm for each of the following problems on any $n$-vertex planar graph $G$:
+In each of the applications of \cref{meta}, the proofs are constructive and lead to algorithms whose running-time is dominated by the time required to compute the relevant partition.  The proofs of each part of \cref{meta} are constructive and lead to $O(n^2)$ time algorithms as observed already by \citet{dujmovic.joret.ea:planar}.  \citet{morin:fast} later showed that there exists an $O(n\log n)$ time algorithm to find the partition in \cref{meta}.\ref{three_tree}.  In the current note, we show that there exists a linear time algorithm for finding each of the three partitions guaranteed by \cref{meta}.  This immediately gives an $O(n)$-time algorithm for each of the following problems on any $n$-vertex planar graph $G$:
 \begin{compactitem}
   \item computing an $O(1)$-queue layout of $G$ \cite{dujmovic.joret.ea:planar};
   \item nonrepetitively vertex-colouring $G$ with $O(1)$ colours \cite{dujmovic.esperet.ea:planar};
@@ -149,9 +149,9 @@ In each of the applications of \cref{meta}, the proofs are constructive and lead
   \item colouring the vertices of $G$ with $O(\log n/\log\log\log n)$ integers so that the maximum colour that appears on any path $P$ of length at most $\ell$ appears at exactly one vertex of $P$ (for any fixed $\ell\ge 2$) \cite{bose.dujmovic.ea:asymptotically}.
 \end{compactitem}
 
-In addition to planar graphs, product structure theorems similar to \cref{meta} exist for $k$-planar graphs, $h$-framed graphs, bounded-genus graphs, and graphs from apex-minor-free families \cite{dujmovic.joret.ea:planar,dujmovic.morin.ea:graph,bekos.dalozzo.ea:graph}.  The existence of each of these decompositions relies at some point on \cref{meta}.  Thus, the algorithm presented here can also serve as an optimal subroutine in the computation of product structure decompositions of graphs from these classes.  However, these larger graph classes also require additional machinery that (at the time of writing) makes finding these decompositions largely impractical.\footnote{Possible exceptions here are cases in which a bounded-genus graph, $k$-planar graph, or $h$-framed graph is given along with its embedding.}
+In addition to planar graphs, product structure theorems similar to \cref{meta} exist for $k$-planar graphs, $h$-framed graphs, bounded-genus graphs, and graphs from apex-minor-free families \cite{dujmovic.joret.ea:planar,dujmovic.morin.ea:graph,bekos.dalozzo.ea:graph}.  The existence of each of these partitions relies at some point on \cref{meta}.  Thus, the algorithm presented here can also serve as an optimal subroutine in the computation of product structure partitions of graphs from these classes.  However, these larger graph classes also require additional machinery that (at the time of writing) makes finding these partitions largely impractical.\footnote{Possible exceptions here are cases in which a bounded-genus graph, $k$-planar graph, or $h$-framed graph is given along with its embedding.}
 
-The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the decomposition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
+The remainder of this paper is organized as follows: \cref{prelims} presents some necessary background and notation.  \cref{tripod_decompositions} reviews the proof of \cref{meta}.\ref{three_tree}.  \cref{algorithm} presents the linear time algorithm for finding the partition in \cref{meta}.\ref{three_tree}.  \cref{variants} describes the algorithms for finding the partitions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.
 
 \section{Preliminaries}
 \label{prelims}
@@ -190,13 +190,13 @@ The \emph{length} of a non-empty path $v_0,\ldots,v_r$ is the number, $r$, of ed
 
 \paragraph*{Trees, Depth, Ancestors, and Descendants.}
 
-Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For any vertex $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $w$ to $v_0$.  For any $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
+Let $T$ be a tree rooted at a vertex $v_0\in V(T)$.  For each $w\in V(T)$, $P_T(w)$ denotes the path in $T$ from $w$ to $v_0$.  For each $w_0\in V(T)$, any prefix $w_0,\ldots,w_r$ of $P_T(w_0)$ is called an \emph{upward path} in $T$; $w_0$ is the \emph{lower endpoint} of this path and $w_r$ is the \emph{upper endpoint}.  The \emph{$T$-depth} of a node $w\in V(T)$ is the length of the path $P_T(w)$. The second node in $P_T(v)$ (if any) is the \emph{$T$-parent} of $v$.  A vertex $a\in V(T)$ is a \emph{$T$-ancestor} of $w\in V(T)$ if $a\in V(P_T(w))$. If $a$ is a $T$-ancestor of $w$ then $w$ is a \emph{$T$-descendant} of $a$.
 
 
 
 \paragraph*{Lowest Common Ancestors.}
 
-For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the node $a$ in $P_T(v)\cap P_T(w)$ having maximum $T$-depth.  The \emph{lowest commmon ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
+For any two vertices $v,w\in V(T)$, the \emph{lowest common ancestor} $\lca_T(v,w)$ of $v$ and $w$ is the node $a$ in $P_T(v)\cap P_T(w)$ having maximum $T$-depth.  The \emph{lowest common ancestor problem} is a well-studied data structuring problem that asks to preprocess a given $n$-vertex rooted tree so that one can quickly return $\lca_T(v,w)$ for any two nodes $v,w\in V(T)$. A number of optimal solutions to this problem exist that, after $O(n)$ time preprocessing using $O(n)$ space, can answer queries in $O(1)$ time \cite{berman.vishkin:recursive,shieber.vishkin:on,harel.tarjan:fast,alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.  The most recent work in this area includes simple and practical data structures that achieve this optimal performance \cite{alstrup.gavoille.ea:nearest,bender.farach-colton:lca,fischer.heun:theoretical}.
 
 \paragraph*{Reconstructing Binary Tree Models.}
 
@@ -204,7 +204,7 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 
 % An upward path $v_0,\ldots,v_r$ in a binary tree $T$ is \emph{non-branching} if $v_{i-1}$ is the only child of $v_i$ for each $i\in\{1,\ldots,r-1\}$.  For any binary tree $T$, the \emph{model} $T'$ of $T$ is the binary tree obtained by  replacing each maximal non-branching path $v_0,\ldots,v_r$ with the edge $v_0v_r$; if $v_{r-1}$ is the left (respectively, right) child of $v_r$ then $v_0$ becomes the left (respectively, right) child of $v_r$.
 
-\begin{figure}
+\begin{figure}[htbp]
   \begin{center}
     \begin{tabular}{ccc}
       \includegraphics[scale=0.75,page=1]{figs/model} &
@@ -250,10 +250,10 @@ Let $T$ be a binary tree and $S \subseteq V(T)$. An upward path $v_0,\ldots,v_r$
 % \end{inparaenum}
 % There exists data structures for this problem that use $O(n)$ space and preprocessing and can perform each of these operations in $O(1)$ time  \cite{X}.  Especially simple and efficient solutions exist when the operations are restricted so that the set of marked nodes always induce a connected subtree of $T$.  In this paper we only require this simple version of the data structure.
 
-\section{Tripod Decompositions}
+\section{Tripod Partitions}
 \label{tripod_decompositions}
 
-Refer to \cref{tripod_decomposition_figure}. Let $G$ be an $n$-vertex triangulation and let $T$ be a spanning tree of $G$.   For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths in $T$ (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod decomposition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
+Refer to \cref{tripod_decomposition_figure}. Let $G$ be an $n$-vertex triangulation and let $T$ be a spanning tree of $G$.   For a face $uvw$ of $G$, a \emph{$(G,T)$-tripod} $Y$ with \emph{crotch} $uvw$ is the vertex set of three disjoint (and each possibly empty) upward paths in $T$ (the \emph{legs} of $Y$) whose lower endpoints are $u$, $v$, and $w$.  A \emph{$(G,T)$-tripod partition} is a partition of $V(G)$ into $(G,T)$-tripods.  \citet{dujmovic.joret.ea:planar} proved the following result:
 
 \begin{figure}
   \begin{center}
@@ -262,12 +262,12 @@ Refer to \cref{tripod_decomposition_figure}. Let $G$ be an $n$-vertex triangulat
       \includegraphics[page=2]{figs/tripod-decomp}
     \end{tabular}
   \end{center}
-  \caption{A $(G,T)$-tripod decomposition of a triangulation $G$ (and the underlying spanning tree $T$.)}
+  \caption{A $(G,T)$-tripod partition of a triangulation $G$ (and the underlying spanning tree $T$.)}
   \label{tripod_decomposition_figure}
 \end{figure}
 
 \begin{thm}\label{tripod_decomposition}
-  Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
+  Let $G$ be a triangulation and $T$ be a spanning tree of $G$.  Then there exists a $(G,T)$-tripod partition $\mathcal{Y}$ such that $G/\mathcal{Y}$ has treewidth at most $3$.
 \end{thm}
 
 It is straightforward to verify that \cref{tripod_decomposition} implies \cref{meta}.\ref{three_tree} by first triangulating the given graph and then taking $T$ to be a breadth-first spanning tree of the resulting triangulated graph \cite[Observation~35]{dujmovic.joret.ea:planar}.
@@ -276,10 +276,10 @@ It is straightforward to verify that \cref{tripod_decomposition} implies \cref{m
 %   The result of \citett{dujmovic.joret.ea:planar} provides tripods with somewhat more structure.  Every tripod has three legs whose lower endpoints are on a common face of $G$.  It is possible to fix, in advance, an $S$-rooted BFS tree $T$ and produce tripods whose legs are paths in $T$.
 % \end{remark}
 
-\subsection{Tripod Decompositions from Face Orderings}
+\subsection{Tripod Partitions from Face Orderings}
 \label{orderings}
 
-We now describe how a $(G,T)$-tripod decompositions can be obtained from a sequence of distinct faces of $G$.  Throughout this section (and for the remainder of the paper):
+We now describe how a $(G,T)$-tripod partition can be obtained from a sequence of distinct faces of $G$.  Throughout this section (and for the remainder of the paper):
 \begin{compactitem}
    \item $G$ is an embedded triangulation with outer face $f_0$ and
    \item $T$ is a spanning-tree of $G$ rooted at a vertex $v_0\in V(f_0)$.
@@ -288,7 +288,7 @@ For any subgraph $f$ of $G$, we define $Y_T(f):=f\cup \bigcup_{v\in V(f)} P_T(v)
 
 Let $\mathcal{F}:=f_0,\ldots,f_{r}$ be a sequence of distinct faces of $G$ whose first element is the outer face $f_0$. Let $G_{-1}$ denote the graph with no vertices and, for each $i\in\{0,\ldots,r\}$, define the graph $G_i:=\bigcup_{j=0}^i Y_T(f_j)$ and let $Y_i:=V(G_i)\setminus V(G_{i-1})$.  Let $\mathcal{G_F}:= G_0,\ldots,G_{r}$ and let $\mathcal{Y_F}:=Y_0,\ldots,Y_r$.  
 
-Informally, we require that each of the \emph{legs} of each tripod $Y_i$ have  a \emph{foot} on a different vertex of $G_{i-1}$ and that the tripods $Y_1,\ldots,Y_r$ cover all the vertices and edges of $G$. Formally, we say that the sequence $\mathcal{F}$ is \emph{proper} if, for each $i\in\{1,\ldots,r\}$, and each distinct $v,w\in V(f_i)$, $V(Y_T(v)\cap G_{i-1})\neq V(Y_T(w)\cap G_{i-1})$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod decomposition of $G$.
+Informally, we require that each of the \emph{legs} of each tripod $Y_i$ have  a \emph{foot} on a different vertex of $G_{i-1}$ and that the tripods $Y_1,\ldots,Y_r$ cover all the vertices and edges of $G$. Formally, we say that the sequence $\mathcal{F}$ is \emph{proper} if, for each $i\in\{1,\ldots,r\}$, and each distinct $v,w\in V(f_i)$, $V(Y_T(v)\cap G_{i-1})\neq V(Y_T(w)\cap G_{i-1})$.  The sequence $\mathcal{F}$ is \emph{complete} for $G$ if $G_r=G$.  Note that, if $\mathcal{F}$ is complete, then $\{Y_0,\ldots,Y_r\}$ is a tripod partition of $G$.
 
 From the preceding definitions it follows that, if $\mathcal{F}$ is proper, then  $G_i$ is $2$-connected for each $i\in\{0,\ldots,r\}$.  For any $i\in\{0,\ldots,r\}$, consider any face $f$ of $G_i$, that we now treat as a cycle in $G$. An easy proof by induction shows that, for any $j\in\{0,\ldots,i\}$, the induced graph $f[Y_j]$ is connected. %[a path]
 % (The path $f[Y_j]$ is a path that first appears in $G_j$.)
@@ -307,7 +307,7 @@ In words, each face of each graph $G_i$ has vertices from at most three tripods 
 \end{lem}
 
 \begin{rem}
-  \cref{face_trick} is stated in terms of sequences only for convenience and could be rephrased in terms of partial orders. Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,r\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this partial order will result in the same tripod decomposition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$.
+  \cref{face_trick} is stated in terms of sequences only for convenience and could be rephrased in terms of partial orders. Indeed, consider the partial order $\prec$ defined as follows:  For each $i\in\{1,\ldots,r\}$ let $f_i'$ be the face of $G_{i-1}$ that contains $f_i$; then $f_\ell\prec f_i$ for each $\ell\in\{0,\ldots,i-1\}$ such that $V(f_i')\cap Y_\ell\neq\emptyset$.  It is straightforward to check that any linearization of this partial order will result in the same tripod partition $\mathcal{Y_F}:=\{Y_0,\ldots,Y_{r}\}$.
 \end{rem}
 
 \citet{dujmovic.joret.ea:planar} prove \cref{face_trick} by giving a recursive algorithm that constructs the face sequence $\mathcal{F}$.  For a face $f$ of $G_i$, define the set $I_f:=\{\ell\in\{0,\ldots,i\}:V(f)\cap Y_\ell\neq\emptyset\}$.  They begin with the outer face $f_0$ of $G$.  To find the face $f_i$, $i>0$, they consider some face $f\not\in\{f_0,\ldots,f_{i-1}\}$ of $G_{i-1}$ and use Sperner's Lemma to show that there is an appropriate face $f_i$ of $G$ (called a \emph{Sperner triangle}) that is contained in $f$. In particular, $f_i$ is chosen so that the three upward paths in $Y_F(f_i)$ lead back to each of the (at most 3) tripods in $\{Y_j:j\in I_f\}$. See \cref{sperner}.
@@ -331,10 +331,12 @@ This proof leads to a divide-and-conquer algorithm: After finding $f_i$, the alg
 
 By now, our presentation of this material differs somewhat from that in \cite{dujmovic.joret.ea:planar,ueckerdt.wood.ea:improved}.  Therefore, we now pause to explain how \cref{face_trick} implies \cref{tripod_decomposition}. %\ref{three_tree}.
 Let $G$ be a triangulation, let $T$ be spanning tree of $G$, let
-$\mathcal{F}:=f_0,\ldots,f_r$ be the proper good face sequence guaranteed by \cref{face_trick}, and let $\mathcal{Y_F}:=\{Y_0,\ldots,Y_r\}$ be the resulting tripod decomposition. We now show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. We construct the graph $H$ so that for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $H$ contains a clique on $\{Y_j:j\in I_f\}$. To accomplish this, for each $i\in\{1,\ldots,r\}$ let $f$ be the face of $G_{i-1}$ that contains $f_i$ and form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
+$\mathcal{F}:=f_0,\ldots,f_r$ be the proper good face sequence guaranteed by \cref{face_trick}, and let $\mathcal{Y_F}:=\{Y_0,\ldots,Y_r\}$ be the resulting tripod partition. We now show that there exists a chordal graph $H$ whose largest clique has size at most $4$ and that contains $G/\mathcal{Y_F}$. We construct the graph $H$ so that for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i$, $H$ contains a clique on $\{Y_j:j\in I_f\}$. To accomplish this, for each $i\in\{1,\ldots,r\}$ let $f$ be the face of $G_{i-1}$ that contains $f_i$ and form a clique on $\{Y_i\}\cup\{Y_j:j\in I_f\}$.  Inductively, the elements of $\{Y_j:j\in I_f\}$ already form a clique, so this operation is equivalent to attaching $Y_i$ to all the vertices of an existing clique of size at most $3$. Therefore, this results in a chordal graph $H$ whose largest clique has size at most $4$ and therefore $H$ has treewidth at most $3$ \cite{gavril:intersection}.
 
-\section{An $O(n)$-Time Algorithm}
+\section{\boldmath An \texorpdfstring{$O(n)$}{O(n)}-Time Algorithm}
 \label{linear_time_algorithm}\label{algorithm}
+
+Throughout the rest of this paper, we will assign colours to vertices of graphs.  We say that an edge is \emph{monochromatic} if both its endpoints have the same colour and \emph{bichromatic} if its endpoints have different colours.  A triangular face is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
 
 Refer to \cref{baby_sperner_fig} for an illustration of the following (probably well-known) simple lemma, which is closely related to Sperner's Lemma:
 
@@ -356,8 +358,7 @@ Refer to \cref{baby_sperner_fig} for an illustration of the following (probably 
 \end{lem}
 
 \begin{proof}
-  If $w_0=w_k$, the lemma is immediately true, so assume $w_0\neq w_k$.
-  Say that an edge of $N$ is \emph{bichromatic} if one of its endpoints is red and the other is blue.  Any edge that is not bichromatic is \emph{monochromatic}.  The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_{\ell}v_{\ell+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex or a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
+  If $w_0=w_k$, the lemma is immediately true, so assume $w_0\neq w_k$. The outer face $f_0$ of $N$ has exactly two bichromatic edges $v_0v_r$ and $v_{\ell}v_{\ell+1}$ and any inner face of $N$ has either zero or two bichromatic edges.  Consider the subgraph $H$ of $N^\star$ obtained removing each edge $fg\in E(N^\star)$ such that the edge in $E(f)\cap E(g)$ is monochromatic.  Every vertex in $H$ has degree $0$ or $2$, so each connected component of $H$ is either an isolated vertex or a cycle.  The face $f_0$ has degree $2$ so it is contained in a cycle $C$ of $H$.  The two neighbours of $f_0$ in $H$ are $w_0$ and $w_k$. Therefore $C$ contains a path $w_0,\ldots,w_k$ that satisfies the conditions of the lemma.
 \end{proof}
 
 The next lemma, which is the main new insight in this paper, allows us to use \cref{reconstruction} to find Sperner triangles in constant time.
@@ -373,16 +374,15 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
       \item $g$ is contained in the interior of $f$;
       \item $g$ contains an edge $vw\in E(f)$ with $v\in Y_a$ and $w\in Y_b$ for some distinct $a,b\in I_f$.
   \end{compactenum}
-  Let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  If $f_i\in V(\overline{T}_0)$ is such that each component of $\overline{T}_0-f_i$ contains at most one element of $S$,
-  Then $f_0,\ldots,f_i$ is good.
+  Let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  If $f_i\in V(\overline{T}_0)$ is such that each component of $\overline{T}_0-f_i$ contains at most one element of $S$, then $f_0,\ldots,f_i$ is good.
 \end{lem}
 
 \begin{proof}
-  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in the closure of the interior of $f$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $|S|=3$, $|I_f|=3$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained in $Y_j$.  Say that an edge or face of $N$ is \emph{monochromatic}, \emph{bichromatic}, or \emph{trichromatic} if it contains vertices of one, two, or three colours, respectively.
+  Let $N$ be the near-triangulation consisting of all vertices and edges of $G$ contained in the closure of the interior of $f$.  Recall that $I_f:=\{j\in\{0,\ldots,i-1\}: Y_j\cap V(f)\neq\emptyset\}$.  Since $f_0,\ldots,f_{i-1}$ is good, $|I_f|\le 3$.  Since $|S|=3$, $|I_f|=3$.  For each $j\in I_f$, colour each vertex $v$ of $N$ with the colour $j$ if the first vertex of $P_{T}(v)$ in $V(f)$ is contained in $Y_j$.  
 
-  $E(f)$ contains exactly three bichromatic edges each of which is on the boundary of exactly one face in $S$.  Let $X$ be the subgraph of $N^\star$ that contains an edge $fg\in E(N^\star)$ if and only if $f$ and $g$ are inner faces of $N$ and the edge in $E(f)\cap E(g)$ is bichromatic.  We claim that $X$ is a subgraph of $\overline{T}$.  In order to show this, we need only argue that each edge $uv$ of $T$ in the interior of $f$ is monochromatic.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$, so $uv$ is monochromatic. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
+  $E(f)$ contains exactly three bichromatic edges, each of which is on the boundary of exactly one face in $S$.  Let $X$ be the subgraph of $N^\star$ that contains an edge $fg\in E(N^\star)$ if and only if $f$ and $g$ are inner faces of $N$ and the edge in $E(f)\cap E(g)$ is bichromatic.  We claim that $X$ is a subgraph of $\overline{T}$.  In order to show this, we need only argue that each edge $uv$ of $T$ in the interior of $f$ is monochromatic.  Consider any $uv\in E(N)\setminus E(f)$ where $u$ is the $T$-parent of $v$.  If $v\not\in V(f)$ then, by definition, $v$ has the same colour as $u$, so $uv$ is monochromatic. The case where $v\in V(f)$ and $u\not\in V(f)$ can not occur since $v\in V(f)$ implies that $P_T(v)\subseteq G_{i-1}$, but $u\not\in V(G_{i-1})$.  Similarly, the case in which $u\in V(f)$ and $v\in V(f)$ can not occur since this implies that $P_T(v)\subseteq G_{i-1}$, but $uv\not\in E(G_{i-1})$.
 
-  Next we claim that all the elements of $S$ are in a single connected component of $X$.  To see this, let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$ and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
+  Next we claim that all the elements of $S$ are in a single connected component of $X$.  To see this, let $\{a,b,c\}:=I_f$ and consider a pair $g_1,g_2\in S$ where (without loss of generality) $g_1$ contains a bichromatic edge of $f$ with colours $a$ and $b$, and $g_2$ contains a bichromatic edge of $f$ with colours $b$ and $c$.  By treating $a$ and $c$ as a single colour we apply \cref{baby_sperner} to conclude that $g_1$ and $g_2$ are in the same component of $X$.
 
   Refer to \cref{lca_sperner_fig}(a).
   Therefore $X$ is a subgraph of $\overline{T}$ that has a component containing all the elements of $S$. Therefore $X$ contains $\overline{T}_0$.  By choice, $\overline{T}_0$ contains a path from $f_i$ to each $g\in S$ and each of these paths is disjoint except for their shared starting point $f_i$.   
@@ -451,50 +451,151 @@ The next lemma, which is the main new insight in this paper, allows us to use \c
 %   The process described above not only makes it possible to identify $f_i$ in constant time, but also makes it possible to determine the colours of each of the three vertices of $f_i$ in constant time.  This is clearly true for Cases~1 and 2. To handle Case~3, we can use three queries in the lowest common ancestor data structure for $\overline{T}$ to determine the first edge on the path in $\overline{T}$ from $f_i$ to each of $g_1,g_2,g_3$.  For each $j\in\{1,2,3\}$, the colours on $g_j$ are the same as those of the edge of $f_i$ that is dual to the first edge on the path to $g_j$.
 % \end{rem}
 
+We now pause to explain the representation of our triangulation. For concreteness, we describe our algorithms using a half-edge data structure, variants of which are described in \cite{baumgart.ea:vision, guibas.stolfi.ea:voronoi, kettner.ea:visualization, weiler.ea:structure}.  The important property of this structure is that the following operations are supported in constant time: For every directed half-edge $vw$, we can find the reversal $wv$ of $vw$, the next directed half-edge $vw'$ that appears in counterclockwise order around $v$, and the face to the left of $vw$. For every face $f$, we can find the three neighbouring faces of $f$, the three incident vertices of $f$, and the three half-edges having $f$ to their left.
 
-\todo[inline]{Say something here or earlier about the representation of our triangulation. We should use a representation in which, for every directed edge $vw$ we can find its reversal $wv$ and the next directed edge $vw'$ that appears in counterclockwise order around $v$.  We should also have a notion faces. For each face $f$, we should be able to find its three neighbouring faces, its three vertices, and the three half-edges that have $f$ on their left side.  For each half-edge $vw$ we should be able to find the face on the left of $vw$.  Cite some standard survey on representations of embedded planar graphs and say that most of the standard representations support these operations in constant time.  Check references here: \url{https://cs418.cs.illinois.edu/website/text/halfedge.html} }
+\iffalse\todo[inline]{Say something here or earlier about the representation of our triangulation. We should use a representation in which, for every directed edge $vw$ we can find its reversal $wv$ and the next directed edge $vw'$ that appears in counterclockwise order around $v$.  We should also have a notion faces. For each face $f$, we should be able to find its three neighbouring faces, its three vertices, and the three half-edges that have $f$ on their left side.  For each half-edge $vw$ we should be able to find the face on the left of $vw$.  Cite some standard survey on representations of embedded planar graphs and say that most of the standard representations support these operations in constant time.  Check references here: \url{https://cs418.cs.illinois.edu/website/text/halfedge.html} 
+Add references 3, 16, 21, and 35 from here: \url{https://ti.inf.ethz.ch/ew/courses/Geo21/lecture/gca21-2.pdf}}\fi
 
 \begin{thm}\label{three_tree_algorithm}
-  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-tripod decomposition $\mathcal{Y}$ such that $\tw(G/\mathcal{Y})\le 3$.
+  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-tripod partition $\mathcal{Y}$ such that $\tw(G/\mathcal{Y})\le 3$.
 \end{thm}
 
 \begin{proof}
   Let $v_0$ be the root of $T$ and let $f_0$ be a face of $G$ incident to $v_0$ that contains an edge of $T$ incident to $v_0$.  In a preprocessing step, we compute the cotree $\overline{T}$ of $(G,T)$ and construct a lowest common ancestor data structure for $\overline{T}$ in $O(n)$ time that allows us to compute $\lca_{\overline{T}}(f,g)$ for any two faces $f,g\in F(G)$ in $O(1)$ time.
 
-  After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{unmarked} and we \emph{mark} a vertex once we have placed it in a tripod. \todo{We also want to mark faces as being used (as $f_j$ for some $j<i$ or unused.} The precise input to a recursive invocation is defined as follows:\todo{Start here.  Say the input is half edges $e_1,e_2,e_3$. Then $g_1,g_2,g_3$ are the faces to the left of these half edges.}
-  \begin{enumerate}
-    \item If $C$ intersects three tripods then the input consists of the three inner faces $g_1$, $g_2$, and $g_3$ of $N$ that contain bichromatic edges of $C$.\todo{Deal with case when, for example, $g_1=g_2$.}  \cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, or $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.
+  After this preprocessing, we construct the good sequence $f_0,\ldots,f_{r}$ recursively. Conceptually, during any recursive invocation, the input is a near-triangulation $N$ bounded by a cycle $C$ in $G$ whose vertices belong to at most three tripods computed in previous steps.  Each vertex of $G$ starts initially \emph{uncoloured} and we \emph{colour} a vertex $v$ in a tripod $Y_i$ with the colour $i$ when tripod $Y_i$ is created.  Likewise, each face of $G$ starts initially uncoloured and we colour a face once we have added it to the good sequence.   The precise input to a recursive invocation is defined as follows:
 
-    \item If $C$ intersects two tripods, then the input consists of two inner faces $g_1$, $g_2$, of $N$ with bichromatic edges of $C$ on their boundary.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.\todo{Add a note that these are the only easy faces to get to?}
+  
+%  \begin{enumerate}
+\paragraph{Trichromatic instances.}
+If $C$ intersects three tripods, then the input consists of the three bichromatic half-edges $e_1$, $e_2$, and $e_3$ of $C$ (arranged in counterclockwise order around $C$) that have $N$ to their left. 
+% By extension, $g_1$, $g_2$, and $g_3$ are the three (not necessarily distinct) inner faces of $N$ to the left of these half-edges. \iffalse\todo{Deal with case when, for example, $g_1=g_2$.}\fi 
+For each $e\in\{1,2,3\}$, let $g_i$ be the inner face of $N$ to the left of $e_i$.
 
-    \item If $C$ intersects only one tripod, then the input consists of any inner face $g_1$ of $N$ that contains an edge in $E(f)$.  In this case $f_i:=g_1$ satisfies our requirements.
+If the faces $g_1$, $g_2$, and $g_3$ are all distinct, then 
+\cref{lca_sperner} characterizes the face $f_i$ in terms of the minimum subtree $\overline{T}_0$ of $\overline{T}$ that contains $g_1$, $g_2$, and $g_3$.  Indeed, $f_i$ is either the unique degree-$3$ node of $\overline{T}_0$ (if $g_1$, $g_2$, and $g_3$ are all leaves of $\overline{T}_0$) or $f_i$ is the unique node among $g_1$ $g_2$, and $g_3$ that has degree $2$.  By \cref{reconstruction} we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time and find the node $f_i$.  If the faces $g_1$, $g_2$ and $g_3$ are not all distinct because, for instance $g_1=g_2$, then the face $g_1$ has at least two edges ($e_1$ and $e_2$) that belong to $C$, and the three vertices of $g_1$ that belong to three different tripods. In this case we choose $f_i=g_1$.
+
+\paragraph{Bichromatic instances.}
+If $C$ intersects two tripods, then the input consists of the two half-edges $e_1$ and $e_2$ of $C$. By extension, $g_1$ and $g_2$ are the two inner faces of $N$ to the left of these half-edges.  In this case, we let $f_i:=g_1$ or $f_i=g_2$, either choice satisfies our requirements.\iffalse\todo{Add a note that these are the only easy faces to get to?}\fi
+
+\paragraph{Monochromatic instances.}
+If $C$ intersects only one tripod, then the input consists of some half-edge $e_1$ of $C$. By extension, $g_1$ is the inner face of $N$ to the left of this half-edge.  In this case $f_i:=g_1$ satisfies our requirements.
+%\end{enumerate}
+
+Once we have found $f_i$, we can compute the tripod $Y_i$ and mark its vertices by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near-triangulations whose outer faces coincide with each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$. \iffalse We now discuss how to identify, in constant time, the up to three subproblems on which we need to recurse. \todo{This is where we add a bunch of stuff.}\fi To identify these recursive invocations in constant time, we need to efficiently:
+\begin{compactenum}
+ \item recognize some candidate near-triangulation as being non-empty, and
+ \item determine the bichromatic half-edges needed to perform said recursive invocation.
+\end{compactenum}
+
+
+
+We begin with the first issue.  Let $uv$ be a half-edge of $f_i$ with $f_i$ to the left of $uv$. 
+There are three situations that may cause the subproblem to the right of $uv$ to be empty:
+\begin{compactenum}
+ \item $uv$ is an edge of $C$.  To detect this we distinguish between two cases.  If $uv$ is bichromatic then $uv$ belongs to $C$ if and only if $uv\in\{e_1,e_2,e_3\}$. If $uv$ is monochromatic then $uv$ belongs to $C$ if and only if $u$ is the $T$-parent of $v$ (or vice-versa) or $uv$ is an edge of $f_j$ for some $j<i$. The former situation can easily be checked directly. The latter situation can be identified by checking the colour (if any) of the face to the right of the half-edge $uv$.
+ 
+ \item $u\in Y_i$ and $v$ is the $T$-parent of $u$.
+ 
+ \item $v\in Y_i$ and $u$ is the $T$-parent of $v$.
+ 
+ %A bichromatic edge $uv$ of a non-empty leg of length one of $Y_i$ is an edge of $f_i$. This can be checked directly.
+ 
+ %Two cases may arise. In the first, $uv$ is bichromatic, inducing an empty subproblem if and only if $uv \not \in \{e_1, e_2, e_3\}$. In the second, $uv$ is monochromatic, inducing an empty subproblem if and only if $u$ is the $T$-parent of $v$ (or vice-versa) or $uv$ is an edge of $f_j$ for some $j<i$.
+ %\item a bichromatic edge $uv$ of a non-empty leg of length one of $Y_i$ is an edge of $f_i$. Two cases may arise. In the first, $uv$ is a bichromatic edge of $f_i$, inducing an empty subproblem. In the second, $uv$ is not a bichromatic edge of $f_i$, inducing a non-empty subproblem.
+\end{compactenum}
+%\textit{Some sentence about how the above is possible in constant time given our data representation.}
+Note that points 1 and 2 are mutually exclusive, since if $uv$ is an edge of $C$ then $u\not\in Y_i$. Similarly, points 1 and 3 are also mutually exclusive.  The precise subproblem identification process is broken down as follows:
+
+\iffalse General things:  In all three cases we need an efficient way to test if an edge of the Sperner triangle $f_i$ is an edge of $f$. 
+
+Two main tasks: Making sure a subproblem is non-empty and determining the number of colours (and therefore special faces) on the boundary of the subproblem.\fi
+
+\paragraph{Monochromatic instances.} %at most 2 subproblems
+Monochromatic instances induce at most two recursive invocations. We must use points 1, 2, and 3 above to identify subproblems. Let $uvw$ be the vertices of $f_i$, with $vw = e_1$. Then, there exists a subproblem to the right of $uv$, and a subproblem to the right of $wu$.  We describe how to treat the subproblem to the right of $uv$ using points $1$ and $2$.  There are two cases to consider: 
+\begin{enumerate}[nosep,nolistsep]
+  \item If $u$ is a vertex of $C$, then this subproblem is empty if and only if $uv$ is an edge of $C$ (point 1). If this subproblem is non-empty, then it is a monochromatic subproblem whose input is the half-edge $e_1'=vu$.
+
+  \item If $u$ is not a vertex of $C$, then $u\in Y_i$ and the subproblem to the right of $uv$ is empty if and only if $v$ is the $T$-parent of $u$ (point 2).  If this subproblem is non-empty, then it is a bichromatic subproblem whose input is the half-edge $e_1'=vu$ and the half-edge 
+  $e_2'=u'u''$, where $u'$ is the last vertex in the leg of $Y_i$ that contains $u$ and $u''$ is the $T$-parent of $u'$.
+  % $e_2'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$.
 \end{enumerate}
-Once we have found the Sperner triangle $f_i$, we can compute the tripod $Y_i$ and mark its vertices by following the path in $T$ from each vertex of $f_i$ to its nearest marked ancestor in $T$.  This takes $O(1+|Y_i|)$ time.  Once we have done this, we have also found the at most three bichromatic edges of $G_i$ that are needed to perform the at most three recursive invocations on the near triangulations whose outer faces coincide with each of the new faces in $F(G_i)\setminus F(G_{i-1})\setminus\{f_i\}$. We now discuss how to identify, in constant time, the up to three subproblems on which we need to recurse. \todo{This is where we add a bunch of stuff.}
+The subproblem to the right of $wu$ is treated similarly using points $1$ and $3$.
 
-General things:  In all three cases we need an efficient way to test if an edge of the Sperner triangle $f_i$ is an edge of $f$. 
+\iffalse
+\paragraph{Bichromatic instances.} %at most 2 subproblems
+Similar to monochromatic instances, bichromatic instances induce at most two recursive invocations. We must use points 1, 2, and 3 above to identify subproblems. Let $uvw$ be the vertices of $f_i$, with $vw = e_1$. Then, there exists a subproblem to the right of $uv$, and a subproblem to the right of $wu$.  We describe how to treat the subproblem to the right of $uv$ using points $1$ and $2$.  There are two cases to consider:
+\begin{enumerate}[nosep,nolistsep]
+  \item If $u$ is a vertex of $C$, then this subproblem is empty if and only if $uv$ is an edge of $C$ (point 1). If this subproblem is non-empty, then it is either a monochromatic subproblem whose input is the half-edge $e_1'=vu$ or a bichromatic subproblem whose input is the half-edge $e_1'=vu$ and the half-edge $e_2'=e_2$. A non-empty subproblem is monochromatic if $uv$ is monochromatic, and bichromatic if $uv$ if bichromatic.
 
-Two main tasks: Making sure a subproblem is non-empty and determining the number of colours (and therefore special faces) on the boundary of the subproblem.
+  \item If $u$ is not a vertex of $C$, then $u\in Y_i$ and the subproblem to the right of $uv$ is empty if and only if $v$ is the $T$-parent of $u$ (point 2).  If this subproblem is non-empty, then it is either a bichromatic subproblem whose input is the half-edge $e_1'=vu$ and the half-edge $e_2'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$ or a trichromatic subproblem whose input is the half-edge $e_1'=vu$, the half-edge $e_2'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$, and the half-edge $e_3=e_2$. A non-empty subproblem is bichromatic if the $T$-parent of $u'$ and $v$ are coloured identically, and trichromatic if the $T$-parent of $u'$ and $w$ are coloured identically.
+\end{enumerate}
+The subproblem to the right of $wu$ is treated similarly using points $1$ and $3$.
+\fi
 
-\paragraph{Subproblems coming from monochromatic instances}
+\paragraph{Bichromatic instances.} %at most 2 subproblems
+Similar to monochromatic instances, bichromatic instances induce at most two recursive invocations. We must use points 1, 2, and 3 above to identify subproblems. Let $uvw$ be the vertices of $f_i$, with $vw = e_1$. Then, there exists a subproblem to the right of $uv$, and a subproblem to the right of $wu$.  We describe how to treat the subproblem to the right of $uv$ using points $1$ and $2$.  There are two cases to consider:
 
-Here we need to discuss what happens when the non-empty leg of the Sperner triangle has a parent in $T$ that is also on the Sperner triangle. (We can describe this as a (empty) subproblem that is bounded by two half edges $vw$ and $wv$..)
+\begin{enumerate}[nosep,nolistsep]
+  \item If $u$ is a vertex of $C$, then this subproblem is empty if and only if $uv$ is an edge of $C$ (point 1). If this subproblem is non-empty, then it is either a monochromatic subproblem or a bichromatic subproblem.
+  
+  \begin{enumerate}[nosep,nolistsep]
+  %\item A non-empty subproblem is monochromatic if $uv$ is monochromatic. The input to a monochromatic subproblem is the half-edge $e_1'=vu$.
+  \item A non-empty subproblem is monochromatic if $u$ and $v$ are coloured identically (that is, $uv$ is monochromatic). The input to a monochromatic subproblem is the half-edge $e_1'=vu$.
+  
+  %\item A non-empty subproblem is bichromatic if $uv$ if bichromatic. The input to a bichromatic subproblem is the half-edge $e_1'=vu$ and the half-edge $e_2'=e_2$.
+  \item A non-empty subproblem is bichromatic if $u$ and $w$ are coloured identically (that is, $uv$ is bichromatic). The input to a bichromatic subproblem is the half-edge $e_1'=vu$ and the half-edge $e_2'=e_2$.
+\end{enumerate}
 
-\paragraph{Subproblems coming from bichromatic instances}
+  \item If $u$ is not a vertex of $C$, then $u\in Y_i$.  Then the subproblem to the right of $uv$ is empty if and only if $v$ is the $T$-parent of $u$ (point 2).  Let $u'$ denote the last vertex in the leg of $Y_i$ that contains $u$ and let $u''$ be the $T$-parent of $u'$.  If the subproblem to the right of $uv$ is non-empty, then it is either a bichromatic subproblem or a trichromatic subproblem.
+  
+\begin{enumerate}[nosep,nolistsep]
+  \item A non-empty subproblem is bichromatic if $v$ and $u''$ are coloured identically. The input to a bichromatic subproblem is the half-edge $e_1'=vu$ and the half-edge $e_2'=u'u''$.
+  
+  \item A non-empty subproblem is trichromatic if $w$ and $u''$ are coloured identically. The input to a trichromatic subproblem is the half-edge $e_1'=vu$, the half-edge $e_2'=u'u''$, and the half-edge $e_3'=e_2$.
+\end{enumerate}
+\end{enumerate}
+The subproblem to the right of $wu$ is treated similarly using points $1$ and $3$.
+%Additionally, we must determine the bichromatic half-edges needed to perform recursion on non-empty subproblems. %Here the new issue is counting the number of colours on the boundary of the new subproblems.
 
-Here the new issue is counting the number of colours on the boundary of the new subproblems.
+\paragraph{Trichromatic instances.} %at most 3 subproblems
+Trichromatic instances induce at most three recursive invocations. We must use point 1 above to identify subproblems. Let $uvw$ be the vertices of $f_i$. Then, there exits a subproblem to the right of $uv$, a subproblem to the right of $vw$, and a subproblem to the right of $wu$.  Without loss of generality, suppose that the subproblem to the right of $uv$ contains $e_1$, the suproblem to the right of $vw$ contains $e_2$ and the subproblem to the right of $wu$ contains $e_3$.
 
-\paragraph{Subproblems coming from trichromatic instances}
+We describe how to treat the subproblem to the right of $uv$. There are four cases to consider:
+\begin{enumerate}[nosep,nolistsep]
+  \item If $u$ is a vertex of $C$ and $v$ is a vertex of $C$, then this subproblem is empty if and only if $uv$ is an edge of $C$ (point 1). If this subproblem is non-empty, then it is a bichromatic subproblem whose input is the half-edge $e_1'=vu$ and the half-edge $e_2'=e_1$.
+  % \in \{e_1,e_2,e_3\}$ whose endpoints are coloured identically to $e_1'$.%good
 
+  %\item If $u$ is a vertex of $C$ and $v$ is not a vertex of $C$, then this subproblem is a non-empty trichromatic subproblem whose input is the half-edge $e_1'=vu$, the half-edge $e_2' \in \{e_1,e_2,e_3\}$, and the half-edge $e_3'$ whose source is the last vertex $v'$ in the leg of $Y_i$ that contains $v$ whose target is the $T$-parent of $v'$.
 
+  \item If $u$ is a vertex of $C$ and $v$ is not a vertex of $C$, then this subproblem is always a non-empty trichromatic subproblem. Let $v'$ denote the last vertex in the leg of $Y_i$ that contains $v$ and let $v''$ be the $T$-parent of $v'$. Then the input to this subproblem is the half-edge $e_1'=v''v'$, the half-edge $e_2'=vu$, and the half-edge $e_3'=e_1$.
+  % \in \{e_1,e_2,e_3\}$ whose endpoints are coloured identically to $u$ and to the $T$-parent of $v'$.%swap source & target for v
 
-After setting $f_0$, the initial recursive call falls into the third case above, so its input is any of the three inner faces that shares an edge with the outer face, $f_0$.  Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{r}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{r}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{r} O(1+|Y_i|) = O(n)$.
+  %\item If $u$ is not a vertex of $C$ and $v$ is a vertex of $C$, then this subproblem is a non-empty trichromatic subproblem whose input is the half-edge $e_1'=vu$, the half-edge $e_2' \in \{e_1,e_2,e_3\}$, and the half-edge $e_3'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$.
+
+  \item If $u$ is not a vertex of $C$ and $v$ is a vertex of $C$, then this subproblem is always a non-empty trichromatic subproblem. Let $u'$ denote the last vertex in the leg of $Y_i$ that contains $u$ and let $u''$ be the $T$-parent of $u'$. Then the input to this subproblem is the half-edge $e_1'=u'u''$, the half-edge $e_2'=e_1$, and the half-edge $e_3'=vu$.
+
+  % \item If $u$ is not a vertex of $C$ and $v$ is a vertex of $C$, then this subproblem is a non-empty trichromatic subproblem whose input is the half-edge $e_1'=vu$, the half-edge $e_2'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$, the half-edge $e_3' \in \{e_1,e_2,e_3\}$ whose endpoints are coloured identically to the $T$-parent of $u'$ and to $v$.%good
+
+  \item If $u$ is not a vertex of $C$ and $v$ is not a vertex of $C$, then this subproblem is always a non-empty trichromatic subproblem.  Let $u'$ denote the last vertex in the leg of $Y_i$ that contains $u$, let $u''$ be the $T$-parent of $u'$, let $v'$ denote the last vertex in the leg of $Y_i$ that contains $v$, and let $v''$ be the $T$-parent of $v'$.  Then the input to this subproblem is the half-edge $e_1'=v''v'$, the half-edge $e_2'=u'u''$, and the half-edge $e_3'=e_1$.
+  
+  
+  
+  
+  
+  % $$ whose input is the half-edge $e_1'$ whose target is the last vertex $v'$ in the leg of $Y_i$ that contains $v$ whose source is the $T$-parent of $v'$, the half-edge $e_2'$ whose source is the last vertex $u'$ in the leg of $Y_i$ that contains $u$ whose target is the $T$-parent of $u'$, and the half-edge $e_3' \in \{e_1,e_2,e_3\}$ whose endpoints are coloured identically to the $T$-parent of $u'$ and to the $T$-parent of $v'$.%swap source & target for v
+\end{enumerate}
+The subproblem to the right of $vw$ and the subproblem to the right of $wu$ are treated similarly using point 1.
+%Trichromatic instances induce at most three recursive invocations. We must use point 1 (point 2 does not apply) above to identify subproblems. No need to determine the number of bichromatic edges needed to recurse on non-empty subproblems, as it's always going to be one per problem.
+
+After setting $f_0$, the initial recursive call falls into the monochromatic instance described above, with its input being any of the three half-edges adjacent to the outer face $f_0$ that have $G \setminus f_0$ to their left.  Each recursive invocation adds a new face $f_i$ to the good face sequence $f_0,\ldots,f_{r}$ and takes $O(1+|Y_i|)$ time.  Since $Y_0,\ldots,Y_{r}$ is a partition of $V(G)$, the running time of this algorithm is therefore $\sum_{i=0}^{r} O(1+|Y_i|) = O(n)$.
 \end{proof}
 
 
 \section{Variations}
 \label{variants}
 
-In this section we show that there are $O(n)$ time algorithms for computing the decompositions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.  In the same way that \cref{meta}.\ref{three_tree} follows from the tripod decomposition of \cref{tripod_decomposition}, \cref{meta}.\ref{four_tree} follows from a bipod decomposition given by \cref{bipod_decomposition_algorithm} and \cref{meta}.\ref{six_tree} follows from a monopod decomposition given by \cref{monopod_decomposition_algorithm}.
+In this section we show that there are $O(n)$ time algorithms for computing the partitions in \cref{meta}.\ref{four_tree} and \cref{meta}.\ref{six_tree}.  In the same way that \cref{meta}.\ref{three_tree} follows from the tripod partition of \cref{tripod_decomposition}, \cref{meta}.\ref{four_tree} follows from a bipod partition given by \cref{bipod_decomposition_algorithm}, and \cref{meta}.\ref{six_tree} follows from a monopod partition given by \cref{monopod_decomposition_algorithm}.
 
 % Both algorithms are based on the fact that lowest common ancestor information is sufficient to reconstruct the shapes of certain subtrees of the cotree $\overline{T}$.
 
@@ -508,15 +609,15 @@ In this section we show that there are $O(n)$ time algorithms for computing the 
 %
 % Both of these results are obtained by recursive algorithm similar to that described for computing tripod decompositions.
 
-\subsection{Bipod Decompositions}
+\subsection{Bipod Partitions}
 
-We begin with the decomposition in \cref{meta}.\ref{four_tree}, which was communicated to us by Vida~Dujmović, and has not appeared before.  This decomposition is obtained by selecting a proper sequence $\mathcal{E}:=e_0,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i)\setminus V(G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
+We begin with the partition in \cref{meta}.\ref{four_tree}, which was communicated to us by Vida~Dujmović, and has not appeared before.  This partition is obtained by selecting a proper sequence $\mathcal{E}:=e_0,\ldots,e_k$ of distinct edges of $G$, which define a sequence of graphs $\mathcal{G_E}:=G_{0},\ldots,G_k$ where $G_i:=\bigcup_{j=0}^i P_T(e_j)$ and a sequence of \emph{bipods} $\mathcal{I_E}:=\Lambda_0,\ldots,\Lambda_k$ where $\Lambda_i=V(G_i)\setminus V(G_{i-1})$.  We call $\mathcal{E}$ \emph{good} if, for each $i\in\{0,\ldots,k\}$ and each face $f\in F(G_i)$, $V(f)$ has a non-empty intersection with at most $4$ bipods in $\Lambda_0,\ldots,\Lambda_i$.
 
 Exactly the same argument used in \cref{orderings} to show that $G/\mathcal{Y_F}$ is contained in a chordal graph of maximum clique size $4$ also shows that if $\mathcal{E}$ is a good edge sequence that produces a bipod partition $\mathcal{I_E}$ of $V(G)$, then $G/\mathcal{I_E}$ is contained in a chordal graph of maximum clique size $5$, so $G/\mathcal{I_E}$ has treewidth at most $4$.
 
 We now explain why a good edge sequence $e_0,\ldots,e_r$ exists.\footnote{The existence of this edge sequence is more easily proven using Sperner's Lemma, but we want a proof that lends itself to a linear time algorithm.}  As before, we set $f_0$ to be any face of $G$ such that $E(f_0)$ contains an edge of $T$ incident to the root $v_0$ of $T$.  The edge $e_0$ is any edge of $E(f_0)\setminus E(T)$.  Next we take special care to ensure that $G_i$ is biconnected for $i\ge 1$.  In particular, if $G_0$ contains only two edges of $f_0$, then we take $e_1$ to be the edge of $f_0$ that does not appear in $G_0$.  Otherwise, we choose $e_1$ using the general strategy for choosing $e_i$, described next.
 
-Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose the edge $e_i$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$. Let $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$. If $|I_f| < 4$ then we can select $e_i$ to be any edge in the interior $f$. Therefore, we focus on the case $|I_f| = 4$. As before we colour vertices in the near triangulation $N$ using colours in the set $I_f$; we let $S$ be the set of inner faces in $N$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
+Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose the edge $e_i$, we consider any face $f\in F(G_{i-1})\setminus F(G)$. Inductively, $V(f)$ contains vertices from at most four bipods in $\Lambda_0,\ldots,\Lambda_{i-1}$. Let $I_f:=\{j\in\{0,\ldots,i-1\}:\Lambda_j\cap V(f)\neq\emptyset\}$. If $|I_f| < 4$ then we can select $e_i$ to be any edge in the interior $f$. Therefore, we focus on the case $|I_f| = 4$. As before we colour vertices in the near-triangulation $N$ using colours in the set $I_f$; we let $S$ be the set of inner faces in $N$ that contain a bichromatic edge in $E(f)$; and let $\overline{T}_0$ be the minimal subtree of $\overline{T}$ that spans $S$.  The same argument in the proof of \cref{lca_sperner} shows that every node of $\overline{T}_0$ is contained in $f$.
 
 \cref{director}, below, shows that $\overline{T}_0$ contains an edge $xy$ such that each component of $\overline{T}_0-xy$ contains at most two elements of $S$.  It is straightforward to verify that, if we choose $e_i$ to the be the edge in $E(x)\cap E(y)$ then we obtain a graph $G_i$ in which each of the two new faces containing vertices from $\Lambda_i$ contains vertices from at most three bipods in $\{\Lambda_j:j\in I_f\}$, as required.
 
@@ -528,7 +629,7 @@ Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose
        \includegraphics[page=3]{figs/two_up}
      \end{tabular}
   \end{center}
-  \caption{Choosing the next $e_i$ in a  good edge sequence.}
+  \caption{Choosing the next edge $e_i$ in a  good edge sequence.}
   \label{e_i}
 \end{figure}
 
@@ -548,18 +649,20 @@ Refer to \cref{e_i}.  Now we may assume that $G_{i-1}$ is biconnected. To choose
 
 Algorithmically, using \cref{reconstruction}, we can construct the model $\overline{T}_0'$ of $\overline{T}_0$ in constant time given the set $S$.  The model $\overline{T}_0'$ will also contain an edge $\alpha\beta$ such that each component of $\overline{T}_0'-\alpha\beta$ contains at most two nodes in $S$. We claim that $E(\alpha)$  contains an edge that makes a suitable choice for $e_i$, and this edge can be found in constant time.  Indeed, the edge $\alpha\beta$ in  $\overline{T}_0'$ corresponds to a path $\alpha,x_1,\ldots,x_k,\beta$ in $\overline{T}_0$ and the unique edge in $E(\alpha)\cap E(x_1)$ is a suitable choice for $e_i$.  
 
-The rest of the details of the algorithm are similar to those given in the proof of \cref{three_tree_algorithm}:  Each subproblem is a near-triangulation $N$ bounded by a cycle $C$ and the input that defines the subproblem consists of the (at most four) faces $S\subseteq F(N)$ incident to bichromatic edges of $C$.\footnote{In the degenerate case where $C$ has no bichromatic edges, the input is any face of $N$ incident to an edge of $C$.}
+The rest of the details of the algorithm are similar to those given in the proof of \cref{three_tree_algorithm}:  Each subproblem is a near-triangulation $N$ bounded by a cycle $C$ and the input that defines the subproblem consists of the (at most four) bichromatic half-edges of $C$.
+(In the degenerate case where $C$ has no bichromatic edges, the input is any half-edge of $C$.)
+Similar issues arise when determining which subproblems are non-empty and determining the half-edges used as input for each non-empty subproblem.  The interested reader can find these details in the code \cite{morin:fatripar,gouin:planar}.
 
 \begin{thm}\label{bipod_decomposition_algorithm}
-  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-bipod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 4$.
+  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-bipod partition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 4$.
 \end{thm}
 
 
-\subsection{Monopod Decompositions}
+\subsection{Monopod Partitions}
 
-Finally we consider the decomposition described in \cref{meta}.\ref{six_tree}.   This decomposition is obtained from a tripod decomposition $\mathcal{Y}:=Y_0,\ldots,Y_r$, obtained by a sequence $\mathcal{F}:=f_0,\ldots,f_r$ of faces of $G$ in the same manner described in \cref{orderings}.  However in this setting, the sequence $f_0,\ldots,f_r$ is \emph{good} if, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i:=\bigcup_{j=0}^i Y_T(f_j)$, $V(f)$ contains vertices from at most $5$ \emph{legs} of tripods in $Y_{0},\ldots,Y_i$.  Under these conditions, \citet{ueckerdt.wood.ea:improved} are able to show that the \emph{monopod decomposition} $\mathcal{I}$ obtained by splitting each tripod $Y_i$ into three upward paths yields a quotient graph $G/\mathcal{I}$ of treewidth at most $6$.
+Finally we consider the partition described in \cref{meta}.\ref{six_tree}.   This partition is obtained from a tripod partition $\mathcal{Y}:=Y_0,\ldots,Y_r$, obtained by a sequence $\mathcal{F}:=f_0,\ldots,f_r$ of faces of $G$ in the same manner described in \cref{orderings}.  However in this setting, the sequence $f_0,\ldots,f_r$ is \emph{good} if, for each $i\in\{0,\ldots,r\}$ and each face $f$ of $G_i:=\bigcup_{j=0}^i Y_T(f_j)$, $V(f)$ contains vertices from at most $5$ \emph{legs} of tripods in $Y_{0},\ldots,Y_i$.  Under these conditions, \citet{ueckerdt.wood.ea:improved} are able to show that the \emph{monopod partition} $\mathcal{I}$ obtained by splitting each tripod $Y_i$ into three upward paths yields a quotient graph $G/\mathcal{I}$ of treewidth at most $6$.
 
-As before we focus on the extreme case when $V(f)$ contains vertices from exactly 5 legs of tripods. Refer to \cref{uwy}. Following the same strategy used for the previous two decompositions, the set $S$ in this case has size at most $5$ and the face $f_i$ corresponds to a node of $\overline{T}_0$ such that each component of $\overline{T}_0-f_i$ contains at most $2$ nodes in $S$.  (This is always possible because $\lfloor 5/2\rfloor=2$.)  Again, a suitable choice for $f_i$ can be found in the model $\overline{T}_0'$ of $\mathcal{T}_0$ in constant time.
+As before we focus on the extreme case when $V(f)$ contains vertices from exactly 5 legs of tripods. Refer to \cref{uwy}. Following the same strategy used for the previous two partitions, the set $S$ in this case has size at most $5$ and the face $f_i$ corresponds to a node of $\overline{T}_0$ such that each component of $\overline{T}_0-f_i$ contains at most $2$ nodes in $S$.  (This is always possible because $\lfloor 5/2\rfloor=2$.)  Again, a suitable choice for $f_i$ can be found in the model $\overline{T}_0'$ of $\mathcal{T}_0$ in constant time.
 
 \begin{figure}[htbp]
   \begin{center}
@@ -573,23 +676,33 @@ As before we focus on the extreme case when $V(f)$ contains vertices from exactl
   \label{uwy}
 \end{figure}
 
+The details of determining which subproblems are non-empty and which half-edges are used as input for each subproblem are similar to the previous two partitions. Details can be found in the source code \cite{morin:fatripar,gouin:planar}.
 
 \begin{thm}\label{monopod_decomposition_algorithm}
-  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-monopod decomposition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 6$.
+  There exists an $O(n)$ time algorithm that, given any $n$-vertex triangulation $G$ and any rooted spanning tree $T$ of $G$, produces a $(G,T)$-monopod partition $\mathcal{I}$ such that $\tw(G/\mathcal{I})\le 6$.
 \end{thm}
 
-\section{Implementation and Experiments?}
+\section{Implementation}
+
+The algorithms described in this paper have been implemented in C++ \cite{morin:fatripar} and in C \cite{gouin:planar}.  The C++ implementation includes the algorithms for tripod, bipod, and monopod partitions. The C implementation implements only the tripod decomposition (which, at the time of writing, gives the tightest results in theoretical applications).
+
+As discussed in the proof of \cref{tripod_decomposition}, the implementation requires some care when deciding which subproblems are non-empty, but the resulting code is not overly long. The entire C++ implementation of all three algorithms, including the code for the lowest common ancestor data structure has 924 lines of code.\footnote{A \emph{line of code} is any line that contains a semicolon.}  The resulting code is also quite efficient. \Cref{plots} shows the total running time of the implementation on $n$-vertex triangulations for $n$ ranging from $10,000$ to $1,990,000$ in increments of $10,000$.  Each measurement is the average of $20$ runs on $20$ different triangulations.
 
 
-A breakdown of runtime by various phases.  Constructing BFS of $G$, Constructing the cotree, preprocessing the cotree for LCA, then the partition proper.
+\begin{figure}
+  \includegraphics{figs/total.pdf} \\
+  \includegraphics{figs/per_item.pdf}
+  \caption{Running time of the tripod partition algorithm C++ implementation in \cite{morin:fatripar}}
+  \label{plots}
+\end{figure}
 
-For the partition proper we could drill down a bit on the functions it calls.
+\Cref{plots} breaks down the total running time of the algorithms into the various stages, including the construction of the BFS tree $T$, the construction of the cotree $\overline{T}$, and the tripod partition algorithm proper. \Cref{plots} does not include the time required to read the input file that contains the triangulation $G$ and convert it into the triangle adjacency structure described before the proof of \cref{algorithm}. The upper part of \cref{plots} shows the total running time, in seconds. The lower part shows the total running time divided by the number of vertices.  For even the largest triangulations tested, the time per vertex is not more than $1.3\times 10^{-6}$ seconds ($1.4$ microseconds).  
 
-Are there any big examples of planar triangulations we could download?  
+The time per vertex appears to increase slowly with $n$ in the lower part of \cref{plots}. This is a caching effect. The CPU in this machine has three levels of cache, the largest of which has 6MB.  As the size of the input triangulation increases, the fraction of memory references that are available in the cache decreases, resulting in (slower) accesses to RAM.  In the limit, every memory access would be to RAM and, on this machine this would result in a processing time of approximately $1.4$ microseconds per vertex.
 
+The input triangulations used to generate \cref{plots} were obtained by computing Delaunay triangulations of points uniformly distributed in a circle, with three additional points added to ensure that the outer face is a triangle.  The machine used to run the experiments is the third authors office desktop computer. The CPU in this machine is a \texttt{Intel(R) Core(TM) i5-4670K CPU @ 3.40GHz}. The machine has 16GB of DDR3 memory in four 4GB modules configured at a speed of 1600MT/s.  (This machine is nothing special. It was purchased in 2013 and is a standard desktop computer.)
 
-
-
+The short summary of these results is that the implementation is fast in real terms on basic hardware. For comparison, the time required to make a $1$-million vertex triangulation using the (very fast) \texttt{delaunator} algorithm \cite{delfrrr:delaunator} is approximately 8 seconds. The time required to compute a tripod partition of this triangulation is approximately 1 second.  
 
 \section*{Acknowledgement}
 
